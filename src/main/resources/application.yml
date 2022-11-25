@@ -17,8 +17,6 @@ spring:
     date-format: dd-MM-yyyy
     time-zone: Europe/Paris
 logging:
-  file:
-    name: log/app-web.log
   level:
     fr.insy2s.ecommerce: trace
     org.hibernate.SQL: debug
