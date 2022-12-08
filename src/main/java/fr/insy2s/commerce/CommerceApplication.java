@@ -1,4 +1,4 @@
-package fr.insy2s.commerce;
+package fr.insy2s.Commerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
