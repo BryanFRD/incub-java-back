@@ -1,4 +1,4 @@
-package fr.insy2s.Commerce.models;
+package fr.insy2s.commerce.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
