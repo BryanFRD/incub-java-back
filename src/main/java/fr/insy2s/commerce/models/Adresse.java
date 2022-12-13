@@ -28,7 +28,7 @@ public class Adresse {
     private Boolean statut_adresse;
 
     @ManyToOne
-    private Utliisateur utliisateur;
+    private Utilisateur utliisateur;
 
     @OneToMany(mappedBy = "adresse")
     private List<Facture> factures;

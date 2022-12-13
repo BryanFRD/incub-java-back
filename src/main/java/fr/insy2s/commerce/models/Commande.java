@@ -27,7 +27,7 @@ public class Commande {
     private Date date_livraison;
 
     @ManyToOne
-    private Utliisateur utilisateur;
+    private Utilisateur utilisateur;
 
     @OneToOne
     private Facture facture;
