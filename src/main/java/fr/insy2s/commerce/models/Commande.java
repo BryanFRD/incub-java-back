@@ -1,4 +1,4 @@
-package fr.insy2s.Commerce.models;
+package fr.insy2s.commerce.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class Commande {
     private Date date_livraison;
 
     @ManyToOne
-    private Utliisateur utilisateur;
+    private Utilisateur utilisateur;
 
     @OneToOne
     private Facture facture;
