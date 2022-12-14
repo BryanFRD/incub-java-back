@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
+
 
 /**
  * @author Hocine Bedrouni
@@ -20,6 +22,7 @@ public class GreetingsController {
     }
 
     @GetMapping("/bye")
+    @RolesAllowed("ROLE_CLIENT")
     public ResponseEntity<String> sayGoodBye(){
         return ResponseEntity.ok("Good by and see you later");
     }
