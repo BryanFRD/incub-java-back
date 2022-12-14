@@ -10,6 +10,7 @@ pour accéder aux requetes publiques depuis postman (methode GET)
     
 ##Requete pour Obtenir Token 'METHODE POST'
 pour recevoir un token depuis postman (methode POST avec le JSON)
+
     - http://localhost:8080/api/public/login
 
         il faut y ajouter au format JSON un Utilisateur existant dans la BDD (uniquement l'email et le mot de passe)
