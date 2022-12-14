@@ -95,6 +95,7 @@ public class ProduitController {
             return this.productService.update(Product);
         }
 
+
         /**
          * Cette fonction supprime un produit de la base de données
          *
