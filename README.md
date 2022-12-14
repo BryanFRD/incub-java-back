@@ -5,16 +5,9 @@ pour accéder aux requetes publiques depuis postman (methode GET)
 
     - http://localhost:8080/api/public/hello (permet d'accéder à une page de vérification)
 
-    - http://localhost:8080/api/public/enr/users (permet d'obtenir la liste des utilisateurs dans la BDD)
+    - http://localhost:8082/api/public/produit/liste (permet d'obtenir la liste des produits dans la BDD)
 
-
-##Requete privé 'METHODE GET'
-pour accéder aux requetes privées depuis postman (methode GET avec le token)
-
-    - http://localhost:8080/api/bye (permet d'accéder à une page privé de vérification)
-        il faut y inclure le token dans "Bearer" (pour récupérer le token voir juste en dessous)
-
-
+    
 ##Requete pour Obtenir Token 'METHODE POST'
 pour recevoir un token depuis postman (methode POST avec le JSON)
     - http://localhost:8080/api/public/login
@@ -24,5 +17,19 @@ pour recevoir un token depuis postman (methode POST avec le JSON)
           "password": "pass"
         }`
 
+##Requete privé 'METHODE GET'(avec Token)
+pour accéder aux requetes privées depuis postman (methode GET avec le token)
 
+    - http://localhost:8080/api/bye (permet d'accéder à une page privé de vérification)
+        il faut y inclure le token dans "Bearer" 
+
+##Requete privé 'METHODE POST'(avec Token)
+    - http://localhost:8082/api/public/produit/liste (permet d'ajouter un produit dans la BDD)
+
+##Requete privé 'METHODE DELETE'(avec Token)
+    - http://localhost:8082/api/produit/delete/{id} (permet de supprimer un produit depuis son Id)
+
+
+##Requete privé 'METHODE UPDATE'(avecToken)
+    - http://localhost:8082/api/produit/update/{ID} 5permet de modifier un produit depuis son Id)
 
