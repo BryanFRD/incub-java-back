@@ -31,5 +31,5 @@ pour accéder aux requetes privées depuis postman (methode GET avec le token)
 
 
 ##Requete privé 'METHODE UPDATE'(avecToken)
-    - http://localhost:8082/api/produit/update/{ID} 5permet de modifier un produit depuis son Id)
+    - http://localhost:8082/api/produit/update/{id} (permet de modifier un produit depuis son Id)
 
