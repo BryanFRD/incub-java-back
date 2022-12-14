@@ -19,8 +19,10 @@ pour recevoir un token depuis postman (methode POST avec le JSON)
         }`
 
 ##Requete pour Ajouter un utilisateur 'METHODE POST'
-    - http://localhost:8080/api/public/adduser
-pour ajouter un utilisateur dans la BDD (methode POST avec le JSON)
+    - http://localhost:8080/api/public/adduser 
+     pour ajouter un utilisateur dans la BDD (methode POST avec le JSON)
+
+
 
 
 
