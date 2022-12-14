@@ -20,12 +20,12 @@ public class JwtTokenUtil {
     public String generateAccessToken(Utilisateur user) {
         return Jwts.builder()
                 .setSubject(user.getId() + "," + user.getEmail())
-                .setIssuer("CodeJava")
+                .setIssuer("Projet Ecom")
+                .claim("roles", user.getRoles().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
-
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JwtTokenUtil.class);
@@ -45,7 +45,6 @@ public class JwtTokenUtil {
         } catch (SignatureException ex) {
             LOGGER.error("Signature validation failed");
         }
-
         return false;
     }
 
@@ -58,7 +57,7 @@ public class JwtTokenUtil {
         return parseClaims(token).getSubject();
     }
 
-    private Claims parseClaims(String token) {
+    public Claims parseClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)

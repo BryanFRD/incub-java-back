@@ -1,8 +1,9 @@
 package fr.insy2s.commerce.config;
 
 
-
+import fr.insy2s.commerce.models.Role;
 import fr.insy2s.commerce.models.Utilisateur;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,15 +52,30 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         UserDetails userDetails = getUserDetails(token);
 
         UsernamePasswordAuthenticationToken
-                authentication = new UsernamePasswordAuthenticationToken(userDetails, null, null);
+                authentication = new UsernamePasswordAuthenticationToken(userDetails, null,  userDetails.getAuthorities());
+//                authentication = new UsernamePasswordAuthenticationToken(userDetails, null, null);
 
         authentication.setDetails(
                 new WebAuthenticationDetailsSource().buildDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
+
+
     private UserDetails getUserDetails(String token) {
         Utilisateur userDetails = new Utilisateur();
+
+        Claims claims = jwtUtil.parseClaims(token);
+        String subject = (String) claims.get(Claims.SUBJECT);
+        String roles = (String) claims.get("roles");
+
+        roles = roles.replace("[", "").replace("]", "");
+        String[] roleNames = roles.split(",");
+
+        for (String aRoleName : roleNames) {
+            userDetails.addRole(new Role(aRoleName));
+        }
         String[] jwtSubject = jwtUtil.getSubject(token).split(",");
 
         userDetails.setId(Long.parseLong(jwtSubject[0]));
@@ -68,27 +84,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return userDetails;
     }
 
-    /**
-     *
-     * @param request
-     *     private boolean hasAuthorizationBearer(HttpServletRequest request) {
-     *         String header = request.getHeader("Authorization");
-     *         if (ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
-     *             return false;
-     *         }
-     *
-     *         return true;
-     *     }
-     * @return
-     */
-
 
     private boolean hasAuthorizationBearer(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
          if (ObjectUtils.isEmpty(header) || !header.startsWith("Bearer")) {
             return false;
         }
-
         return true;
     }
 

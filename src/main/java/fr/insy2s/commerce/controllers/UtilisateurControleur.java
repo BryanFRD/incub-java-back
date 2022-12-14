@@ -10,31 +10,34 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+@RestController
+//    @CrossOrigin(originPatterns = "http://localhost:3000/%22)
+@RequestMapping("/api")
+
 public class UtilisateurControleur {
 
+        @Autowired
+        private UtilisateurRepository utilisateurRepository;
 
-    @RestController
-//    @CrossOrigin(originPatterns = "http://localhost:3000/%22)
-            @RequestMapping("/api/public/enr")
-            public static class UserController {
+        @PostMapping("/public/adduser")
+        public ResponseEntity<Utilisateur> create(@RequestBody Utilisateur user) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String password = passwordEncoder.encode(user.getPassword());
+            user.setPassword(password);
+            Utilisateur savedProduct = utilisateurRepository.save(user);
+            URI productURI = URI.create("/users/" + savedProduct.getId());
+            return ResponseEntity.created(productURI).body(savedProduct);
+        }
 
-            @Autowired
-            private UtilisateurRepository utilisateurRepository;
-
-            @PostMapping
-            public ResponseEntity<Utilisateur> create(@RequestBody Utilisateur user) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode(user.getPassword());
-        user.setPassword(password);
-        Utilisateur savedProduct = utilisateurRepository.save(user);
-        URI productURI = URI.create("/users/" + savedProduct.getId());
-        return ResponseEntity.created(productURI).body(savedProduct);
+        @GetMapping("/users")
+        //@RolesAllowed({"ROLE_CUSTOMER", "ROLE_EDITOR"})
+        public List<Utilisateur> list() {
+            return utilisateurRepository.findAll();
+        }
     }
 
-    @GetMapping("/users")
-    public List<Utilisateur> list() {
-        return utilisateurRepository.findAll();
-    }
-}
 
-}
+
+
+
+
