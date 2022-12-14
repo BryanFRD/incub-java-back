@@ -38,6 +38,7 @@ pour recevoir un token depuis postman (methode POST avec le JSON)
     - http://localhost:8082/api/public/produit/liste (permet d'ajouter un produit dans la BDD)
 
 
+
 ##Requete privé 'METHODE DELETE'(avec Token)
     - http://localhost:8082/api/produit/delete/{id} (permet de supprimer un produit depuis son Id)
 
