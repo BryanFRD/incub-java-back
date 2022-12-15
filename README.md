@@ -20,6 +20,7 @@ pour recevoir un token depuis postman (methode POST avec le JSON)
 
 
 ##Requete pour Ajouter un utilisateur 'METHODE POST'
+
     - http://localhost:8080/api/public/adduser 
      pour ajouter un utilisateur dans la BDD (methode POST avec le JSON)
 
@@ -28,6 +29,7 @@ pour recevoir un token depuis postman (methode POST avec le JSON)
 
 
 ##Requete privé 'METHODE GET'(avec Token)
+
      pour accéder aux requetes privées depuis postman (methode GET avec le token)
     - http://localhost:8080/api/bye (permet d'accéder à une page privé de vérification)
         il faut y inclure le token dans "Bearer" 
@@ -35,7 +37,7 @@ pour recevoir un token depuis postman (methode POST avec le JSON)
 
 ##Requete privé 'METHODE POST'(avec Token)
 
-    - http://localhost:8082/api/public/produit/liste (permet d'ajouter un produit dans la BDD)
+    - http://localhost:8082/api/public/produit/create (permet d'ajouter un produit dans la BDD)
 
 
 
