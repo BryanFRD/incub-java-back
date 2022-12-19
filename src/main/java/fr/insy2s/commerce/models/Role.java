@@ -8,41 +8,28 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nom_role;
+    private String nomRole;
 
 
-    public Role(String nom_role) {
-        this.nom_role = nom_role;
-    }
-
-    public Role() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNom_role() {
-        return nom_role;
-    }
-
-    public void setNom_role(String nom_role) {
-        this.nom_role = nom_role;
+    public Role(String nomRole) {
+        this.nomRole = nomRole;
     }
 
     @Override
-    public String toString() {
-        return this.nom_role;
-    }
+    public  String toString(){return this.nomRole;}
+
+
+
+
+
 }

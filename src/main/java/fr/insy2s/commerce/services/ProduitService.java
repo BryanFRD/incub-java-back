@@ -32,14 +32,12 @@ public class ProduitService {
      * @return Le produit avec l'identifiant qui a été transmis.
      */
     public Produit findById(Long id){
-
         Optional<Produit> optproduit = this.productRepo.findById(id);
         if(optproduit.isPresent()){
             return  optproduit.get();
         }else{
-            throw  new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-
     }
 
     /**
@@ -61,7 +59,7 @@ public class ProduitService {
      */
     public Produit update(Produit newProduct){
         if(!this.productRepo.existsById(newProduct.getId())){
-            throw  new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"impossible de trouver la Product a mettere a jour ");
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"impossible de trouver la Product a mettre a jour ");
         }else{
             return this.productRepo.save(newProduct);
         }
@@ -72,15 +70,11 @@ public class ProduitService {
      *
      * @param id L'identifiant du produit à supprimer.
      */
-    public Produit delete(Long id){
-        if(!this.productRepo.existsById(id)){
-            throw  new ResponseStatusException(HttpStatus.NOT_FOUND,"impossible de trouver le produit a suprimer");
-        }
-        Produit produitdelet = this.findById(id);
+
+    public void delete(Long id){
         this.productRepo.deleteById(id);
-        if(this.productRepo.existsById(id)){
-            throw  new ResponseStatusException(HttpStatus.EXPECTATION_FAILED,"erreur lors de la supression");
-        }
-        return produitdelet;
     }
+
+
+
 }

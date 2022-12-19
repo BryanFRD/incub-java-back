@@ -1,37 +1,49 @@
 package fr.insy2s.commerce.controllers;
 
 import fr.insy2s.commerce.models.Panier;
-import fr.insy2s.commerce.repositories.PanierRepository;
-import fr.insy2s.commerce.repositories.ProduitRepository;
+
+import fr.insy2s.commerce.services.PanierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import javax.annotation.security.RolesAllowed;
-import java.net.URI;
 import java.util.List;
-
+@RestController
+@RequestMapping("/api")
 public class PanierController {
-
     @Autowired
-    private PanierRepository repo;
+    private PanierService panierService;
 
+    @GetMapping("/admin/panier/liste")
+    public List<Panier> findAll() { return this.panierService.findAll(); }
 
-    @PostMapping
-    @RolesAllowed({"ROLE_ADMIN", "ROLE_CLIENT"})
-    public ResponseEntity<String> create(@RequestBody String panier) {
-//        Panier savedPanier = repo.save(panier);
-     return ResponseEntity.ok("Vous avez créer votre panier");
-//        URI panierURI = URI.create("/panier/" + savedPanier.getId());
-//        return ResponseEntity.created(panierURI).body(savedPanier);
+    @GetMapping("/public/panier/{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Panier findById(@PathVariable Long id) { return this.panierService.findById(id); }
+
+    @PostMapping("/public/panier/create")
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public ResponseEntity<Panier> create(@RequestBody Panier newPanier){
+        Panier savedPanier = this.panierService.create(newPanier);
+        return ResponseEntity.status(201).body(savedPanier);
+
     }
 
-    @GetMapping("/public/panier/list")
-    public ResponseEntity<String> list(@RequestBody String panier) {
-        return ResponseEntity.ok("Vous afficher ici la liste des produits du panier");
-//        return repo.findAll();
-//        return ("Voici ce que vous avez commandé");
+    @PostMapping("/public/panier/update/{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public Panier update(@RequestBody Panier newPanier, @PathVariable Long id) {
+        if(!id.equals(newPanier.getId())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Mauvais Panier à mettre à jour");
+        }
+        return this.panierService.update(newPanier);
     }
+
+    @DeleteMapping("/public/panier/delete/{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void delete(@PathVariable Long id) {
+        this.panierService.delete(id);
+    }
+
 }

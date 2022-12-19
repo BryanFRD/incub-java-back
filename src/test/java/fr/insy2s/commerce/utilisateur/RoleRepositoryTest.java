@@ -4,7 +4,6 @@ import fr.insy2s.commerce.models.Role;
 import fr.insy2s.commerce.models.Utilisateur;
 import fr.insy2s.commerce.repositories.RoleRepository;
 import fr.insy2s.commerce.repositories.UtilisateurRepository;
-import jdk.jshell.execution.Util;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,26 +28,28 @@ public class RoleRepositoryTest {
      @Autowired
      private UtilisateurRepository utilisateurRepository;
 
-//    @Test
-//    public void testCreateRoles() {
-//        Role client = new Role("ROLE_CLIENT");
-//
-//        Role customer = new Role("ROLE_CUSTOMER");
-//
-//        repo.saveAll(List.of(client, customer));
-////        repo.save(client);
-//        long count = repo.count();
-//        assertEquals(3, count);
-//    }
+    @Test
+    public void testCreateRoles() {
+        Role client = new Role("ROLE_CLIENT");
+
+        Role customer = new Role("ROLE_CUSTOMER");
+
+        Role admin = new Role("ROLE_ADMIN");
+
+        repo.saveAll(List.of(client, customer, admin));
+//        repo.save(client);
+        long count = repo.count();
+        assertEquals(3, count);
+    }
 
 
     @Test
     public void testAssignRoleToUser() {
-        int userId = 5;
-        Long roleId = 3L;     /* role_id 1 = ADMIN, role_id  2 = CLIENT, role_id 3 = CUSTOMER*/
+        int userId = 2;
+        Long roleId = 2L;     /* role_id 1 = ADMIN, role_id  2 = CLIENT, role_id 3 = CUSTOMER*/
         Optional<Role> role = repo.findById(roleId);
         Role role2 = new Role();
-        role2.setNom_role(role.get().getNom_role());
+        role2.setNomRole(role.get().getNomRole());
         role2.setId(role.get().getId());
         Optional<Utilisateur> user = utilisateurRepository.findById(Long.valueOf(userId));
         Utilisateur user2 = new Utilisateur();
