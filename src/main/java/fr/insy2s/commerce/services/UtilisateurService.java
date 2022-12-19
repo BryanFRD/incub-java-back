@@ -1,13 +1,19 @@
 package fr.insy2s.commerce.services;
 
+import fr.insy2s.commerce.dtos.UpdatePasswordRequest;
 import fr.insy2s.commerce.models.Produit;
+import fr.insy2s.commerce.models.Role;
 import fr.insy2s.commerce.models.Utilisateur;
+import fr.insy2s.commerce.repositories.RoleRepository;
 import fr.insy2s.commerce.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +22,9 @@ public class UtilisateurService {
 
     @Autowired
     private UtilisateurRepository userRepo;
+
+    @Autowired
+    private RoleRepository roleRepo;
 
     /**
      * Il renvoie une liste de tous les utilisateur de la base de données
@@ -42,15 +51,11 @@ public class UtilisateurService {
         }
     }
 
-    /**
-     * Il prend un objet Utilisateur, l'enregistre dans la base de données et renvoie l'objet Utilisateur
-     * enregistré.
-     *
-     * @param newProduct Il s'agit de l'objet transmis par le contrôleur.
-     * @return L'objet newProduct est renvoyé.
-     */
-    public Utilisateur create(Utilisateur newProduct){
-        return this.userRepo.save(newProduct);
+
+    public Utilisateur create(Utilisateur newUtilisateur){
+    Optional<Role> role = roleRepo.findById(2L);
+        newUtilisateur.addRole((role.get()));
+        return this.userRepo.save((newUtilisateur));
     }
 
 
@@ -61,11 +66,61 @@ public class UtilisateurService {
      */
     public Utilisateur update(Utilisateur newProduct){
         if(!this.userRepo.existsById(newProduct.getId())){
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"impossible de trouver la Product a mettere a jour ");
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"impossible de trouver la Product a mettre a jour ");
         }else{
             return this.userRepo.save(newProduct);
         }
     }
+
+    public Utilisateur updateRole(Utilisateur userRoleToUpdate){
+        if(!this.userRepo.existsById(userRoleToUpdate.getId())){
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,"impossible de trouver le role a mettre a jour ");
+        }else{
+            Utilisateur user = this.findById(userRoleToUpdate.getId());
+            user.setRoles(userRoleToUpdate.getRoles());
+            return this.userRepo.save(user);
+        }
+    }
+
+    public ResponseEntity<Utilisateur> addUser(Utilisateur utilisateur) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = passwordEncoder.encode(utilisateur.getPassword());
+        utilisateur.setPassword(password);
+        Utilisateur savedUser = userRepo.save(utilisateur);
+        URI userURI = URI.create("/user/" + savedUser.getId());
+        return ResponseEntity.created(userURI).body(savedUser);
+    }
+
+
+    public String forgetPassword(String email){
+        Utilisateur user = (this.userRepo.findByEmail(email)).get();
+        if(user.getId()== null){ throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
+        } else {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String password = passwordEncoder.encode("azerty");
+            Utilisateur user2 = (this.userRepo.findByEmail(email)).get();
+            user2.setPassword(password);
+             this.userRepo.save(user2);
+             return "Votre nouveau Passaword est azerty" ;
+        }
+    }
+
+    public ResponseEntity<?> updatePassword( UpdatePasswordRequest request) {
+        Optional<Utilisateur> user = this.userRepo.findByEmail(request.getEmail());
+        if (user.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
+        } else {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            Utilisateur user1 = (this.userRepo.findByEmail(request.getEmail())).get();
+            String password = passwordEncoder.encode(request.getNewPassword());
+            user1.setPassword(password);
+            this.userRepo.save(user1);
+            return ResponseEntity.status(201).body("Votre mot de passe à été changé");
+        }
+
+    }
+
+
 
     /**
      * Cette fonction supprime un utilisateur par son identifiant
