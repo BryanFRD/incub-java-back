@@ -22,7 +22,7 @@ public class Commande {
 
     private Date date_commande;
 
-    private String statut_commande;
+    private String statut_commande; //TODO ajouter l'enum
 
     private Date date_livraison;
 
@@ -33,7 +33,10 @@ public class Commande {
     private Facture facture;
 
     @ManyToOne
-    private Adresse adresse;
+    private Adresse adresseLivraison;
+
+    @ManyToOne
+    private Adresse adresseFacturation;
 
     @OneToMany(mappedBy = "commande")
     private List<Panier> paniers;

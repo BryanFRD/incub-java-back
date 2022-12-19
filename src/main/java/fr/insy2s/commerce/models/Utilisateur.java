@@ -30,8 +30,8 @@ public class Utilisateur implements UserDetails {
 
     private String email;
 
-    @OneToMany(mappedBy = "utilisateur")
-    private List<Commande> commandes;
+//    @OneToMany(mappedBy = "utilisateur")
+//    private List<Commande> commandes;
 
     @ManyToMany
     @JoinTable(
@@ -39,7 +39,6 @@ public class Utilisateur implements UserDetails {
             joinColumns = @JoinColumn(name = "utilisateur_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id")
     )
-
     private Set<Role> roles = new HashSet<>();
 
 
@@ -47,7 +46,7 @@ public class Utilisateur implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getNom_role()));
+            authorities.add(new SimpleGrantedAuthority(role.getNomRole()));
         }
         return authorities;
     }

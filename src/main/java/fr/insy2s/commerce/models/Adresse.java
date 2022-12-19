@@ -30,9 +30,9 @@ public class Adresse {
     @ManyToOne
     private Utilisateur utilisateur;
 
-    @OneToMany(mappedBy = "adresse")
-    private List<Facture> factures;
-
-    @OneToMany(mappedBy = "adresse")
-    private List<Commande> commandes;
+//    @OneToMany(mappedBy = "adresse")
+//    private List<Facture> factures;
+//
+//    @OneToMany(mappedBy = "adresse")
+//    private List<Commande> commandes;
 }

@@ -23,10 +23,6 @@ public class Facture {
 
     private Date date_facturation;
 
-    @OneToOne
-    private Commande commande;
 
-    @ManyToOne
-    private Adresse adresse;
 
 }

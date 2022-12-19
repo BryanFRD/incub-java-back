@@ -19,15 +19,16 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String label_produit;
+    private String label;
 
-    private String reference_produit;
+    private String reference;
 
-    private String description_produit;
+    private String description;
 
-    private double prix_ttc;
+    @Column(name="prix_ttc")
+    private double prixTtc;
 
-    private Integer stock_produit;
+    private Integer stock;
 
     @OneToMany(mappedBy = "produit")
     private List<Image> images;
