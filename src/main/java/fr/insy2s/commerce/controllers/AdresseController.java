@@ -1,5 +1,6 @@
 package fr.insy2s.commerce.controllers;
 
+import fr.insy2s.commerce.dtos.AdresseRequest;
 import fr.insy2s.commerce.models.Adresse;
 
 import fr.insy2s.commerce.services.AdresseService;
@@ -41,6 +42,15 @@ public class AdresseController {
         }
         return this.adresseService.update(newAdresse);
     }
+
+//    @PostMapping("/public/adresse/updateUser/{id}")
+//    @ResponseStatus(code = HttpStatus.ACCEPTED)
+//    public Adresse updateUserAddress(@RequestBody AdresseRequest addRequest, @PathVariable Long id){
+//        if(!id.equals(addRequest.getAdresseId())){
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Mauvaise adresse à mettre à jour");
+//        }
+//        return this.adresseService.addUserToAdress(addRequest);
+//    }
 
     @DeleteMapping("/public/adresse/delete/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)

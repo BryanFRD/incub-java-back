@@ -22,7 +22,7 @@ public class CommandeService {
 
     public Commande findById(Long id) {
         Optional<Commande> optCommande = this.commandRepo.findById(id);
-        if (!optCommande.isPresent()) {
+        if (optCommande.isPresent()) {
             return optCommande.get();
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

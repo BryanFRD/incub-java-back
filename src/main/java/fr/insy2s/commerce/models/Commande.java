@@ -16,13 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 public class Commande {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date date_commande;
 
-    private String statut_commande; //TODO ajouter l'enum
+    @Enumerated(EnumType.STRING)
+    @Column(name = "statut_commande")
+    private CommandeStatus statutCommande;
 
     private Date date_livraison;
 

@@ -1,7 +1,6 @@
 package fr.insy2s.commerce.controllers;
 
 import fr.insy2s.commerce.models.Commande;
-import fr.insy2s.commerce.models.Panier;
 import fr.insy2s.commerce.services.CommandeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

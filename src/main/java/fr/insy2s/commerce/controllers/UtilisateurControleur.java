@@ -1,8 +1,10 @@
 package fr.insy2s.commerce.controllers;
 
-import fr.insy2s.commerce.models.Produit;
+
+import fr.insy2s.commerce.dtos.UpdatePasswordRequest;
 import fr.insy2s.commerce.models.Utilisateur;
 import fr.insy2s.commerce.services.UtilisateurService;
+import jdk.jshell.execution.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +27,11 @@ public class UtilisateurControleur {
     @Autowired
     private UtilisateurService userService;
 
-    @PostMapping("/admin/create")
+    @PostMapping("/admin/user/create")
     public ResponseEntity<Utilisateur> create(@RequestBody Utilisateur utilisateur) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode(utilisateur.getPassword());
-        utilisateur.setPassword(password);
-        Utilisateur savedUser = userService.create(utilisateur);
-        URI userURI = URI.create("/user/" + savedUser.getId());
-        return ResponseEntity.created(userURI).body(savedUser);
+        return this.userService.addUser(utilisateur);
     }
+
 
     @GetMapping("/public/user/liste")
     @ResponseStatus(code = HttpStatus.OK)
@@ -56,6 +54,31 @@ public class UtilisateurControleur {
         }
         return this.userService.update(utilisateur);
     }
+
+    @PostMapping("public/user/updateRole/{id}")
+    @ResponseStatus(code= HttpStatus.ACCEPTED)
+    public Utilisateur updateRole (@RequestBody Utilisateur utilisateur, @PathVariable Long id){
+        if (!id.equals(utilisateur.getId())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"mauvais utilisateur à mettre a jour");
+        }
+        return this.userService.updateRole(utilisateur);
+    }
+    @PostMapping("public/user/forgetPass")
+    @ResponseStatus(code= HttpStatus.ACCEPTED)
+    public String forgetPassword(@RequestBody Utilisateur user ){
+       return this.userService.forgetPassword(user.getEmail());
+    }
+
+    @PostMapping("public/user/updatePass")
+    @ResponseStatus(code= HttpStatus.ACCEPTED)
+    public ResponseEntity<?> updatePassword(@RequestBody UpdatePasswordRequest request){
+        return this.userService.updatePassword(request);
+    }
+
+
+//    @PostMapping("")
+
+
 
     // ------Methode avec DTO------
 //    @PostMapping("admin/user/update/{id}")
