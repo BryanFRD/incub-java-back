@@ -26,6 +26,9 @@ public class UtilisateurService {
     private UtilisateurRepository userRepo;
 
     @Autowired
+    private EmailSenderService senderService;
+
+    @Autowired
     private RoleRepository roleRepo;
 
     /**
@@ -97,13 +100,12 @@ public class UtilisateurService {
     public UUID forgetPassword(String email){
         Optional<Utilisateur> user = this.userRepo.findByEmail(email);
         if(user.isPresent()){
-//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//            String password = passwordEncoder.encode("azerty");
-//            Utilisateur user2 = user.get();
-//            user2.setPassword(password);
-//            this.userRepo.save(user2);
 
-//            Utilisateur UUID corrId = UUID.randomUUID();
+            // TODO mettre un token dans le mail et rediriger vers la page de connexion FRONT
+
+            senderService.sendSimpleEmail("bluby80@gmail.com",
+                    "Changer mot de passe",
+                    "TEST TEST");
             return user.get().getCorrId() ;
         }
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
