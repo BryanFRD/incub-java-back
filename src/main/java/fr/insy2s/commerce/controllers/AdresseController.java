@@ -43,14 +43,12 @@ public class AdresseController {
         return this.adresseService.update(newAdresse);
     }
 
-//    @PostMapping("/public/adresse/updateUser/{id}")
-//    @ResponseStatus(code = HttpStatus.ACCEPTED)
-//    public Adresse updateUserAddress(@RequestBody AdresseRequest addRequest, @PathVariable Long id){
-//        if(!id.equals(addRequest.getAdresseId())){
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Mauvaise adresse à mettre à jour");
-//        }
-//        return this.adresseService.addUserToAdress(addRequest);
-//    }
+    @PostMapping("/public/adresse/updateUser")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public Adresse updateUserAddress(@RequestBody AdresseRequest addRequest){
+
+        return this.adresseService.addUserToAdress(addRequest);
+    }
 
     @DeleteMapping("/public/adresse/delete/{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)

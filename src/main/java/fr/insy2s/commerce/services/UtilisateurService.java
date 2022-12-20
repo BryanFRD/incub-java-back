@@ -13,9 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.beans.Transient;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UtilisateurService {
@@ -92,32 +94,36 @@ public class UtilisateurService {
     }
 
 
-    public String forgetPassword(String email){
-        Utilisateur user = (this.userRepo.findByEmail(email)).get();
-        if(user.getId()== null){ throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
-        } else {
-            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            String password = passwordEncoder.encode("azerty");
-            Utilisateur user2 = (this.userRepo.findByEmail(email)).get();
-            user2.setPassword(password);
-             this.userRepo.save(user2);
-             return "Votre nouveau Passaword est azerty" ;
+    public UUID forgetPassword(String email){
+        Optional<Utilisateur> user = this.userRepo.findByEmail(email);
+        if(user.isPresent()){
+//            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//            String password = passwordEncoder.encode("azerty");
+//            Utilisateur user2 = user.get();
+//            user2.setPassword(password);
+//            this.userRepo.save(user2);
+
+//            Utilisateur UUID corrId = UUID.randomUUID();
+            return user.get().getCorrId() ;
         }
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
     }
+
+//    @Transient
+//    private UUID corrId = UUID.randomUUID();
 
     public ResponseEntity<?> updatePassword( UpdatePasswordRequest request) {
         Optional<Utilisateur> user = this.userRepo.findByEmail(request.getEmail());
-        if (user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
-        } else {
+        if (user.isPresent()) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             Utilisateur user1 = (this.userRepo.findByEmail(request.getEmail())).get();
             String password = passwordEncoder.encode(request.getNewPassword());
             user1.setPassword(password);
             this.userRepo.save(user1);
             return ResponseEntity.status(201).body("Votre mot de passe à été changé");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
         }
-
     }
 
 

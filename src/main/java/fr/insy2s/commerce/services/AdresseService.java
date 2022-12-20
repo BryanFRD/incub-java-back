@@ -5,6 +5,7 @@ import fr.insy2s.commerce.models.Adresse;
 import fr.insy2s.commerce.models.Utilisateur;
 import fr.insy2s.commerce.repositories.AdresseRepository;
 import fr.insy2s.commerce.repositories.UtilisateurRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AdresseService {
 
-    @Autowired
-    private AdresseRepository adresseRepo;
-    @Autowired
-    private UtilisateurService userService;
+
+    private final AdresseRepository adresseRepo;
+
+    private final UtilisateurService userService;
 
     public List<Adresse> findAll() {
         return this.adresseRepo.findAll();
@@ -27,11 +29,7 @@ public class AdresseService {
 
     public Adresse findById(Long id) {
         Optional<Adresse> optAdresse = this.adresseRepo.findById(id);
-        if(optAdresse.isPresent()){
-        return optAdresse.get();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        return optAdresse.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
 
@@ -48,17 +46,16 @@ public class AdresseService {
     }
 
 //       TODO
-//    public Adresse addUserToAdress(AdresseRequest addRequest){
-//        if(!this.adresseRepo.existsById((long) addRequest.getAdresseId())){
-//            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "impossible de mettre l'adresse à jour");
-//        } else {
-//            Adresse address = this.findById((long) addRequest.getAdresseId());
-//            Utilisateur user = this.userService.findById((long) addRequest.getUserId());
-//            address.setUtilisateur();
-//            return this.adresseRepo.save(address);
-//        }
-//    }
-
+    public Adresse addUserToAdress(AdresseRequest addRequest) {
+        Optional<Adresse> address = adresseRepo.findById(addRequest.getAdresseId());
+        Utilisateur user = userService.findById(addRequest.getUserId());
+        if (address.isPresent()) {
+            address.get().setUtilisateur(user);
+            return address.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     public void delete(Long id) {
         this.adresseRepo.deleteById(id);

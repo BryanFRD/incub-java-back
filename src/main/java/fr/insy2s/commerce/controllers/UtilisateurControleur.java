@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 //    @CrossOrigin(originPatterns = "http://localhost:3000/%22)
@@ -65,7 +66,7 @@ public class UtilisateurControleur {
     }
     @PostMapping("public/user/forgetPass")
     @ResponseStatus(code= HttpStatus.ACCEPTED)
-    public String forgetPassword(@RequestBody Utilisateur user ){
+    public UUID forgetPassword(@RequestBody Utilisateur user ){
        return this.userService.forgetPassword(user.getEmail());
     }
 
