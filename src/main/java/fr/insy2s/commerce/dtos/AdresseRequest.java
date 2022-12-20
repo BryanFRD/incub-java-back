@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 public class AdresseRequest {
 
-    private int adresseId;
+    private Long adresseId;
 
-    private int userId;
+    private Long userId;
 
 
 }

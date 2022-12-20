@@ -30,9 +30,11 @@ public class Utilisateur implements UserDetails {
 
     private String email;
 
-//    @OneToMany(mappedBy = "utilisateur")
-//    private List<Commande> commandes;
+    @Transient
+    private UUID corrId = UUID.randomUUID();
 
+
+    private String resetToken;
     @ManyToMany
     @JoinTable(
             name = "utilisateur_roles",
