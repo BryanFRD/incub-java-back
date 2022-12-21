@@ -97,19 +97,19 @@ public class UtilisateurService {
     }
 
 
-    public UUID forgetPassword(String email){
-        Optional<Utilisateur> user = this.userRepo.findByEmail(email);
-        if(user.isPresent()){
-
-            // TODO mettre un token dans le mail et rediriger vers la page de connexion FRONT
-
-            senderService.sendSimpleEmail("bluby80@gmail.com",
-                    "Changer mot de passe",
-                    "TEST TEST");
-            return user.get().getCorrId() ;
-        }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
-    }
+//    public UUID forgetPassword(String email){
+//        Optional<Utilisateur> user = this.userRepo.findByEmail(email);
+//        if(user.isPresent()){
+//
+//            UUID token = UUID.randomUUID();
+//            user.get().setResetToken(token.toString());
+//            senderService.sendSimpleEmail("bluby80@gmail.com",
+//                    "Changer mot de passe");
+//                    //URL + TOKEN);
+//            return token ;
+//        }
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
+//    }
 
 //    @Transient
 //    private UUID corrId = UUID.randomUUID();

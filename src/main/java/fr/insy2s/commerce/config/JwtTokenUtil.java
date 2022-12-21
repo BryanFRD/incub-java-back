@@ -1,5 +1,6 @@
 package fr.insy2s.commerce.config;
 
+import fr.insy2s.commerce.models.Role;
 import fr.insy2s.commerce.models.Utilisateur;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -21,7 +23,7 @@ public class JwtTokenUtil {
         return Jwts.builder()
                 .setSubject(user.getId() + "," + user.getEmail())
                 .setIssuer("Projet Ecom")
-                .claim("roles", user.getRoles().toString())
+                .claim("roles", user.getRoles().stream().map(Role::getNomRole).collect(Collectors.joining(",")))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)

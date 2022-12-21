@@ -30,8 +30,6 @@ public class Utilisateur implements UserDetails {
 
     private String email;
 
-    @Transient
-    private UUID corrId = UUID.randomUUID();
 
 
     private String resetToken;
