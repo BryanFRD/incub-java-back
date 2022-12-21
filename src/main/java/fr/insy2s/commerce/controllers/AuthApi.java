@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
-
-//@CrossOrigin(originPatterns = "http://localhost:3000")
+@CrossOrigin("*")
 public class AuthApi {
     @Autowired AuthenticationManager authManager;
     @Autowired JwtTokenUtil jwtUtil;
