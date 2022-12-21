@@ -31,7 +31,6 @@ public class Utilisateur implements UserDetails {
     private String email;
 
 
-
     private String resetToken;
     @ManyToMany
     @JoinTable(
