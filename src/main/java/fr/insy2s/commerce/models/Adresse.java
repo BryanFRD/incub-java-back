@@ -1,4 +1,4 @@
-package fr.insy2s.Commerce.models;
+package fr.insy2s.commerce.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,11 +28,7 @@ public class Adresse {
     private Boolean statut_adresse;
 
     @ManyToOne
-    private Utilisateur utliisateur;
+    private Utilisateur utilisateur;
 
-    @OneToMany(mappedBy = "adresse")
-    private List<Facture> factures;
 
-    @OneToMany(mappedBy = "adresse")
-    private List<Commande> commandes;
 }

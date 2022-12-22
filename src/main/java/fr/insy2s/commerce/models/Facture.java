@@ -1,6 +1,9 @@
-package fr.insy2s.Commerce.models;
+package fr.insy2s.commerce.models;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,10 +23,6 @@ public class Facture {
 
     private Date date_facturation;
 
-    @OneToOne
-    private Commande commande;
 
-    @ManyToOne
-    private Adresse adresse;
 
 }

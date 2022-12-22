@@ -1,14 +1,11 @@
-package fr.insy2s.Commerce.models;
+package fr.insy2s.commerce.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -22,15 +19,16 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String label_produit;
+    private String label;
 
-    private String reference_produit;
+    private String reference;
 
-    private String description_produit;
+    private String description;
 
-    private double prix_ttc;
+    @Column(name="prix_ttc")
+    private double prixTtc;
 
-    private Integer stock_produit;
+    private Integer stock;
 
     @OneToMany(mappedBy = "produit")
     private List<Image> images;

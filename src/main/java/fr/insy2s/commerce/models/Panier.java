@@ -1,4 +1,4 @@
-package fr.insy2s.Commerce.models;
+package fr.insy2s.commerce.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,13 +12,15 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="command_line")
 public class Panier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double prix;
+    @Column(name="prix_unitaire")
+    private double prixUnitaireProduit;
 
     private int quantité;
 

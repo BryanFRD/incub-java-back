@@ -1,4 +1,4 @@
-package fr.insy2s.Commerce.models;
+package fr.insy2s.commerce.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +16,16 @@ import java.util.List;
 @AllArgsConstructor
 public class Commande {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date date_commande;
 
-    private String statut_commande;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "statut_commande")
+    private CommandeStatus statutCommande;
 
     private Date date_livraison;
 
@@ -33,7 +36,10 @@ public class Commande {
     private Facture facture;
 
     @ManyToOne
-    private Adresse adresse;
+    private Adresse adresseLivraison;
+
+    @ManyToOne
+    private Adresse adresseFacturation;
 
     @OneToMany(mappedBy = "commande")
     private List<Panier> paniers;
