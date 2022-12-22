@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
@@ -27,6 +28,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     private final UtilisateurRepository utilisateurRepository;
 
     private final JwtTokenFilter jwtTokenFilter;
+
+
 
 
     @Override
@@ -47,6 +50,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 
 
     @Override
@@ -70,5 +75,6 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
 
 }
