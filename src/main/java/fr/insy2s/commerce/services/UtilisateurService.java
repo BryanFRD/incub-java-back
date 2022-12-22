@@ -113,11 +113,14 @@ public class UtilisateurService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
     }
 
+
+
     public ResponseEntity<?> updatePassword( UpdatePasswordRequest request) {
-        Optional<Utilisateur> user = this.userRepo.findByEmail(request.getEmail());
+        Optional<Utilisateur> user = this.userRepo.findByResetToken(request.getResetToken());
         if (user.isPresent()) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            Utilisateur user1 = (this.userRepo.findByEmail(request.getEmail())).get();
+//            Utilisateur user1 = (this.userRepo.findByResetToken(request.getResetToken()).get());
+            Utilisateur user1 = user.get();
             String password = passwordEncoder.encode(request.getNewPassword());
             user1.setPassword(password);
             this.userRepo.save(user1);
