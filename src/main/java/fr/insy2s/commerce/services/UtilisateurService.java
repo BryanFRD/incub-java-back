@@ -113,6 +113,7 @@ public class UtilisateurService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
     }
 
+
 //    @Transient
 //    private UUID corrId = UUID.randomUUID();
 
