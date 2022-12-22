@@ -64,10 +64,10 @@ public class UtilisateurControleur {
         }
         return this.userService.updateRole(utilisateur);
     }
-    @PostMapping("public/user/forgetPass")
-    @ResponseStatus(code= HttpStatus.ACCEPTED)
-    public UUID forgetPassword(@RequestBody Utilisateur user ){
-       return this.userService.forgetPassword(user.getEmail());
+   @PostMapping("public/user/forgetPass")
+   @ResponseStatus(code= HttpStatus.ACCEPTED)
+   public UUID forgetPassword(@RequestBody Utilisateur user ){
+      return this.userService.forgetPassword(user.getEmail());
     }
 
     @PostMapping("public/user/updatePass")

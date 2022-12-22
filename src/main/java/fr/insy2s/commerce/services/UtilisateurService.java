@@ -110,12 +110,8 @@ public class UtilisateurService {
                     "http://localhost:5173/forgetPass/" + token);
             return token ;
         }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
     }
-
-
-//    @Transient
-//    private UUID corrId = UUID.randomUUID();
 
     public ResponseEntity<?> updatePassword( UpdatePasswordRequest request) {
         Optional<Utilisateur> user = this.userRepo.findByEmail(request.getEmail());
