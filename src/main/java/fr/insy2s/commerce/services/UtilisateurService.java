@@ -104,10 +104,10 @@ public class UtilisateurService {
             UUID token = UUID.randomUUID();
             user.get().setResetToken(token.toString());
             this.update(user.get());
-            senderService.sendSimpleEmail("bluby80@gmail.com",
+            senderService.sendSimpleEmail(user.get().getEmail(),
                     "Changer mot de passe",
 
-                    "http://localhost:5173/forgetPass/" + token);
+                    "http://localhost:5173/updatepass/" + token);
             return token ;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");

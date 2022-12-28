@@ -28,7 +28,7 @@ public class UtilisateurControleur {
     @Autowired
     private UtilisateurService userService;
 
-    @PostMapping("/admin/user/create")
+    @PostMapping("/public/user/create")
     public ResponseEntity<Utilisateur> create(@RequestBody Utilisateur utilisateur) {
         return this.userService.addUser(utilisateur);
     }
