@@ -8,7 +8,7 @@ import lombok.Setter;
 public class UpdatePasswordRequest {
 
 
-    private String ResetToken;
+    private String resetToken;
 
     private  String newPassword;
 }
