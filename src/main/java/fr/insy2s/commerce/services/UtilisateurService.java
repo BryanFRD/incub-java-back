@@ -56,12 +56,22 @@ public class UtilisateurService {
         }
     }
 
-
-    public Utilisateur create(Utilisateur newUtilisateur){
-    Optional<Role> role = roleRepo.findById(2L);
+    public ResponseEntity<Utilisateur> addUser(Utilisateur newUtilisateur) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = passwordEncoder.encode(newUtilisateur.getPassword());
+        newUtilisateur.setPassword(password);
+        Optional<Role> role = roleRepo.findById(2L);
         newUtilisateur.addRole((role.get()));
-        return this.userRepo.save((newUtilisateur));
+        Utilisateur savedUser = userRepo.save(newUtilisateur);
+        return ResponseEntity.status(200).body(savedUser);
     }
+
+
+//    public Utilisateur create(Utilisateur newUtilisateur){
+//    Optional<Role> role = roleRepo.findById(2L);
+//        newUtilisateur.addRole((role.get()));
+//        return this.userRepo.save((newUtilisateur));
+//    }
 
 
     /**
@@ -87,14 +97,7 @@ public class UtilisateurService {
         }
     }
 
-    public ResponseEntity<Utilisateur> addUser(Utilisateur utilisateur) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode(utilisateur.getPassword());
-        utilisateur.setPassword(password);
-        Utilisateur savedUser = userRepo.save(utilisateur);
-        URI userURI = URI.create("/user/" + savedUser.getId());
-        return ResponseEntity.created(userURI).body(savedUser);
-    }
+
 
 
     public UUID forgetPassword(String email){
