@@ -7,6 +7,9 @@ import fr.insy2s.commerce.models.Utilisateur;
 import fr.insy2s.commerce.repositories.RoleRepository;
 import fr.insy2s.commerce.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -87,13 +90,26 @@ public class UtilisateurService {
         }
     }
 
-    public ResponseEntity<Utilisateur> addUser(Utilisateur utilisateur) {
+//    public ResponseEntity<Utilisateur> addUser(Utilisateur utilisateur) {
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String password = passwordEncoder.encode(utilisateur.getPassword());
+//        utilisateur.setPassword(password);
+//        Utilisateur savedUser = userRepo.save(utilisateur);
+//        URI userURI = URI.create("/user/" + savedUser.getId());
+//        return ResponseEntity.created(userURI).body(savedUser);
+//    }
+
+
+    public ResponseEntity<Utilisateur> addUser(Utilisateur newUtilisateur) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String password = passwordEncoder.encode(utilisateur.getPassword());
-        utilisateur.setPassword(password);
-        Utilisateur savedUser = userRepo.save(utilisateur);
-        URI userURI = URI.create("/user/" + savedUser.getId());
-        return ResponseEntity.created(userURI).body(savedUser);
+        String password = passwordEncoder.encode(newUtilisateur.getPassword());
+        newUtilisateur.setPassword(password);
+        // 2 correspon à l'Id du Role [ROLE_CLIENT] dans db,L = Long
+        // pour attribuer le role client aux utilisateur d'une facon automatique
+        Optional<Role> role = roleRepo.findById(2L);
+        newUtilisateur.addRole((role.get()));
+        Utilisateur savedUser = userRepo.save(newUtilisateur);
+        return ResponseEntity.status(200).body(savedUser);
     }
 
 
@@ -104,10 +120,10 @@ public class UtilisateurService {
             UUID token = UUID.randomUUID();
             user.get().setResetToken(token.toString());
             this.update(user.get());
-            senderService.sendSimpleEmail("bluby80@gmail.com",
+            senderService.sendSimpleEmail(user.get().getEmail(),
                     "Changer mot de passe",
 
-                    "http://localhost:5173/forgetPass/" + token);
+                    "http://localhost:5173/updatepass/" + token);
             return token ;
         }
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
@@ -118,10 +134,11 @@ public class UtilisateurService {
 //    private UUID corrId = UUID.randomUUID();
 
     public ResponseEntity<?> updatePassword( UpdatePasswordRequest request) {
-        Optional<Utilisateur> user = this.userRepo.findByEmail(request.getEmail());
+        Optional<Utilisateur> user = this.userRepo.findByResetToken(request.getResetToken());
         if (user.isPresent()) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            Utilisateur user1 = (this.userRepo.findByEmail(request.getEmail())).get();
+//            Utilisateur user1 = (this.userRepo.findByResetToken(request.getResetToken()).get());
+            Utilisateur user1 = user.get();
             String password = passwordEncoder.encode(request.getNewPassword());
             user1.setPassword(password);
             this.userRepo.save(user1);
@@ -143,6 +160,15 @@ public class UtilisateurService {
         this.userRepo.deleteById(id);
     }
 
+    public Page<Utilisateur> findUserPaginated(PageRequest pr) {
+        return userRepo.findAll(pr);
+    }
+
+//    public List<Utilisateur> findUserPaginated(int pageNo, int pageSize) {
+//        Pageable paging = PageRequest.of(pageNo, pageSize);
+//        Page<Utilisateur> pagedResult = userRepo.findAll(paging);
+//        return pagedResult.toList();
+//    }
 
 
 }

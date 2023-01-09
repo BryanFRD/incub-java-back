@@ -63,6 +63,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
 
 
+
     private UserDetails getUserDetails(String token) {
         Utilisateur userDetails = new Utilisateur();
 

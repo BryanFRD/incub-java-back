@@ -2,8 +2,7 @@ package fr.insy2s.commerce.controllers;
 
 import fr.insy2s.commerce.dtos.ProduitResponse;
 import fr.insy2s.commerce.models.Produit;
-import fr.insy2s.commerce.models.Utilisateur;
-import fr.insy2s.commerce.repositories.ProduitRepository;
+
 import fr.insy2s.commerce.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.annotation.security.RolesAllowed;
-import java.net.URI;
+
 import java.util.List;
 
 
@@ -38,6 +36,11 @@ public class ProduitController {
         @GetMapping("/public/produit/liste")
         public List<Produit> findAll(){
             return this.productService.findAll();
+        }
+
+        @GetMapping("/public/produit/liste/{pageNo}/{pageSize}")
+        public List<Produit> getPaginated(@PathVariable int pageNo, @PathVariable int pageSize){
+            return this.productService.findProdPaginated(pageNo, pageSize);
         }
 
         /**

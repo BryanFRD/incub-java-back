@@ -3,6 +3,10 @@ package fr.insy2s.commerce.services;
 import fr.insy2s.commerce.models.Produit;
 import fr.insy2s.commerce.repositories.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,8 +17,11 @@ import java.util.Optional;
 @Service
 public class ProduitService {
 
+
     @Autowired
     private ProduitRepository productRepo;
+
+
 
     /**
      * Il renvoie une liste de tous les produits de la base de données
@@ -74,6 +81,17 @@ public class ProduitService {
     public void delete(Long id){
         this.productRepo.deleteById(id);
     }
+
+
+
+    public List<Produit> findProdPaginated(int pageNo, int pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<Produit> pagedResult = productRepo.findAll(paging);
+        return pagedResult.toList();
+    }
+
+
+
 
 
 

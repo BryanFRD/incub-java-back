@@ -18,7 +18,7 @@ public class CategorieController {
     private CategorieService categorieService;
 
 
-    @GetMapping("/admin/categorie/liste")
+    @GetMapping("/public/categorie/liste")
     public List<Categorie> findAll() { return this.categorieService.findAll(); }
 
     @GetMapping("/admin/categorie/{id}")
