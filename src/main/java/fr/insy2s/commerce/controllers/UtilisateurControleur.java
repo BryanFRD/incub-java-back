@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-//    @CrossOrigin(originPatterns = "http://localhost:3000/%22)
+@CrossOrigin("*")
 @RequestMapping("/api")
 
 public class UtilisateurControleur {
@@ -67,10 +67,10 @@ public class UtilisateurControleur {
         }
         return this.userService.updateRole(utilisateur);
     }
-    @PostMapping("public/user/forgetPass")
-    @ResponseStatus(code= HttpStatus.ACCEPTED)
-    public UUID forgetPassword(@RequestBody Utilisateur user ){
-       return this.userService.forgetPassword(user.getEmail());
+   @PostMapping("public/user/forgetPass")
+   @ResponseStatus(code= HttpStatus.ACCEPTED)
+   public UUID forgetPassword(@RequestBody Utilisateur user ){
+      return this.userService.forgetPassword(user.getEmail());
     }
 
     @PostMapping("public/user/updatePass")
@@ -80,28 +80,7 @@ public class UtilisateurControleur {
     }
 
 
-//    @PostMapping("")
 
-
-
-
-    // ------Methode avec DTO------
-//    @PostMapping("admin/user/update/{id}")
-//    @ResponseStatus(code= HttpStatus.ACCEPTED)
-//    public ResponseEntity<?> update (@RequestBody Utilisateur utilisateur, @PathVariable Long id){
-//        if (!id.equals(utilisateur.getId()))
-//
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "mauvais utilisateur Ã  mettre a jour");
-//        Utilisateur userARenvoy = this.service.update(utilisateur);
-//        UtilisateurResponse response = new UtilisateurResponse(
-//                userARenvoy.getNom(),
-//                userARenvoy.getPrenom(),
-//                userARenvoy.getEmail(),
-//                "Vous avez mis a jour l'utilisateur"
-//        );
-//
-//        return ResponseEntity.ok(response);
-//    }
 
     @DeleteMapping("/public/user/delete/{id}")
     @ResponseStatus(code= HttpStatus.ACCEPTED)

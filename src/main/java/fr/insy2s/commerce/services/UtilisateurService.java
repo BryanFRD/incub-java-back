@@ -59,12 +59,22 @@ public class UtilisateurService {
         }
     }
 
-
-    public Utilisateur create(Utilisateur newUtilisateur){
-    Optional<Role> role = roleRepo.findById(2L);
+    public ResponseEntity<Utilisateur> addUser(Utilisateur newUtilisateur) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String password = passwordEncoder.encode(newUtilisateur.getPassword());
+        newUtilisateur.setPassword(password);
+        Optional<Role> role = roleRepo.findById(2L);
         newUtilisateur.addRole((role.get()));
-        return this.userRepo.save((newUtilisateur));
+        Utilisateur savedUser = userRepo.save(newUtilisateur);
+        return ResponseEntity.status(200).body(savedUser);
     }
+
+
+//    public Utilisateur create(Utilisateur newUtilisateur){
+//    Optional<Role> role = roleRepo.findById(2L);
+//        newUtilisateur.addRole((role.get()));
+//        return this.userRepo.save((newUtilisateur));
+//    }
 
 
     /**
@@ -126,12 +136,10 @@ public class UtilisateurService {
                     "http://localhost:5173/updatepass/" + token);
             return token ;
         }
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "L'utilisateur n'existe pas, vous devez vous inscrire");
     }
 
 
-//    @Transient
-//    private UUID corrId = UUID.randomUUID();
 
     public ResponseEntity<?> updatePassword( UpdatePasswordRequest request) {
         Optional<Utilisateur> user = this.userRepo.findByResetToken(request.getResetToken());
