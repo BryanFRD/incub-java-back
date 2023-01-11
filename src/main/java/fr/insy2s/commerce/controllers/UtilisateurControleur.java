@@ -37,11 +37,11 @@ public class UtilisateurControleur {
     }
 
 
-//    @GetMapping("/public/user/list")
-//    @ResponseStatus(code = HttpStatus.OK)
-//    public List<Utilisateur> list() {
-//        return userService.findAll();
-//    }
+    @GetMapping("/public/user/list")
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<Utilisateur> list() {
+        return userService.findAll();
+    }
 
 
     @GetMapping("/public/user/{id}")
