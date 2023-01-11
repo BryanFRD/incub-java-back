@@ -3,8 +3,12 @@ package fr.insy2s.commerce.controllers;
 import fr.insy2s.commerce.dtos.ProduitResponse;
 import fr.insy2s.commerce.models.Produit;
 
+import fr.insy2s.commerce.models.Utilisateur;
 import fr.insy2s.commerce.services.ProduitService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
@@ -33,15 +37,22 @@ public class ProduitController {
          *
          * @return Une liste de produits
          */
-        @GetMapping("/public/produit/liste")
+        @GetMapping("/public/produit/list")
         public List<Produit> findAll(){
             return this.productService.findAll();
         }
 
-        @GetMapping("/public/produit/liste/{pageNo}/{pageSize}")
-        public List<Produit> getPaginated(@PathVariable int pageNo, @PathVariable int pageSize){
-            return this.productService.findProdPaginated(pageNo, pageSize);
-        }
+//        @GetMapping("/public/produit/liste")
+//        public List<Produit> getPaginated(@PathVariable int pageNo, @PathVariable int pageSize){
+//            return this.productService.findAll(pageNo, pageSize);
+//        }
+    @GetMapping("/public/produit/liste")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Page<Produit> findProdAll(@RequestParam int page, @RequestParam int size) {
+        PageRequest pr = PageRequest.of(page, size);
+        return productService.findProdPaginated(pr);
+    }
+//
 
         /**
          * Il renvoie un produit avec l'identifiant donné

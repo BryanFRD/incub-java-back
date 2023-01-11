@@ -1,6 +1,7 @@
 package fr.insy2s.commerce.services;
 
 import fr.insy2s.commerce.models.Produit;
+import fr.insy2s.commerce.models.Utilisateur;
 import fr.insy2s.commerce.repositories.ProduitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -84,15 +85,10 @@ public class ProduitService {
 
 
 
-    public List<Produit> findProdPaginated(int pageNo, int pageSize) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<Produit> pagedResult = productRepo.findAll(paging);
-        return pagedResult.toList();
+
+
+
+    public Page<Produit> findProdPaginated(PageRequest pr) {
+        return productRepo.findAll(pr);
     }
-
-
-
-
-
-
 }
