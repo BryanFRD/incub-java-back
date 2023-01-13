@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ecom_incub
+    username: root
+    password: noumko009
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+        format_sql: true
+    defer-datasource-initialization: true
+    show-sql: true
+  jackson:
+    date-format: dd-MM-yyyy
+    time-zone: Europe/Paris
+logging:
+  level:
+    fr.insy2s.ecommerce: trace
+    org.hibernate.SQL: debug
+server:
+  port: 9000
