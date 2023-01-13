@@ -1,15 +1,14 @@
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ecommerce
-    username: postgres
-    password: postgres
+    url: jdbc:mysql://localhost:3306/ecom_incub
+    username: root
+    password: noumko009
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.MariaDBDialect
         format_sql: true
     defer-datasource-initialization: true
     show-sql: true
@@ -20,4 +19,5 @@ logging:
   level:
     fr.insy2s.ecommerce: trace
     org.hibernate.SQL: debug
-
+server:
+  port: 9000
