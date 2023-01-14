@@ -19,7 +19,7 @@ public class CommandService implements Webservices<Command> {
     }
 
     @Override
-    public List<Command> listes() {
+    public List<Command> all() {
         return this.commandRepository.findAll();
     }
 

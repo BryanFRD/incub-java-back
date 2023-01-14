@@ -6,24 +6,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.sql.Date;
 
 @Data
-@Entity
-@Table(name = "role")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+@Entity
+@Table(name = "invoice")
+public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_role")
+    @Column(name = "id_invoice")
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"role"})
-    private List<Account> users;
+    @Column(name = "billing_date")
+    private Date billingDate;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_ordered")
+    @JsonIgnoreProperties({"invoices"})
+    private Command command;
 }

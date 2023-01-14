@@ -12,18 +12,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "utilisateur")
-public class User {
+@Table(name = "account")
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_user")
+    @Column(name = "id_account")
     private Long id;
 
-    @Column(name = "nom")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "prenom")
+    @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "password")
@@ -36,11 +36,11 @@ public class User {
     private String resetToken;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "ref_role")
+    @JoinColumn(name = "id_role")
     @JsonIgnoreProperties({"users"})
     private Role role;
 
-/*    @OneToMany(mappedBy = "user")
-    @JsonIgnoreProperties({"utilisateur", "adresse"})
-    private List<Command> commands;*/
+    @OneToMany(mappedBy = "account")
+    @JsonIgnoreProperties({"account", "deliveryAdress", "billingAdress"})
+    private List<Command> commands;
 }

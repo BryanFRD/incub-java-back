@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface Webservices<T> {
 
-    List<T> listes();
+    List<T> all();
 
     void add(T e);
 

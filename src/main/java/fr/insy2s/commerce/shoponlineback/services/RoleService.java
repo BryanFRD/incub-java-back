@@ -19,7 +19,7 @@ public class RoleService implements Webservices<Role> {
     }
 
     @Override
-    public List<Role> listes() {
+    public List<Role> all() {
         return this.roleRepository.findAll();
     }
 

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/adresse")
+@RequestMapping("/api/adress")
 public class AdressController {
 
     @Autowired
@@ -19,39 +19,39 @@ public class AdressController {
         this.adressService = adresseService;
     }
 
-    @GetMapping("/listesAdresse")
-    public List<Adress> listes_adresse()
+    @GetMapping("/all-adress")
+    public List<Adress> allAdress()
     {
-        return this.adressService.listes();
+        return this.adressService.all();
     }
 
-    @PostMapping("/addAdresse")
-    public String add_adresse(@Validated @RequestBody Adress adresse)
+    @PostMapping("/add-adress")
+    public String addAdress(@Validated @RequestBody Adress adress)
     {
-        this.adressService.add(adresse);
+        this.adressService.add(adress);
 
-        return "adresse ajouter avec succès";
+        return "adress successfully add";
     }
 
-    @PutMapping("/updateAdresse/{ref_adresse}")
-    public String update_adresse(@Validated @PathVariable Long ref_adresse, @RequestBody Adress adresse)
+    @PutMapping("/update-adress/{idAdress}")
+    public String updateAdress(@Validated @PathVariable Long idAdress, @RequestBody Adress adresse)
     {
-        this.adressService.update(ref_adresse, adresse);
+        this.adressService.update(idAdress, adresse);
 
-        return "adresse modifier avec succèss";
+        return "adress update complete successfully";
     }
 
-    @DeleteMapping("/removeAdresse/{ref_adresse}")
-    public String remove_adresse(@Validated @PathVariable Long ref_adresse)
+    @DeleteMapping("/remove-adresse/{idAdress}")
+    public String removeAdress(@Validated @PathVariable Long idAdress)
     {
-        this.adressService.remove(ref_adresse);
+        this.adressService.remove(idAdress);
 
-        return "adresse supprimer avec succès";
+        return "adress delete successfully";
     }
 
-    @GetMapping("/getByIdAdresse/{ref_adresse}")
-    public Adress getById_adresse(@Validated @PathVariable Long ref_adresse)
+    @GetMapping("/get-by-id-adress/{idAdress}")
+    public Adress getByIdAdresse(@Validated @PathVariable Long idAdress)
     {
-        return this.adressService.getById(ref_adresse);
+        return this.adressService.getById(idAdress);
     }
 }

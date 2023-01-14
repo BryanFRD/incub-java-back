@@ -12,27 +12,33 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "adresse")
+@Table(name = "adress")
 public class Adress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ref_adresse")
+    @Column(name = "id_adress")
     private Long id;
 
-    @Column(name = "rue_complete")
+    @Column(name = "street")
     private String street;
 
-    @Column(name = "ville")
+    @Column(name = "city")
     private String city;
 
-    @Column(name = "code_postal", length = 5)
+    @Column(name = "postal_code", length = 5)
     private int codePostal;
 
-    @Column(name = "statut_adresse")
+    @Column(name = "statut_adress")
     private String statut;
 
-    @OneToMany(mappedBy = "adress")
-    @JsonIgnoreProperties({"adresse", "utilisateur"})
-    private List<Command> commands;
+    @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"deliveryAdress", "billingAdress", "account"})
+    private List<Command> ordersDelivered;
+
+    @OneToMany(mappedBy = "billingAdress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"deliveryAdress", "billingAdress", "account"})
+    private List<Command> ordersInvoiced;
+
+
 }
