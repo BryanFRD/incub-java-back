@@ -9,21 +9,24 @@ import javax.persistence.*;
 import java.util.List;
 
 @Data
-@Entity
-@Table(name = "role")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+@Entity
+@Table(name = "category")
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_role")
+    @Column(name = "id_category")
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"role"})
-    private List<Account> accounts;
+    @Column(name = "picture_url")
+    private String url;
+
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"category"})
+    private List<Product> products;
 }

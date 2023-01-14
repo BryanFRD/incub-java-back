@@ -19,7 +19,7 @@ public class Command {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ordered")
-    private Long id;
+    private Long idCommand;
 
     @Column(name = "ordered_date")
     private Instant commandDate;
@@ -48,4 +48,8 @@ public class Command {
     @OneToMany(mappedBy = "command", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"command"})
     private List<Invoice> invoices;
+
+    @OneToMany(mappedBy = "command", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"command", "product"})
+    private List<OrderDetails> orderDetails;
 }

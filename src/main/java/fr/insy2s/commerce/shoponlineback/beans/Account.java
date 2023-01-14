@@ -37,7 +37,7 @@ public class Account {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_role")
-    @JsonIgnoreProperties({"users"})
+    @JsonIgnoreProperties({"accounts"})
     private Role role;
 
     @OneToMany(mappedBy = "account")

@@ -35,8 +35,8 @@ public class RoleService implements Webservices<Role> {
                 .map(p -> {
                     if (p.getName() != null)
                         p.setName(e.getName());
-                    if (p.getUsers() != null)
-                        p.setUsers(e.getUsers());
+                    if (p.getAccounts() != null)
+                        p.setAccounts(e.getAccounts());
                     return this.roleRepository.save(p);
                 }).orElseThrow(()-> new RuntimeException("Role id not found"));
     }
