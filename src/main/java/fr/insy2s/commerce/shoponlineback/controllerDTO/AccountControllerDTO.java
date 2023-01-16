@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-dto/account")
+@RequestMapping("/api/account-dto")
 @RequiredArgsConstructor
 public class AccountControllerDTO {
 
@@ -26,6 +26,28 @@ public class AccountControllerDTO {
     {
         this.accountServiceDTO.add(accountDTO);
 
-        return "AccountDTO successfully add";
+        return "Account dto successfully add";
+    }
+
+    @PutMapping("/update-account-dto/{idAccount}")
+    public String updateAccountDTO(@Validated @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
+    {
+        this.accountServiceDTO.update(idAccount, accountDTO);
+
+        return "Account dto update complete successfully";
+    }
+
+    @DeleteMapping("/remove-account-dto/{idAccount}")
+    public String removeAccountDTO(@Validated @PathVariable Long idAccount)
+    {
+        this.accountServiceDTO.remove(idAccount);
+
+        return "Account dto successfully delete";
+    }
+
+    @GetMapping("/get-by-id-account-dto/{idAccount}")
+    public AccountDTO getByIdAccountDTO(@Validated @PathVariable Long idAccount)
+    {
+        return this.accountServiceDTO.getById(idAccount);
     }
 }
