@@ -6,24 +6,27 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
-@Entity
-@Table(name = "role")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+@Entity
+@Table(name = "picture")
+public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_role")
-    private Long id;
+    @Column(name = "id_picture")
+    private Long idPicture;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"role"})
-    private List<Account> accounts;
+    @Column(name = "url")
+    private String url;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_product")
+    @JsonIgnoreProperties({"pictures"})
+    private Product product;
 }

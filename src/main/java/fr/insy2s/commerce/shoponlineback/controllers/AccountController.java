@@ -1,6 +1,6 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
-import fr.insy2s.commerce.shoponlineback.beans.User;
+import fr.insy2s.commerce.shoponlineback.beans.Account;
 import fr.insy2s.commerce.shoponlineback.services.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -9,44 +9,44 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/account")
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
 
 
-    @GetMapping("/listes-user")
-    public List<User> listesUser()
+    @GetMapping("/all-account")
+    public List<Account> listesUser()
     {
-        return this.accountService.listes();
+        return this.accountService.all();
     }
 
-    @PostMapping("/add-user")
-    public String addUser(@Validated @RequestBody User utilisateur)
+    @PostMapping("/add-account")
+    public String addUser(@Validated @RequestBody Account utilisateur)
     {
         this.accountService.add(utilisateur);
 
-        return "user ajouter avec succès";
+        return "user successfully add";
     }
 
-    @PutMapping("/update-user/{id_user}")
-    public String updateUser(@Validated @PathVariable Long id_user, @RequestBody User utilisateur)
+    @PutMapping("/update-account/{id_user}")
+    public String updateUser(@Validated @PathVariable Long id_user, @RequestBody Account utilisateur)
     {
         this.accountService.update(id_user, utilisateur);
 
-        return "Mise à jour de l'utilisateur avec succès";
+        return "User update complete successfully";
     }
 
-    @DeleteMapping("/remove-user/{id_user}")
+    @DeleteMapping("/remove-account/{id_user}")
     public String removeUser(@Validated @PathVariable Long id_user)
     {
         this.accountService.remove(id_user);
 
-        return "Utilisateur supprimer avec succès";
+        return "user delete successfully";
     }
 
-    @GetMapping("/get-by-id-user/{id_user}")
-    public User getByIdUser(@Validated @PathVariable Long id_user)
+    @GetMapping("/get-by-id-account/{id_user}")
+    public Account getByIdUser(@Validated @PathVariable Long id_user)
     {
         return  this.accountService.getById(id_user);
     }

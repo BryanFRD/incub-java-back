@@ -2,7 +2,7 @@ package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.beans.Role;
 import fr.insy2s.commerce.shoponlineback.services.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,48 +10,44 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/role")
+@RequiredArgsConstructor
 public class RoleController {
 
-    @Autowired
     private final RoleService roleService;
 
-    public RoleController(RoleService roleService) {
-        this.roleService = roleService;
-    }
-
-    @GetMapping("/listesRole")
-    public List<Role> listes_role()
+    @GetMapping("/all-role")
+    public List<Role> AllRole()
     {
-        return this.roleService.listes();
+        return this.roleService.all();
     }
 
-    @PostMapping("/addRole")
-    public String add_role(@Validated @RequestBody Role role)
+    @PostMapping("/add-role")
+    public String addRole(@Validated @RequestBody Role role)
     {
         this.roleService.add(role);
 
-        return "role ajouter avec succèss";
+        return "rol successfully add";
     }
 
-    @PutMapping("/updateRole/{ref_role}")
-    public String update_role(@Validated @PathVariable Long ref_role, @RequestBody Role role)
+    @PutMapping("/update-role/{idRole}")
+    public String updateRole(@Validated @PathVariable Long idRole, @RequestBody Role role)
     {
-        this.roleService.update(ref_role, role);
+        this.roleService.update(idRole, role);
 
-        return "role modifier avec succèss";
+        return "role update complete successfully";
     }
 
-    @DeleteMapping("/removeRole/{ref_role}")
-    public String remove_role(@Validated @PathVariable Long ref_role)
+    @DeleteMapping("/remove-role/{idRole}")
+    public String removeRole(@Validated @PathVariable Long idRole)
     {
-        this.roleService.remove(ref_role);
+        this.roleService.remove(idRole);
 
-        return "role supprimer avec succcès";
+        return "role delete successfully";
     }
 
-    @GetMapping("/getByIdRole/{ref_role}")
-    public Role getById_role(@Validated @PathVariable Long ref_role)
+    @GetMapping("/get-by-id-role/{idRole}")
+    public Role getByIdRole(@Validated @PathVariable Long idRole)
     {
-        return this.roleService.getById(ref_role);
+        return this.roleService.getById(idRole);
     }
 }

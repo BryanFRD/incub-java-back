@@ -19,7 +19,7 @@ public class AdressService implements Webservices<Adress> {
     }
 
     @Override
-    public List<Adress> listes() {
+    public List<Adress> all() {
         return this.adressRepository.findAll();
     }
 

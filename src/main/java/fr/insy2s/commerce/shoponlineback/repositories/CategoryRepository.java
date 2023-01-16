@@ -1,9 +1,11 @@
 package fr.insy2s.commerce.shoponlineback.repositories;
 
-import fr.insy2s.commerce.shoponlineback.beans.Account;
+import fr.insy2s.commerce.shoponlineback.beans.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+
+
 }

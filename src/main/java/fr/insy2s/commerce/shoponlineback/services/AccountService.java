@@ -1,10 +1,9 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
-import fr.insy2s.commerce.shoponlineback.beans.User;
+import fr.insy2s.commerce.shoponlineback.beans.Account;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,17 +11,18 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements Webservices<User> {
+public class AccountService implements Webservices<Account> {
 
     private final AccountRepository accountRepository;
 
     @Override
-    public List<User> listes() {
+    public List<Account> all() {
         return this.accountRepository.findAll();
     }
 
+
     @Override
-    public void add(User e) {
+    public void add(Account e) {
 
         e.setResetToken(UUID.randomUUID().toString());
 
@@ -31,7 +31,7 @@ public class AccountService implements Webservices<User> {
     }
 
     @Override
-    public User update(Long id, User e) {
+    public Account update(Long id, Account e) {
         return this.accountRepository.findById(id)
                 .map(p -> {
                     if(p.getName() != null)
@@ -52,14 +52,14 @@ public class AccountService implements Webservices<User> {
     @Override
     public void remove(Long id) {
 
-        User utilisateur = this.accountRepository.findById(id).get();
+        Account utilisateur = this.accountRepository.findById(id).get();
 
         if (utilisateur != null)
             this.accountRepository.delete(utilisateur);
     }
 
     @Override
-    public User getById(Long id) {
+    public Account getById(Long id) {
         return this.accountRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found sorry"));
     }
 }

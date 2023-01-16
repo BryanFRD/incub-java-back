@@ -19,7 +19,7 @@ public class CommandService implements Webservices<Command> {
     }
 
     @Override
-    public List<Command> listes() {
+    public List<Command> all() {
         return this.commandRepository.findAll();
     }
 
@@ -53,6 +53,6 @@ public class CommandService implements Webservices<Command> {
 
     @Override
     public Command getById(Long id) {
-        return this.commandRepository.findById(id).orElseThrow();
+        return this.commandRepository.findById(id).orElseThrow(() -> new RuntimeException("not found sorry"));
     }
 }
