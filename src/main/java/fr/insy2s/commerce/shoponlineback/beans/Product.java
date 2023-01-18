@@ -21,7 +21,7 @@ public class Product {
     private Long idProduct;
 
     @Column(name = "ref_product")
-    private String productReference;
+    private String refProduct;
 
     @Column(name = "name")
     private String name;
@@ -42,6 +42,6 @@ public class Product {
     private List<Picture> pictures;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"product", "command"})
+    @JsonIgnoreProperties({"product", "ordered"})
     public List<OrderDetails> orderDetails;
 }

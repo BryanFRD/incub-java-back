@@ -12,12 +12,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "adress")
-public class Adress {
+@Table(name = "address")
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_adress")
+    @Column(name = "id_address")
     private Long id;
 
     @Column(name = "street")
@@ -34,11 +34,11 @@ public class Adress {
 
     @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"deliveryAdress", "billingAdress", "account"})
-    private List<Command> ordersDelivered;
+    private List<Ordered> ordersDelivered;
 
     @OneToMany(mappedBy = "billingAdress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"deliveryAdress", "billingAdress", "account"})
-    private List<Command> ordersInvoiced;
+    private List<Ordered> ordersInvoiced;
 
 
 }

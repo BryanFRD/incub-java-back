@@ -1,6 +1,6 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
-import fr.insy2s.commerce.shoponlineback.beans.Adress;
+import fr.insy2s.commerce.shoponlineback.beans.Address;
 import fr.insy2s.commerce.shoponlineback.services.AdressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -20,13 +20,13 @@ public class AdressController {
     }
 
     @GetMapping("/all-adress")
-    public List<Adress> allAdress()
+    public List<Address> allAdress()
     {
         return this.adressService.all();
     }
 
     @PostMapping("/add-adress")
-    public String addAdress(@Validated @RequestBody Adress adress)
+    public String addAdress(@Validated @RequestBody Address adress)
     {
         this.adressService.add(adress);
 
@@ -34,7 +34,7 @@ public class AdressController {
     }
 
     @PutMapping("/update-adress/{idAdress}")
-    public String updateAdress(@Validated @PathVariable Long idAdress, @RequestBody Adress adresse)
+    public String updateAdress(@Validated @PathVariable Long idAdress, @RequestBody Address adresse)
     {
         this.adressService.update(idAdress, adresse);
 
@@ -50,7 +50,7 @@ public class AdressController {
     }
 
     @GetMapping("/get-by-id-adress/{idAdress}")
-    public Adress getByIdAdresse(@Validated @PathVariable Long idAdress)
+    public Address getByIdAdresse(@Validated @PathVariable Long idAdress)
     {
         return this.adressService.getById(idAdress);
     }

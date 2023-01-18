@@ -1,13 +1,13 @@
 package fr.insy2s.commerce.shoponlineback.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import fr.insy2s.commerce.shoponlineback.beans.Role;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class AccountDTO {
 
-    private Long id;
+    private String refAccount;
 
     private String name;
 
@@ -19,6 +19,5 @@ public class AccountDTO {
 
     private String resetToken;
 
-    @JsonIgnoreProperties({"accounts"})
-    private Role role;
+    List<RoleDTO> roles;
 }

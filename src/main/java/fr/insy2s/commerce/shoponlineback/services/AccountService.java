@@ -24,6 +24,7 @@ public class AccountService implements Webservices<Account> {
     @Override
     public void add(Account e) {
 
+        e.setRefAccount(UUID.randomUUID().toString());
         e.setResetToken(UUID.randomUUID().toString());
 
 
@@ -34,6 +35,7 @@ public class AccountService implements Webservices<Account> {
     public Account update(Long id, Account e) {
         return this.accountRepository.findById(id)
                 .map(p -> {
+                    p.setRefAccount(UUID.randomUUID().toString());
                     if(p.getName() != null)
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
@@ -43,8 +45,8 @@ public class AccountService implements Webservices<Account> {
                     if (p.getEmail() != null)
                         p.setEmail(e.getEmail());
                     p.setResetToken(UUID.randomUUID().toString());
-                    if (p.getRole() != null)
-                        p.setRole(e.getRole());
+                    if (p.getRoles() != null)
+                        p.setRoles(e.getRoles());
                     return this.accountRepository.save(p);
                 }).orElseThrow(()-> new RuntimeException("Attention une exeption detecter sur cet user id"));
     }

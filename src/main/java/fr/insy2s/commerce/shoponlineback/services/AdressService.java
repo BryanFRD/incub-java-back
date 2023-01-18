@@ -1,6 +1,6 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
-import fr.insy2s.commerce.shoponlineback.beans.Adress;
+import fr.insy2s.commerce.shoponlineback.beans.Address;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.repositories.AdressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AdressService implements Webservices<Adress> {
+public class AdressService implements Webservices<Address> {
 
     @Autowired
     private final AdressRepository adressRepository;
@@ -19,17 +19,17 @@ public class AdressService implements Webservices<Adress> {
     }
 
     @Override
-    public List<Adress> all() {
+    public List<Address> all() {
         return this.adressRepository.findAll();
     }
 
     @Override
-    public void add(Adress e) {
+    public void add(Address e) {
         this.adressRepository.save(e);
     }
 
     @Override
-    public Adress update(Long id, Adress e) {
+    public Address update(Long id, Address e) {
         return this.adressRepository.findById(id)
                 .map(p -> {
                     if (p.getStreet() != null)
@@ -47,14 +47,14 @@ public class AdressService implements Webservices<Adress> {
     @Override
     public void remove(Long id) {
 
-        Adress adresse = this.adressRepository.findById(id).get();
+        Address adresse = this.adressRepository.findById(id).get();
 
         if (adresse != null)
             this.adressRepository.delete(adresse);
     }
 
     @Override
-    public Adress getById(Long id) {
+    public Address getById(Long id) {
         return this.adressRepository.findById(id).orElseThrow(() -> new RuntimeException("sorry Adresse not found"));
     }
 }

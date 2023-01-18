@@ -23,7 +23,7 @@ public class ProductService implements Webservices<Product> {
     @Override
     public void add(Product e) {
 
-        e.setProductReference(UUID.randomUUID().toString());
+        e.setRefProduct(UUID.randomUUID().toString());
 
         this.productRepository.save(e);
     }
@@ -32,7 +32,7 @@ public class ProductService implements Webservices<Product> {
     public Product update(Long id, Product e) {
         return this.productRepository.findById(id)
                 .map(p -> {
-                    p.setProductReference(UUID.randomUUID().toString());
+                    p.setRefProduct(UUID.randomUUID().toString());
                     if (p.getName() != null)
                         p.setName(e.getName());
                     if (p.getPriceTTC() != null)

@@ -20,6 +20,9 @@ public class Invoice {
     @Column(name = "id_invoice")
     private Long id;
 
+    @Column(name = "ref_invoice")
+    private String refInvoice;
+
     @Column(name = "name")
     private String name;
 
@@ -29,5 +32,5 @@ public class Invoice {
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_ordered")
     @JsonIgnoreProperties({"invoices"})
-    private Command command;
+    private Ordered ordered;
 }

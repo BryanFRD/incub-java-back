@@ -26,8 +26,8 @@ public class OrderDetails {
     private Product product;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @MapsId("idCommand")
+    @MapsId("idOrdered")
     @JoinColumn(name = "id_ordered", insertable = false, updatable = false)
     @JsonIgnoreProperties({"orderDetails"})
-    private Command command;
+    private Ordered ordered;
 }
