@@ -14,15 +14,18 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "ordered")
-public class Command {
+public class Ordered {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ordered")
-    private Long idCommand;
+    private Long idOrdered;
+
+    @Column(name = "ref_ordered")
+    private String refOrdered;
 
     @Column(name = "ordered_date")
-    private Instant commandDate;
+    private Instant orderedDate;
 
     @Column(name = "order_status")
     private String statut;
@@ -31,25 +34,25 @@ public class Command {
     private Instant deliveryDate;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_adress")
+    @JoinColumn(name = "id_adress_delivery")
     @JsonIgnoreProperties({"ordersDelivered"})
-    private Adress deliveryAdress;
+    private Address deliveryAdress;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_adress_1")
+    @JoinColumn(name = "id_adress_invoiced")
     @JsonIgnoreProperties({"ordersInvoiced"})
-    private Adress billingAdress;
+    private Address billingAdress;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_account")
-    @JsonIgnoreProperties({"commands"})
+    @JsonIgnoreProperties({"ordereds"})
     private Account account;
 
-    @OneToMany(mappedBy = "command", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"command"})
+    @OneToMany(mappedBy = "ordered", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"ordered"})
     private List<Invoice> invoices;
 
-    @OneToMany(mappedBy = "command", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"command", "product"})
+    @OneToMany(mappedBy = "ordered", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"ordered", "product"})
     private List<OrderDetails> orderDetails;
 }

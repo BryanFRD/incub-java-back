@@ -3,13 +3,15 @@ package fr.insy2s.commerce.shoponlineback.servicesDTO;
 import fr.insy2s.commerce.shoponlineback.beans.Account;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
-import fr.insy2s.commerce.shoponlineback.mappers.MapperAllDTO;
-import fr.insy2s.commerce.shoponlineback.mappers.MapperAllDTOImpl;
+import fr.insy2s.commerce.shoponlineback.mappers.AccountMapper;
+import fr.insy2s.commerce.shoponlineback.mappers.AccountMapperImpl;
 import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,29 +19,28 @@ public class AccountServiceDTO  implements Webservices<AccountDTO> {
 
     private final AccountRepository accountRepository;
 
-    private MapperAllDTO mapperAllDTO = new MapperAllDTOImpl();
+    private AccountMapper accountMapper = new AccountMapperImpl();
 
 
     @Override
     public List<AccountDTO> all()
     {
-        List<Account> accounts = this.accountRepository.findAll();
-
-        return this.mapperAllDTO.allDTOFromAccount(accounts);
+        return this.accountMapper.allDTOFromAccount(this.accountRepository.findAll());
     }
 
     @Override
     public void add(AccountDTO e) {
 
-        Account account = this.mapperAllDTO.fromAccountDTO(e);
+        e.setRefAccount(UUID.randomUUID().toString());
 
-        this.accountRepository.save(account);
+        this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
     }
 
     @Override
     public AccountDTO update(Long id, AccountDTO e) {
-        return this.mapperAllDTO.fromAccount(this.accountRepository.findById(id)
+        return this.accountMapper.fromAccount(this.accountRepository.findById(id)
                 .map(p -> {
+                    p.setRefAccount(UUID.randomUUID().toString());
                     if (e.getName() != null)
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
@@ -56,16 +57,15 @@ public class AccountServiceDTO  implements Webservices<AccountDTO> {
     @Override
     public void remove(Long id) {
 
-        Account account = this.accountRepository.findById(id).get();
-
-        if (account != null)
-            this.accountRepository.delete(account);
+        Optional<Account> account = this.accountRepository.findById(id);
+        if (account.isPresent())
+            this.accountRepository.deleteById(id);
     }
 
     @Override
     public AccountDTO getById(Long id) {
 
 
-        return this.mapperAllDTO.fromAccount(this.accountRepository.findById(id).orElseThrow());
+        return this.accountMapper.fromAccount(this.accountRepository.findById(id).orElseThrow());
     }
 }

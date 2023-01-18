@@ -2,8 +2,9 @@ package fr.insy2s.commerce.shoponlineback.servicesDTO;
 
 import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
-import fr.insy2s.commerce.shoponlineback.mappers.MapperAllDTO;
-import fr.insy2s.commerce.shoponlineback.mappers.MapperAllDTOImpl;
+import fr.insy2s.commerce.shoponlineback.mappers.AccountMapperImpl;
+import fr.insy2s.commerce.shoponlineback.mappers.RoleMapper;
+import fr.insy2s.commerce.shoponlineback.mappers.RoleMapperImpl;
 import fr.insy2s.commerce.shoponlineback.repositories.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ public class RoleServiceDTO implements Webservices<RoleDTO> {
 
     private final RoleRepository roleRepository;
 
-    private MapperAllDTO mapperAllDTO = new MapperAllDTOImpl();
+    private RoleMapper roleMapper = new RoleMapperImpl();
 
     @Override
     public List<RoleDTO> all() {
 
-        return this.mapperAllDTO.allDTOFromRole(this.roleRepository.findAll());
+        return this.roleMapper.allDTOFromRole(this.roleRepository.findAll());
     }
 
     @Override

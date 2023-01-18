@@ -1,39 +1,43 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
-import fr.insy2s.commerce.shoponlineback.beans.Command;
+import fr.insy2s.commerce.shoponlineback.beans.Ordered;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.repositories.CommandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
-public class CommandService implements Webservices<Command> {
+public class OrderedService implements Webservices<Ordered> {
 
     @Autowired
     private final CommandRepository commandRepository;
 
-    public CommandService(CommandRepository commandeRepository) {
+    public OrderedService(CommandRepository commandeRepository) {
         this.commandRepository = commandeRepository;
     }
 
     @Override
-    public List<Command> all() {
+    public List<Ordered> all() {
         return this.commandRepository.findAll();
     }
 
     @Override
-    public void add(Command e) {
+    public void add(Ordered e) {
+
+        e.setRefOrdered(UUID.randomUUID().toString());
         this.commandRepository.save(e);
     }
 
     @Override
-    public Command update(Long id, Command e) {
+    public Ordered update(Long id, Ordered e) {
         return this.commandRepository.findById(id)
                 .map(p -> {
-                    if (p.getCommandDate() != null)
-                        p.setCommandDate(e.getCommandDate());
+                    p.setRefOrdered(UUID.randomUUID().toString());
+                    if (p.getOrderedDate() != null)
+                        p.setOrderedDate(e.getOrderedDate());
                     if (p.getStatut() != null)
                         p.setStatut(e.getStatut());
                     if (p.getDeliveryDate() != null)
@@ -45,14 +49,14 @@ public class CommandService implements Webservices<Command> {
     @Override
     public void remove(Long id) {
 
-        Command commande = this.commandRepository.findById(id).get();
+        Ordered commande = this.commandRepository.findById(id).get();
 
         if (commande != null)
             this.commandRepository.delete(commande);
     }
 
     @Override
-    public Command getById(Long id) {
+    public Ordered getById(Long id) {
         return this.commandRepository.findById(id).orElseThrow(() -> new RuntimeException("not found sorry"));
     }
 }
