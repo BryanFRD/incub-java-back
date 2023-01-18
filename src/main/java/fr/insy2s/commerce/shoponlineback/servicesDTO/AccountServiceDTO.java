@@ -9,8 +9,6 @@ import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,10 +29,9 @@ public class AccountServiceDTO  implements Webservices<AccountDTO> {
     }
 
     @Override
-    public void add(AccountDTO e) throws GeneralSecurityException {
+    public void add(AccountDTO e) {
 
         e.setRefAccount(UUID.randomUUID().toString());
-        e.setPassword(this.crypte(e.getPassword()));
 
         this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
     }
@@ -48,13 +45,8 @@ public class AccountServiceDTO  implements Webservices<AccountDTO> {
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
                         p.setFirstName(e.getFirstName());
-                    if (p.getPassword() != null) {
-                        try {
-                            p.setPassword(this.crypte(e.getPassword()));
-                        } catch (GeneralSecurityException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
+                    if (p.getPassword() != null)
+                        p.setPassword(e.getPassword());
                     if (p.getResetToken() != null)
                         p.setResetToken(e.getResetToken());
                     return this.accountRepository.save(p);
@@ -75,19 +67,5 @@ public class AccountServiceDTO  implements Webservices<AccountDTO> {
 
 
         return this.accountMapper.fromAccount(this.accountRepository.findById(id).orElseThrow());
-    }
-
-    public String crypte(String password) throws GeneralSecurityException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        md.update(password.getBytes());
-        byte byteData[] = md.digest();
-
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < byteData.length; i++) {
-            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return sb.toString();
-
     }
 }

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -23,7 +22,8 @@ public class AccountControllerDTO {
     }
 
     @PostMapping("/add-account-dto")
-    public String addAccountDTO(@Validated @RequestBody AccountDTO accountDTO) throws GeneralSecurityException {
+    public String addAccountDTO(@Validated @RequestBody AccountDTO accountDTO)
+    {
         this.accountServiceDTO.add(accountDTO);
 
         return "Account dto successfully add";

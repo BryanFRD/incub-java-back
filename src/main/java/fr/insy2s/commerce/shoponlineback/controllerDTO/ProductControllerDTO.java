@@ -23,7 +23,7 @@ public class ProductControllerDTO {
     @PostMapping("/add-product-dto")
     public String addProductDTO(@Validated @RequestBody ProductDTO productDTO) {
 
-        this.productServiceDTO.add(productDTO);
+        this.productServiceDTO.add((productDTO));
         return "Product dto successfully add";
     }
 

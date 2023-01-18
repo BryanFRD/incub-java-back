@@ -1,4 +1,4 @@
-package fr.insy2s.Commerce;
+package fr.insy2s.commerce;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
