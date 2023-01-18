@@ -1,10 +1,10 @@
-package fr.insy2s.commerce;
+package fr.insy2s.commerce.shoponlineback;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CommerceApplicationTests {
+class ShopOnlineBackApplicationTests {
 
 	@Test
 	void contextLoads() {
