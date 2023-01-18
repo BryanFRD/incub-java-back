@@ -41,7 +41,7 @@ public class AccountServiceDTO  implements Webservices<AccountDTO> {
         return this.accountMapper.fromAccount(this.accountRepository.findById(id)
                 .map(p -> {
                     p.setRefAccount(UUID.randomUUID().toString());
-                    if (e.getName() != null)
+                    if (p.getName() != null)
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
                         p.setFirstName(e.getFirstName());
