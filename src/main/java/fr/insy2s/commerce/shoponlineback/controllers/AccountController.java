@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @RestController
@@ -22,15 +23,14 @@ public class AccountController {
     }
 
     @PostMapping("/add-account")
-    public String addUser(@Validated @RequestBody Account utilisateur)
-    {
+    public String addUser(@Validated @RequestBody Account utilisateur) throws GeneralSecurityException {
         this.accountService.add(utilisateur);
 
         return "user successfully add";
     }
 
     @PutMapping("/update-account/{id_user}")
-    public String updateUser(@Validated @PathVariable Long id_user, @RequestBody Account utilisateur)
+    public String updateUser(@Validated @PathVariable Long id_user, @RequestBody Account utilisateur) throws GeneralSecurityException
     {
         this.accountService.update(id_user, utilisateur);
 
