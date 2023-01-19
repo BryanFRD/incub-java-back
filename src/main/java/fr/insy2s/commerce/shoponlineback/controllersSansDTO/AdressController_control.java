@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.controllers;
+package fr.insy2s.commerce.shoponlineback.controllersSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Address;
 import fr.insy2s.commerce.shoponlineback.servicesSansDTO.AdressService_serv;
@@ -10,12 +10,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/adress")
-public class AdressController {
+public class AdressController_control {
 
     @Autowired
     private final AdressService_serv adressServiceServ;
 
-    public AdressController(AdressService_serv adresseService) {
+    public AdressController_control(AdressService_serv adresseService) {
         this.adressServiceServ = adresseService;
     }
 

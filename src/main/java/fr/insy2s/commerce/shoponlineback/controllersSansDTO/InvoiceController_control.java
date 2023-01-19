@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.controllers;
+package fr.insy2s.commerce.shoponlineback.controllersSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Invoice;
 import fr.insy2s.commerce.shoponlineback.servicesSansDTO.InvoiceService_serv;
@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/invoice")
 @RequiredArgsConstructor
-public class InvoiceController {
+public class InvoiceController_control {
 
     private final InvoiceService_serv invoiceServiceServ;
 

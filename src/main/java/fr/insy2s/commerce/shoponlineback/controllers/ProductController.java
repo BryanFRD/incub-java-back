@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
-import fr.insy2s.commerce.shoponlineback.beans.Product;
-import fr.insy2s.commerce.shoponlineback.servicesSansDTO.ProductService_serv;
+import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
+import fr.insy2s.commerce.shoponlineback.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -9,45 +9,38 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api-dto/product")
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService_serv productServiceServ;
+    private final ProductService productService;
 
-    @GetMapping("/all-product")
-    public List<Product> allProduct()
-    {
-        return this.productServiceServ.all();
+    @GetMapping("/all-product-dto")
+    public List<ProductDTO> allProductDTO(){
+        return this.productService.all();
     }
 
-    @PostMapping("/add-product")
-    public String addProduct(@Validated @RequestBody Product product)
-    {
-        this.productServiceServ.add(product);
+    @PostMapping("/add-product-dto")
+    public String addProductDTO(@Validated @RequestBody ProductDTO productDTO) {
 
-        return "Product successfully add";
+        this.productService.add((productDTO));
+        return "Product dto successfully add";
     }
 
-    @PutMapping("/update-product/{idProduct}")
-    public String updateProduct(@Validated @PathVariable Long idProduct, @RequestBody Product product)
-    {
-        this.productServiceServ.update(idProduct, product);
-
-        return "Product update complete successfully";
+    @PutMapping("/update-account-dto/{idProduct}")
+    public String updateProductDTO(@Validated @PathVariable Long idProduct, @RequestBody ProductDTO productDTO) {
+        this.productService.update(idProduct, productDTO);
+        return "Product dto update complete successfully";
     }
 
-    @DeleteMapping("/remove-product/{idProduct}")
-    public String removeProduct(@Validated @PathVariable Long idProduct)
-    {
-        this.productServiceServ.remove(idProduct);
-
-        return "Product successfully delete";
+    @DeleteMapping("/remove-product-dto/{idProduct}")
+    public String removeProductDTO(@Validated @PathVariable Long idProduct){
+        this.productService.remove(idProduct);
+        return "Produit dto successfully delete";
     }
 
     @GetMapping("/get-by-id-product/{idProduct}")
-    public Product getByIdProduct(@Validated @PathVariable Long idProduct)
-    {
-        return this.productServiceServ.getById(idProduct);
+    public ProductDTO getByIdProductDTO(@Validated @PathVariable Long idProduct) {
+        return this.productService.getById(idProduct);
     }
 }

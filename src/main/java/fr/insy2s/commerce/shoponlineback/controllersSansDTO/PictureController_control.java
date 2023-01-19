@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.controllers;
+package fr.insy2s.commerce.shoponlineback.controllersSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Picture;
 import fr.insy2s.commerce.shoponlineback.servicesSansDTO.PictureService_serv;
@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/picture")
 @RequiredArgsConstructor
-public class PictureController {
+public class PictureController_control {
 
     private final PictureService_serv pictureServiceServ;
 

@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.controllers;
+package fr.insy2s.commerce.shoponlineback.controllersSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.OrderDetails;
 import fr.insy2s.commerce.shoponlineback.servicesSansDTO.OrderDetailsService_serv;
@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/order-details")
 @RequiredArgsConstructor
-public class OrderDetailsController {
+public class OrderDetailsController_control {
 
     private final OrderDetailsService_serv orderDetailsServiceServ;
 

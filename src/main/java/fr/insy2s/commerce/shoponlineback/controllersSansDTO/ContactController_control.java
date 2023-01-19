@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.controllers;
+package fr.insy2s.commerce.shoponlineback.controllersSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Contact;
 import fr.insy2s.commerce.shoponlineback.servicesSansDTO.ContactService_serv;
@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/contact")
 @RequiredArgsConstructor
-public class ContactController {
+public class ContactController_control {
 
     private final ContactService_serv contactServiceServ;
 
