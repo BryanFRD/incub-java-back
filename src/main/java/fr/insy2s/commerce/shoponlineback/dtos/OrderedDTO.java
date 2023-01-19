@@ -24,11 +24,11 @@ public class OrderedDTO {
     private Instant deliveryDate;
 
     @JsonIgnore
-    private Address deliveryAdress;
+    private AddressDTO deliveryAdress;
     @JsonIgnore
-    private Address billingAdress;
-    @JsonIgnore
-    private Account account;
+    private AddressDTO billingAdress;
+
+    private AccountDTO account;
     @JsonIgnore
     private List<Invoice> invoices;
     @JsonIgnore

@@ -3,9 +3,9 @@ package fr.insy2s.commerce.shoponlineback.controllerDTO;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.servicesDTO.AccountServiceDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +22,7 @@ public class AccountControllerDTO {
     }
 
     @PostMapping("/add-account-dto")
-    public String addAccountDTO(@Validated @RequestBody AccountDTO accountDTO)
+    public String addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
     {
         this.accountServiceDTO.add(accountDTO);
 
@@ -30,7 +30,7 @@ public class AccountControllerDTO {
     }
 
     @PutMapping("/update-account-dto/{idAccount}")
-    public String updateAccountDTO(@Validated @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
+    public String updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
         this.accountServiceDTO.update(idAccount, accountDTO);
 
@@ -38,7 +38,7 @@ public class AccountControllerDTO {
     }
 
     @DeleteMapping("/remove-account-dto/{idAccount}")
-    public String removeAccountDTO(@Validated @PathVariable Long idAccount)
+    public String removeAccountDTO(@Valid @PathVariable Long idAccount)
     {
         this.accountServiceDTO.remove(idAccount);
 
@@ -46,7 +46,7 @@ public class AccountControllerDTO {
     }
 
     @GetMapping("/get-by-id-account-dto/{idAccount}")
-    public AccountDTO getByIdAccountDTO(@Validated @PathVariable Long idAccount)
+    public AccountDTO getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
         return this.accountServiceDTO.getById(idAccount);
     }

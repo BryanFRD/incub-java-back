@@ -16,13 +16,13 @@ public class Picture {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_picture")
+    @Column(name = "id_picture", nullable = false)
     private Long idPicture;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "url")
+    @Column(name = "url", nullable = false, length = 300)
     private String url;
 
     @ManyToOne(cascade = CascadeType.MERGE)

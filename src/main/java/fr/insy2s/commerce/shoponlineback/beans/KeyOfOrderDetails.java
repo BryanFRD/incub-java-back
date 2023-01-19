@@ -14,9 +14,9 @@ import java.io.Serializable;
 @Embeddable
 public class KeyOfOrderDetails implements Serializable {
 
-    @Column(name = "id_product")
+    @Column(name = "id_product", nullable = false)
     private Long idProduct;
 
-    @Column(name = "id_ordered")
+    @Column(name = "id_ordered", nullable = false)
     private Long idOrdered;
 }

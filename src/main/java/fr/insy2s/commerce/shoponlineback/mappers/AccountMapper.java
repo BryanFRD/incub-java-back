@@ -4,10 +4,11 @@ import fr.insy2s.commerce.shoponlineback.beans.Account;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AccountMapper {
 
     // For account user
@@ -18,5 +19,7 @@ public interface AccountMapper {
     Account fromAccountDTO(AccountDTO accountDTO);
 
     List<AccountDTO> allDTOFromAccount(List<Account> accounts);
+
+
 
 }
