@@ -1,17 +1,21 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
 import fr.insy2s.commerce.shoponlineback.beans.Account;
+import fr.insy2s.commerce.shoponlineback.bricole.MapperBricolage;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapper;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapperImpl;
 import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +25,18 @@ public class AccountService implements Webservices<AccountDTO> {
 
     private AccountMapper accountMapper = new AccountMapperImpl();
 
+    private MapperBricolage mapperBricolage = new MapperBricolage();
+
+
+
 
     @Override
     public List<AccountDTO> all()
     {
         return this.accountMapper.allDTOFromAccount(this.accountRepository.findAll());
     }
+
+
 
     @Override
     public void add(AccountDTO e) {
@@ -68,4 +78,10 @@ public class AccountService implements Webservices<AccountDTO> {
 
         return this.accountMapper.fromAccount(this.accountRepository.findById(id).orElseThrow());
     }
+
+    public Page<AccountDTO> findAll(Pageable pageable){
+        return this.accountRepository.findAll(pageable)
+                .map(this.mapperBricolage::toAccount);
+    }
+
 }

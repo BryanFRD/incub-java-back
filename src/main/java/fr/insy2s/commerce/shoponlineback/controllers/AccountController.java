@@ -3,6 +3,9 @@ package fr.insy2s.commerce.shoponlineback.controllers;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.services.AccountService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -14,11 +17,9 @@ import java.util.List;
 public class AccountController {
 
     private final AccountService accountService;
-
-    @GetMapping("/all-account-dto")
-    public List<AccountDTO> allAccountDTO()
-    {
-        return this.accountService.all();
+    @GetMapping("/all-account")
+    public ResponseEntity<Page<AccountDTO>> findAllWithPagination(Pageable pageable){
+        return ResponseEntity.ok(this.accountService.findAll(pageable));
     }
 
     @PostMapping("/add-account-dto")
