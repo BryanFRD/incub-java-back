@@ -1,6 +1,5 @@
 package fr.insy2s.commerce.shoponlineback.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.List;
@@ -20,6 +19,5 @@ public class AccountDTO {
 
     private String resetToken;
 
-    @JsonIgnore
     List<RoleDTO> roles;
 }

@@ -1,13 +1,19 @@
 package fr.insy2s.commerce.shoponlineback.interfaces;
 
-import java.security.GeneralSecurityException;
+import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface Webservices<T> {
 
     List<T> all();
 
-    void add(T e) throws GeneralSecurityException;
+//    Page<AccountDTO> all(Pageable pageable);
+
+
+    void add(T e);
 
     T update(Long id, T e);
 

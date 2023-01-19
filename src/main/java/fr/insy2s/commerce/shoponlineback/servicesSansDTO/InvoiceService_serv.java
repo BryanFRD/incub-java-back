@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.services;
+package fr.insy2s.commerce.shoponlineback.servicesSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Invoice;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceService implements Webservices<Invoice> {
+public class InvoiceService_serv implements Webservices<Invoice> {
 
     private final InvoiceRepository invoiceRepository;
 

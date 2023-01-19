@@ -1,7 +1,7 @@
-package fr.insy2s.commerce.shoponlineback.controllers;
+package fr.insy2s.commerce.shoponlineback.controllersSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.OrderDetails;
-import fr.insy2s.commerce.shoponlineback.services.OrderDetailsService;
+import fr.insy2s.commerce.shoponlineback.servicesSansDTO.OrderDetailsService_serv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -11,20 +11,20 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/order-details")
 @RequiredArgsConstructor
-public class OrderDetailsController {
+public class OrderDetailsController_control {
 
-    private final OrderDetailsService orderDetailsService;
+    private final OrderDetailsService_serv orderDetailsServiceServ;
 
     @GetMapping("/all-order-details")
     public List<OrderDetails> allOrderDetails()
     {
-        return this.orderDetailsService.all();
+        return this.orderDetailsServiceServ.all();
     }
 
     @PostMapping("/add-order-details")
     public String addOrderDetails(@Validated @RequestBody OrderDetails orderDetails)
     {
-        this.orderDetailsService.add(orderDetails);
+        this.orderDetailsServiceServ.add(orderDetails);
 
         return "Order details successfully add";
     }
@@ -32,7 +32,7 @@ public class OrderDetailsController {
     @PutMapping("/update-order-details/{idProduct}/{idOrdered}")
     public String updateOrderDetails(@Validated @PathVariable Long idProduct, @PathVariable Long idOrdered, @RequestBody OrderDetails orderDetails)
     {
-        this.orderDetailsService.update(idProduct, idOrdered, orderDetails);
+        this.orderDetailsServiceServ.update(idProduct, idOrdered, orderDetails);
 
         return "Order details updater complete successfully";
     }
@@ -40,7 +40,7 @@ public class OrderDetailsController {
     @DeleteMapping("/remove-order-details/{idProduct}/{idOrdered}")
     public String removeOrderDetails(@Validated @PathVariable Long idProduct, @PathVariable Long idOrdered)
     {
-        this.orderDetailsService.remove(idProduct, idOrdered);
+        this.orderDetailsServiceServ.remove(idProduct, idOrdered);
 
         return "Order detail successfully delete";
     }
@@ -48,6 +48,6 @@ public class OrderDetailsController {
     @GetMapping("/get-by-id-order-details/{idProduct}/{idOrdered}")
     public OrderDetails getByIdOrderDetails(@Validated @PathVariable Long idProduct, @PathVariable Long idOrdered)
     {
-        return this.orderDetailsService.getById(idProduct, idOrdered);
+        return this.orderDetailsServiceServ.getById(idProduct, idOrdered);
     }
 }

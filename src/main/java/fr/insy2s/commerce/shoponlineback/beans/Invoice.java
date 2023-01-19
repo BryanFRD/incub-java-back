@@ -17,16 +17,16 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_invoice")
+    @Column(name = "id_invoice", nullable = false)
     private Long id;
 
-    @Column(name = "ref_invoice")
+    @Column(name = "ref_invoice", nullable = true, length = 50) // TODO Mettre nullable en false après modif BDD
     private String refInvoice;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "billing_date")
+    @Column(name = "billing_date", nullable = false)
     private Date billingDate;
 
     @ManyToOne(cascade = CascadeType.MERGE)

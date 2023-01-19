@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.services;
+package fr.insy2s.commerce.shoponlineback.servicesSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.KeyOfOrderDetails;
 import fr.insy2s.commerce.shoponlineback.beans.OrderDetails;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OrderDetailsService {
+public class OrderDetailsService_serv {
 
     private final OrderDetailsRepository orderDetailsRepository;
 

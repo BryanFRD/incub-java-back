@@ -1,6 +1,6 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
-import fr.insy2s.commerce.shoponlineback.beans.Category;
+import fr.insy2s.commerce.shoponlineback.dtos.CategoryDTO;
 import fr.insy2s.commerce.shoponlineback.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -9,45 +9,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/category")
+@RequestMapping("/api/category-dto")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/all-category")
-    public List<Category> allCategory()
-    {
-        return this.categoryService.all();
+    @GetMapping("/all-category-dto")
+    public List<CategoryDTO> allCategoryDTO(){ return this.categoryService.all();}
+
+    @PostMapping("/add-category-dto")
+    public String addCategoryDTO(@Validated @RequestBody CategoryDTO categoryDTO) {
+        this.categoryService.add(categoryDTO);
+        return "Category dto successfully add";
     }
 
-    @PostMapping("/add-category")
-    public String addCategory(@Validated @RequestBody Category category)
-    {
-        this.categoryService.add(category);
-
-        return "Category successfully add";
+    @PutMapping("/update-category-dto/{idCategory}")
+    public String updateCategoryDTO(@Validated @PathVariable Long idCategory, @RequestBody CategoryDTO categoryDTO) {
+        this.categoryService.update(idCategory, categoryDTO);
+        return "Category dto update complete successfully";
     }
 
-    @PutMapping("/update-category/{idCategory}")
-    public String updateCategory(@Validated @PathVariable Long idCategory, @RequestBody Category category)
-    {
-        this.categoryService.update(idCategory, category);
-
-        return "Category update complete successfully";
-    }
-
-    @DeleteMapping("/remove-category/{idCategory}")
-    public String removeCategory(@Validated @PathVariable Long idCategory)
-    {
+    @DeleteMapping("/remove-category-dto/{idCategory}")
+    public String removeCategoryDTO(@Validated @PathVariable Long idCategory) {
         this.categoryService.remove(idCategory);
-
-        return "Category successfully delete";
+        return  "Category dto successfully delete";
     }
 
-    @GetMapping("/get-by-id-category/{idCategory}")
-    public Category getByIdCategory(@Validated @PathVariable Long idCategory)
-    {
+    @GetMapping("/get-by-id-category-dto/{idCategory}")
+    public CategoryDTO getByIdCategoryDTO(@Validated @PathVariable Long idCategory) {
         return this.categoryService.getById(idCategory);
     }
+
 }

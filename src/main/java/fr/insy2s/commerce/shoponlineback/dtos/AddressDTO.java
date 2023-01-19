@@ -3,7 +3,7 @@ package fr.insy2s.commerce.shoponlineback.dtos;
 import lombok.Data;
 
 @Data
-public class AdressDTO {
+public class AddressDTO {
 
     private Long id;
 

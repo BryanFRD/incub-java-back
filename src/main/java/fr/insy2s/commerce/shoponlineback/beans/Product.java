@@ -17,19 +17,19 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_product")
+    @Column(name = "id_product", nullable = false)
     private Long idProduct;
 
-    @Column(name = "ref_product")
+    @Column(name = "ref_product", nullable = false, length = 100)
     private String refProduct;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length =50)
     private String name;
 
-    @Column(name = "price_ttc")
+    @Column(name = "price_ttc", nullable = false)
     private Double priceTTC;
 
-    @Column(name = "product_inventory")
+    @Column(name = "product_inventory", nullable = false)
     private Long productInventory;
 
     @ManyToOne(cascade = CascadeType.MERGE)

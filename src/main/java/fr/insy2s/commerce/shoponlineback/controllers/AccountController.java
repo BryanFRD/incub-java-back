@@ -1,53 +1,54 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
-import fr.insy2s.commerce.shoponlineback.beans.Account;
+import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.services.AccountService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.GeneralSecurityException;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/api-dto/account")
 @RequiredArgsConstructor
 public class AccountController {
+
     private final AccountService accountService;
-
-
     @GetMapping("/all-account")
-    public List<Account> listesUser()
-    {
-        return this.accountService.all();
+    public ResponseEntity<Page<AccountDTO>> findAllWithPagination(Pageable pageable){
+        return ResponseEntity.ok(this.accountService.findAll(pageable));
     }
 
-    @PostMapping("/add-account")
-    public String addUser(@Validated @RequestBody Account utilisateur) throws GeneralSecurityException {
-        this.accountService.add(utilisateur);
+    @PostMapping("/add-account-dto")
+    public String addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
+    {
+        this.accountService.add(accountDTO);
 
-        return "user successfully add";
+        return "Account dto successfully add";
     }
 
-    @PutMapping("/update-account/{id_user}")
-    public String updateUser(@Validated @PathVariable Long id_user, @RequestBody Account utilisateur) throws GeneralSecurityException
+    @PutMapping("/update-account-dto/{idAccount}")
+    public String updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
-        this.accountService.update(id_user, utilisateur);
+        this.accountService.update(idAccount, accountDTO);
 
-        return "User update complete successfully";
+        return "Account dto update complete successfully";
     }
 
-    @DeleteMapping("/remove-account/{id_user}")
-    public String removeUser(@Validated @PathVariable Long id_user)
+    @DeleteMapping("/remove-account-dto/{idAccount}")
+    public String removeAccountDTO(@Valid @PathVariable Long idAccount)
     {
-        this.accountService.remove(id_user);
+        this.accountService.remove(idAccount);
 
-        return "user delete successfully";
+        return "Account dto successfully delete";
     }
 
-    @GetMapping("/get-by-id-account/{id_user}")
-    public Account getByIdUser(@Validated @PathVariable Long id_user)
+    @GetMapping("/get-by-id-account-dto/{idAccount}")
+    public AccountDTO getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
-        return  this.accountService.getById(id_user);
+        return this.accountService.getById(idAccount);
     }
 }

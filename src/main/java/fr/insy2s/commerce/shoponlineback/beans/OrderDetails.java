@@ -13,10 +13,10 @@ public class OrderDetails {
     @EmbeddedId
     private KeyOfOrderDetails keyOfOrderDetails;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private Long amount;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private Double price;
 
     @ManyToOne(cascade = CascadeType.MERGE)

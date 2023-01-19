@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.services;
+package fr.insy2s.commerce.shoponlineback.servicesSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Contact;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ContactService implements Webservices<Contact> {
+public class ContactService_serv implements Webservices<Contact> {
 
     private final ContactRepository contactRepository;
 
