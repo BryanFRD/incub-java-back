@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.beans.Address;
-import fr.insy2s.commerce.shoponlineback.services.AdressService;
+import fr.insy2s.commerce.shoponlineback.servicesSansDTO.AdressService_serv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,22 +13,22 @@ import java.util.List;
 public class AdressController {
 
     @Autowired
-    private final AdressService adressService;
+    private final AdressService_serv adressServiceServ;
 
-    public AdressController(AdressService adresseService) {
-        this.adressService = adresseService;
+    public AdressController(AdressService_serv adresseService) {
+        this.adressServiceServ = adresseService;
     }
 
     @GetMapping("/all-adress")
     public List<Address> allAdress()
     {
-        return this.adressService.all();
+        return this.adressServiceServ.all();
     }
 
     @PostMapping("/add-adress")
     public String addAdress(@Validated @RequestBody Address adress)
     {
-        this.adressService.add(adress);
+        this.adressServiceServ.add(adress);
 
         return "adress successfully add";
     }
@@ -36,7 +36,7 @@ public class AdressController {
     @PutMapping("/update-adress/{idAdress}")
     public String updateAdress(@Validated @PathVariable Long idAdress, @RequestBody Address adresse)
     {
-        this.adressService.update(idAdress, adresse);
+        this.adressServiceServ.update(idAdress, adresse);
 
         return "adress update complete successfully";
     }
@@ -44,7 +44,7 @@ public class AdressController {
     @DeleteMapping("/remove-adresse/{idAdress}")
     public String removeAdress(@Validated @PathVariable Long idAdress)
     {
-        this.adressService.remove(idAdress);
+        this.adressServiceServ.remove(idAdress);
 
         return "adress delete successfully";
     }
@@ -52,6 +52,6 @@ public class AdressController {
     @GetMapping("/get-by-id-adress/{idAdress}")
     public Address getByIdAdresse(@Validated @PathVariable Long idAdress)
     {
-        return this.adressService.getById(idAdress);
+        return this.adressServiceServ.getById(idAdress);
     }
 }

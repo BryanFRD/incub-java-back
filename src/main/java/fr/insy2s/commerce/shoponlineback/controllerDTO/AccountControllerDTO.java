@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllerDTO;
 
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
-import fr.insy2s.commerce.shoponlineback.servicesDTO.AccountServiceDTO;
+import fr.insy2s.commerce.shoponlineback.services.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,18 +13,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountControllerDTO {
 
-    private final AccountServiceDTO accountServiceDTO;
+    private final AccountService accountService;
 
     @GetMapping("/all-account-dto")
     public List<AccountDTO> allAccountDTO()
     {
-        return this.accountServiceDTO.all();
+        return this.accountService.all();
     }
 
     @PostMapping("/add-account-dto")
     public String addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
     {
-        this.accountServiceDTO.add(accountDTO);
+        this.accountService.add(accountDTO);
 
         return "Account dto successfully add";
     }
@@ -32,7 +32,7 @@ public class AccountControllerDTO {
     @PutMapping("/update-account-dto/{idAccount}")
     public String updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
-        this.accountServiceDTO.update(idAccount, accountDTO);
+        this.accountService.update(idAccount, accountDTO);
 
         return "Account dto update complete successfully";
     }
@@ -40,7 +40,7 @@ public class AccountControllerDTO {
     @DeleteMapping("/remove-account-dto/{idAccount}")
     public String removeAccountDTO(@Valid @PathVariable Long idAccount)
     {
-        this.accountServiceDTO.remove(idAccount);
+        this.accountService.remove(idAccount);
 
         return "Account dto successfully delete";
     }
@@ -48,6 +48,6 @@ public class AccountControllerDTO {
     @GetMapping("/get-by-id-account-dto/{idAccount}")
     public AccountDTO getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
-        return this.accountServiceDTO.getById(idAccount);
+        return this.accountService.getById(idAccount);
     }
 }

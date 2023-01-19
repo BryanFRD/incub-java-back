@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.services;
+package fr.insy2s.commerce.shoponlineback.servicesSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Picture;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PictureService implements Webservices<Picture> {
+public class PictureService_serv implements Webservices<Picture> {
 
     private final PictureRepository pictureRepository;
 

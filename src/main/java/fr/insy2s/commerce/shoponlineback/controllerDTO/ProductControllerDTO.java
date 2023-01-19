@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllerDTO;
 
 import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
-import fr.insy2s.commerce.shoponlineback.servicesDTO.ProductServiceDTO;
+import fr.insy2s.commerce.shoponlineback.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,34 +13,34 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductControllerDTO {
 
-    private final ProductServiceDTO productServiceDTO;
+    private final ProductService productService;
 
     @GetMapping("/all-product-dto")
     public List<ProductDTO> allProductDTO(){
-        return this.productServiceDTO.all();
+        return this.productService.all();
     }
 
     @PostMapping("/add-product-dto")
     public String addProductDTO(@Validated @RequestBody ProductDTO productDTO) {
 
-        this.productServiceDTO.add((productDTO));
+        this.productService.add((productDTO));
         return "Product dto successfully add";
     }
 
     @PutMapping("/update-account-dto/{idProduct}")
     public String updateProductDTO(@Validated @PathVariable Long idProduct, @RequestBody ProductDTO productDTO) {
-        this.productServiceDTO.update(idProduct, productDTO);
+        this.productService.update(idProduct, productDTO);
         return "Product dto update complete successfully";
     }
 
     @DeleteMapping("/remove-product-dto/{idProduct}")
     public String removeProductDTO(@Validated @PathVariable Long idProduct){
-        this.productServiceDTO.remove(idProduct);
+        this.productService.remove(idProduct);
         return "Produit dto successfully delete";
     }
 
     @GetMapping("/get-by-id-product/{idProduct}")
     public ProductDTO getByIdProductDTO(@Validated @PathVariable Long idProduct) {
-        return this.productServiceDTO.getById(idProduct);
+        return this.productService.getById(idProduct);
     }
 }

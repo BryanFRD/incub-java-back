@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.beans.Ordered;
-import fr.insy2s.commerce.shoponlineback.services.OrderedService;
+import fr.insy2s.commerce.shoponlineback.servicesSansDTO.OrderedService_serv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +13,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderedController {
 
-    private final OrderedService orderedService;
+    private final OrderedService_serv orderedServiceServ;
 
     @GetMapping("/all-ordered")
     public List<Ordered> allOrdered()
     {
-        return this.orderedService.all();
+        return this.orderedServiceServ.all();
     }
 
     @PostMapping("/add-ordered")
     public String addOrdered(@Validated @RequestBody Ordered ordered)
     {
-        this.orderedService.add(ordered);
+        this.orderedServiceServ.add(ordered);
 
         return "Ordered successfully add";
     }
@@ -32,7 +32,7 @@ public class OrderedController {
     @PutMapping("/update-ordered/{idOrdered}")
     public String updateOrdered(@Validated @PathVariable Long idOrdered, @RequestBody Ordered ordered)
     {
-        this.orderedService.update(idOrdered, ordered);
+        this.orderedServiceServ.update(idOrdered, ordered);
 
         return "ordered update complete successfully";
     }
@@ -40,7 +40,7 @@ public class OrderedController {
     @DeleteMapping("/remove-ordered/{idOrdered}")
     public String removeOrdered(@Validated @PathVariable Long idOrdered)
     {
-        this.orderedService.remove(idOrdered);
+        this.orderedServiceServ.remove(idOrdered);
 
         return "ordered delete successfully";
     }
@@ -48,7 +48,7 @@ public class OrderedController {
     @GetMapping("/get-by-id-ordered/{idOrdered}")
     public Ordered getByIdOrdered(@Validated @PathVariable Long idOrdered)
     {
-        return this.orderedService.getById(idOrdered);
+        return this.orderedServiceServ.getById(idOrdered);
     }
 
 

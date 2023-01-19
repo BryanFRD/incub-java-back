@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.beans.Picture;
-import fr.insy2s.commerce.shoponlineback.services.PictureService;
+import fr.insy2s.commerce.shoponlineback.servicesSansDTO.PictureService_serv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +13,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PictureController {
 
-    private final PictureService pictureService;
+    private final PictureService_serv pictureServiceServ;
 
     @GetMapping("/all-picture")
     public List<Picture> allPicture()
     {
-        return this.pictureService.all();
+        return this.pictureServiceServ.all();
     }
 
     @PostMapping("/add-picture")
     public String addPicture(@Validated @RequestBody Picture picture)
     {
-        this.pictureService.add(picture);
+        this.pictureServiceServ.add(picture);
 
         return "Picture successfully add";
     }
@@ -32,7 +32,7 @@ public class PictureController {
     @PutMapping("/update-picture/{idPicture}")
     public String updatePicture(@Validated @PathVariable Long idPicture, @RequestBody Picture picture)
     {
-        this.pictureService.update(idPicture, picture);
+        this.pictureServiceServ.update(idPicture, picture);
 
         return "Picture update complete successfully";
     }
@@ -40,7 +40,7 @@ public class PictureController {
     @DeleteMapping("/remove-picture/{idPicture}")
     public String removePicture(@Validated @PathVariable Long idPicture)
     {
-        this.pictureService.remove(idPicture);
+        this.pictureServiceServ.remove(idPicture);
 
         return "Picture successfully delete";
     }
@@ -48,6 +48,6 @@ public class PictureController {
     @GetMapping("/get-by-id-picture/{idPicture}")
     public Picture getByIdPicture(@Validated @PathVariable Long idPicture)
     {
-        return this.pictureService.getById(idPicture);
+        return this.pictureServiceServ.getById(idPicture);
     }
 }

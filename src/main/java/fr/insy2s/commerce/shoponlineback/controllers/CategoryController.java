@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.beans.Category;
-import fr.insy2s.commerce.shoponlineback.services.CategoryService;
+import fr.insy2s.commerce.shoponlineback.servicesSansDTO.CategoryService_serv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +13,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
 
-    private final CategoryService categoryService;
+    private final CategoryService_serv categoryServiceServ;
 
     @GetMapping("/all-category")
     public List<Category> allCategory()
     {
-        return this.categoryService.all();
+        return this.categoryServiceServ.all();
     }
 
     @PostMapping("/add-category")
     public String addCategory(@Validated @RequestBody Category category)
     {
-        this.categoryService.add(category);
+        this.categoryServiceServ.add(category);
 
         return "Category successfully add";
     }
@@ -32,7 +32,7 @@ public class CategoryController {
     @PutMapping("/update-category/{idCategory}")
     public String updateCategory(@Validated @PathVariable Long idCategory, @RequestBody Category category)
     {
-        this.categoryService.update(idCategory, category);
+        this.categoryServiceServ.update(idCategory, category);
 
         return "Category update complete successfully";
     }
@@ -40,7 +40,7 @@ public class CategoryController {
     @DeleteMapping("/remove-category/{idCategory}")
     public String removeCategory(@Validated @PathVariable Long idCategory)
     {
-        this.categoryService.remove(idCategory);
+        this.categoryServiceServ.remove(idCategory);
 
         return "Category successfully delete";
     }
@@ -48,6 +48,6 @@ public class CategoryController {
     @GetMapping("/get-by-id-category/{idCategory}")
     public Category getByIdCategory(@Validated @PathVariable Long idCategory)
     {
-        return this.categoryService.getById(idCategory);
+        return this.categoryServiceServ.getById(idCategory);
     }
 }

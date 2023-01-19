@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllerDTO;
 
 import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
-import fr.insy2s.commerce.shoponlineback.servicesDTO.RoleServiceDTO;
+import fr.insy2s.commerce.shoponlineback.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,12 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleControllerDTO {
 
-    private final RoleServiceDTO roleServiceDTO;
+    private final RoleService roleService;
 
     @GetMapping("/all-role-dto")
     public List<RoleDTO> allRoleDTO()
     {
-        return this.roleServiceDTO.all();
+        return this.roleService.all();
     }
 
 }

@@ -1,7 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.beans.Invoice;
-import fr.insy2s.commerce.shoponlineback.services.InvoiceService;
+import fr.insy2s.commerce.shoponlineback.servicesSansDTO.InvoiceService_serv;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +13,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InvoiceController {
 
-    private final InvoiceService invoiceService;
+    private final InvoiceService_serv invoiceServiceServ;
 
     @GetMapping("/all-invoice")
     public List<Invoice> allInvoice()
     {
-        return this.invoiceService.all();
+        return this.invoiceServiceServ.all();
     }
 
     @PostMapping("/add-invoice")
     public String addInvoice(@Validated @RequestBody Invoice invoice)
     {
-        this.invoiceService.add(invoice);
+        this.invoiceServiceServ.add(invoice);
 
         return "invoice successfully add";
     }
@@ -32,7 +32,7 @@ public class InvoiceController {
     @PutMapping("/update-invoice/{idInvoice}")
     public String updateInvoice(@Validated @PathVariable Long idInvoice, @RequestBody Invoice invoice)
     {
-        this.invoiceService.update(idInvoice, invoice);
+        this.invoiceServiceServ.update(idInvoice, invoice);
 
         return "invoice update complete successfully";
     }
@@ -40,7 +40,7 @@ public class InvoiceController {
     @DeleteMapping("/remove-invoice/{idInvoice}")
     public String removeInvoice(@Validated @PathVariable Long idInvoice)
     {
-        this.invoiceService.remove(idInvoice);
+        this.invoiceServiceServ.remove(idInvoice);
 
         return "invoice delete successfully";
     }
@@ -48,6 +48,6 @@ public class InvoiceController {
     @GetMapping("/get-by-id-invoice/{idInvoice}")
     public Invoice getByIdInvoice(@Validated @PathVariable Long idInvoice)
     {
-        return this.invoiceService.getById(idInvoice);
+        return this.invoiceServiceServ.getById(idInvoice);
     }
 }

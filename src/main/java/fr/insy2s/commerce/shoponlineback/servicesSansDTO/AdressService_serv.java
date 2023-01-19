@@ -1,4 +1,4 @@
-package fr.insy2s.commerce.shoponlineback.services;
+package fr.insy2s.commerce.shoponlineback.servicesSansDTO;
 
 import fr.insy2s.commerce.shoponlineback.beans.Address;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AdressService implements Webservices<Address> {
+public class AdressService_serv implements Webservices<Address> {
 
     @Autowired
     private final AdressRepository adressRepository;
 
-    public AdressService(AdressRepository adresseRepository) {
+    public AdressService_serv(AdressRepository adresseRepository) {
         this.adressRepository = adresseRepository;
     }
 
