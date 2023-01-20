@@ -78,7 +78,7 @@ public class AccountService implements Webservices<AccountDTO>{
     public AccountDTO getById(Long id) {
 
 
-        return this.accountMapper.fromAccount(this.accountRepository.findById(id).orElseThrow());
+        return this.accountMapper.fromAccount(this.accountRepository.findById(id).orElseThrow(()-> new RuntimeException("Sorry user id not found")));
     }
 
 //    public Page<AccountDTO> findAll(Pageable pageable){
