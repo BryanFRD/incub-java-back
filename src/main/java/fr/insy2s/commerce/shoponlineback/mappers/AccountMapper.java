@@ -8,19 +8,17 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring"/*,  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE*/)
+@Mapper(componentModel = "default", uses= {RoleMapper.class}/*,  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE*/)
 public interface AccountMapper {
 
-    // For account user
-//    @Mapping(target = "roles")
+
     AccountDTO fromAccount(Account account);
 
-//    @Mapping(target = "roles", ignore = true)
+
     Account fromAccountDTO(AccountDTO accountDTO);
 
-    List<AccountDTO> allDTOFromAccount(List<Account> accounts);
+//    List<AccountDTO> allDTOFromAccount(List<Account> accounts);
 
-//    Page<AccountDTO> allDTOFromAccount(Page<Account> accounts);
 
 
 

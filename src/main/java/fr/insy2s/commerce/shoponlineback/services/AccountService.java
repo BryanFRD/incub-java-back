@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements Webservices<AccountDTO> {
+public class AccountService implements Webservices<AccountDTO>{
 
     private final AccountRepository accountRepository;
 
-    private AccountMapper accountMapper = new AccountMapperImpl();
+    private final AccountMapper accountMapper = new AccountMapperImpl();
 
-    private MapperBricolage mapperBricolage = new MapperBricolage();
+//    private MapperBricolage mapperBricolage = new MapperBricolage();
 
 
 
@@ -33,7 +33,7 @@ public class AccountService implements Webservices<AccountDTO> {
     @Override
     public List<AccountDTO> all()
     {
-        return this.accountMapper.allDTOFromAccount(this.accountRepository.findAll());
+        return null;
     }
 
 
@@ -42,7 +42,6 @@ public class AccountService implements Webservices<AccountDTO> {
     public void add(AccountDTO e) {
 
         e.setRefAccount(UUID.randomUUID().toString());
-
         this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
     }
 
@@ -79,9 +78,20 @@ public class AccountService implements Webservices<AccountDTO> {
         return this.accountMapper.fromAccount(this.accountRepository.findById(id).orElseThrow());
     }
 
+//    public Page<AccountDTO> findAll(Pageable pageable){
+//        return this.accountRepository.findAll(pageable)
+//                .map(this.mapperBricolage::toAccount);
+//    }
     public Page<AccountDTO> findAll(Pageable pageable){
         return this.accountRepository.findAll(pageable)
-                .map(this.mapperBricolage::toAccount);
+                .map(this.accountMapper::fromAccount);
     }
+
+//    public Page<AccountDTO> findAll(Pageable pageable) {
+//        return this.accountRepository.findAll(pageable)
+//                .map(accountDto -> this.accountMapper.fromAccount(accountDto));
+//    }
+
+
 
 }

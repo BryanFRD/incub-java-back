@@ -23,11 +23,10 @@ public class AccountController {
     }
 
     @PostMapping("/add-account-dto")
-    public String addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
+    public ResponseEntity<String> addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
     {
         this.accountService.add(accountDTO);
-
-        return "Account dto successfully add";
+        return ResponseEntity.status(200).body("Account dto successfully add");
     }
 
     @PutMapping("/update-account-dto/{idAccount}")
