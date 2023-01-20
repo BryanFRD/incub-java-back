@@ -3,10 +3,11 @@ package fr.insy2s.commerce.shoponlineback.mappers;
 import fr.insy2s.commerce.shoponlineback.beans.Role;
 import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
 import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "default")
 public interface RoleMapper {
 
 
