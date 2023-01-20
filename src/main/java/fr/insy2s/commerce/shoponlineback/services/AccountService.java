@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,6 @@ public class AccountService implements Webservices<AccountDTO>{
 
     @Override
     public void add(AccountDTO e) {
-
         e.setRefAccount(UUID.randomUUID().toString());
         this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
     }
@@ -67,8 +67,11 @@ public class AccountService implements Webservices<AccountDTO>{
     public void remove(Long id) {
 
         Optional<Account> account = this.accountRepository.findById(id);
-        if (account.isPresent())
+        if (account.isEmpty()){
+            throw new NotFoundException("error.user.notFound");
+        }
             this.accountRepository.deleteById(id);
+
     }
 
     @Override
