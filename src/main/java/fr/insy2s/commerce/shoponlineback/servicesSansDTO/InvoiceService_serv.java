@@ -11,16 +11,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class InvoiceService_serv implements Webservices<Invoice> {
+public class InvoiceService_serv {
 
     private final InvoiceRepository invoiceRepository;
 
-    @Override
     public List<Invoice> all() {
         return this.invoiceRepository.findAll();
     }
 
-    @Override
     public void add(Invoice e) {
 
         e.setRefInvoice(UUID.randomUUID().toString());
@@ -28,7 +26,6 @@ public class InvoiceService_serv implements Webservices<Invoice> {
         this.invoiceRepository.save(e);
     }
 
-    @Override
     public Invoice update(Long id, Invoice e) {
         return this.invoiceRepository.findById(id)
                 .map(p -> {
@@ -43,7 +40,6 @@ public class InvoiceService_serv implements Webservices<Invoice> {
                 }).orElseThrow(()-> new RuntimeException("sorry this invoice is not found"));
     }
 
-    @Override
     public void remove(Long id) {
 
         Invoice invoice = this.invoiceRepository.findById(id).get();
@@ -52,7 +48,6 @@ public class InvoiceService_serv implements Webservices<Invoice> {
             this.invoiceRepository.delete(invoice);
     }
 
-    @Override
     public Invoice getById(Long id) {
         return this.invoiceRepository.findById(id).orElseThrow(() -> new RuntimeException("not found id invoice"));
     }

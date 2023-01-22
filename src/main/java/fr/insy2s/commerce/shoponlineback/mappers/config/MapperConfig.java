@@ -1,12 +1,12 @@
-package fr.insy2s.commerce.shoponlineback.mappers;
+package fr.insy2s.commerce.shoponlineback.mappers.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+//@Configuration
 public class MapperConfig {
 
-    @Bean
+/*    @Bean
     public AccountMapper accountMapper(){
         return new AccountMapperImpl();
     }
@@ -14,6 +14,6 @@ public class MapperConfig {
     @Bean
     public ProductMapper productMapper(){
         return new ProductMapperImpl();
-    }
+    }*/
 
 }

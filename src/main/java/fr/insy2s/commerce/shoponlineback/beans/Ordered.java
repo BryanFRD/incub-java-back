@@ -1,6 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fr.insy2s.commerce.shoponlineback.enums.OrderedStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,9 @@ public class Ordered {
     @Column(name = "ordered_date",nullable = false)
     private Instant orderedDate;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "order_status",nullable = false, length = 50)
-    private String statut;
+    private OrderedStatus statut;
 
     @Column(name = "delivery_ordered", nullable = false)
     private Instant deliveryDate;

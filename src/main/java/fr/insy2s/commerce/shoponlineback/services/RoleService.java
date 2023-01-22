@@ -12,13 +12,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RoleService implements Webservices<RoleDTO> {
+public class RoleService /*implements Webservices<RoleDTO>*/ {
 
     private final RoleRepository roleRepository;
 
     private RoleMapper roleMapper = new RoleMapperImpl();
 
-    @Override
+  /*  @Override
     public List<RoleDTO> all() {
 
         return this.roleMapper.allDTOFromRole(this.roleRepository.findAll());
@@ -42,5 +42,5 @@ public class RoleService implements Webservices<RoleDTO> {
     @Override
     public RoleDTO getById(Long id) {
         return null;
-    }
+    }*/
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class OrderedService_serv implements Webservices<Ordered> {
+public class OrderedService_serv {
 
     @Autowired
     private final OrderedRepository orderedRepository;
@@ -19,19 +19,16 @@ public class OrderedService_serv implements Webservices<Ordered> {
         this.orderedRepository = commandeRepository;
     }
 
-    @Override
     public List<Ordered> all() {
         return this.orderedRepository.findAll();
     }
 
-    @Override
     public void add(Ordered e) {
 
         e.setRefOrdered(UUID.randomUUID().toString());
         this.orderedRepository.save(e);
     }
 
-    @Override
     public Ordered update(Long id, Ordered e) {
         return this.orderedRepository.findById(id)
                 .map(p -> {
@@ -46,7 +43,6 @@ public class OrderedService_serv implements Webservices<Ordered> {
                 }).orElseThrow(() -> new RuntimeException("this id is not found sorrry"));
     }
 
-    @Override
     public void remove(Long id) {
 
         Ordered commande = this.orderedRepository.findById(id).get();
@@ -55,7 +51,6 @@ public class OrderedService_serv implements Webservices<Ordered> {
             this.orderedRepository.delete(commande);
     }
 
-    @Override
     public Ordered getById(Long id) {
         return this.orderedRepository.findById(id).orElseThrow(() -> new RuntimeException("not found sorry"));
     }

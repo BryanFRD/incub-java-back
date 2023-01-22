@@ -11,17 +11,15 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService_serv implements Webservices<Account> {
+public class AccountService_serv{
 
     private final AccountRepository accountRepository;
 
-    @Override
     public List<Account> all() {
         return this.accountRepository.findAll();
     }
 
 
-    @Override
     public void add(Account e) {
 
         e.setRefAccount(UUID.randomUUID().toString());
@@ -31,7 +29,6 @@ public class AccountService_serv implements Webservices<Account> {
         this.accountRepository.save(e);
     }
 
-    @Override
     public Account update(Long id, Account e) {
         return this.accountRepository.findById(id)
                 .map(p -> {
@@ -51,7 +48,6 @@ public class AccountService_serv implements Webservices<Account> {
                 }).orElseThrow(()-> new RuntimeException("Attention une exeption detecter sur cet user id"));
     }
 
-    @Override
     public void remove(Long id) {
 
         Account utilisateur = this.accountRepository.findById(id).get();
@@ -60,7 +56,6 @@ public class AccountService_serv implements Webservices<Account> {
             this.accountRepository.delete(utilisateur);
     }
 
-    @Override
     public Account getById(Long id) {
         return this.accountRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found sorry"));
     }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AdressService_serv implements Webservices<Address> {
+public class AdressService_serv {
 
     @Autowired
     private final AdressRepository adressRepository;
@@ -18,17 +18,14 @@ public class AdressService_serv implements Webservices<Address> {
         this.adressRepository = adresseRepository;
     }
 
-    @Override
     public List<Address> all() {
         return this.adressRepository.findAll();
     }
 
-    @Override
     public void add(Address e) {
         this.adressRepository.save(e);
     }
 
-    @Override
     public Address update(Long id, Address e) {
         return this.adressRepository.findById(id)
                 .map(p -> {
@@ -44,7 +41,6 @@ public class AdressService_serv implements Webservices<Address> {
                 }).orElseThrow(() -> new RuntimeException("this id adress not found"));
     }
 
-    @Override
     public void remove(Long id) {
 
         Address adresse = this.adressRepository.findById(id).get();
@@ -53,7 +49,6 @@ public class AdressService_serv implements Webservices<Address> {
             this.adressRepository.delete(adresse);
     }
 
-    @Override
     public Address getById(Long id) {
         return this.adressRepository.findById(id).orElseThrow(() -> new RuntimeException("sorry Adresse not found"));
     }

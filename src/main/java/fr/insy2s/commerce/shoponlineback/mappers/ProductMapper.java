@@ -8,15 +8,11 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "default", uses = {CategoryMapper.class})
 public interface ProductMapper {
 
-    @Mapping(target = "category")
     ProductDTO fromProduct(Product product);
 
-    @Mapping(target = "category")
     Product fromProductDTO(ProductDTO productDTO);
-
-    List<ProductDTO> allDTOFromProduct(List<Product> products);
 
 }

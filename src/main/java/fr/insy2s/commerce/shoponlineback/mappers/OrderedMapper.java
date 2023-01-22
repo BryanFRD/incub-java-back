@@ -9,15 +9,12 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "default", uses = {AccountMapper.class, AddressMapper.class})
 public interface OrderedMapper {
 
-    @Mapping(source= "idOrdered", target="id")
     OrderedDTO fromOrdered(Ordered ordered);
 
-    @Mapping(source= "id", target="idOrdered")
     Ordered fromOrderedDTO(OrderedDTO orderedDTO);
 
-    List<OrderedDTO> allDTOfromOrdered(List<Ordered> ordereds);
 
 }

@@ -10,22 +10,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PictureService_serv implements Webservices<Picture> {
+public class PictureService_serv {
 
     private final PictureRepository pictureRepository;
 
-    @Override
     public List<Picture> all() {
         return this.pictureRepository.findAll();
     }
 
-    @Override
     public void add(Picture e) {
 
         this.pictureRepository.save(e);
     }
 
-    @Override
     public Picture update(Long id, Picture e) {
         return this.pictureRepository.findById(id)
                 .map(p -> {
@@ -39,7 +36,6 @@ public class PictureService_serv implements Webservices<Picture> {
                 }).orElseThrow(() -> new RuntimeException("not found this id for picture"));
     }
 
-    @Override
     public void remove(Long id) {
 
         Picture picture = this.pictureRepository.findById(id).get();
@@ -48,7 +44,6 @@ public class PictureService_serv implements Webservices<Picture> {
             this.pictureRepository.delete(picture);
     }
 
-    @Override
     public Picture getById(Long id) {
         return this.pictureRepository.findById(id).orElseThrow(()-> new RuntimeException("not found sorry"));
     }
