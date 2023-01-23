@@ -31,11 +31,11 @@ public class OrderedService implements Webservices<OrderedDTO, WebservicesGeneri
 
     private final AddressMapper addressMapper = new AddressMapperImpl();
 
-    private final InvoiceMapper invoiceMapper = new InvoiceMapperImpl();
+//    private final InvoiceMapper invoiceMapper = new InvoiceMapperImpl();
 
     private final UuidService uuidService;
 
-    private JdbcTemplate jdbcTemplate;
+//    private JdbcTemplate jdbcTemplate;
 
     @Override
     public Page<OrderedDTO> all(Pageable pageable) {
@@ -57,7 +57,7 @@ public class OrderedService implements Webservices<OrderedDTO, WebservicesGeneri
     public OrderedDTO update(Long id, OrderedDTO e) {
         return this.orderedMapper.fromOrdered(this.orderedRepository.findById(id)
                 .map(p-> {
-                    p.setRefOrdered(this.uuidService.generateUuid());
+//                    p.setRefOrdered(this.uuidService.generateUuid());
                     if(p.getOrderedDate() != null){
                         p.setOrderedDate(e.getOrderedDate());
                     }
@@ -108,9 +108,9 @@ public class OrderedService implements Webservices<OrderedDTO, WebservicesGeneri
                 .orElseThrow(() -> new OrderedNotFoundException("Ordered with id " +id+ " was not found"));
     }
 
-    public void updateOrderedStatus()
-    {
-        this.jdbcTemplate.execute("update ordered set status ='CONFIRMED' where order_status = 'livrer'");
-    }
+//    public void updateOrderedStatus()
+//    {
+//        this.jdbcTemplate.execute("update ordered set status ='CONFIRMED' where order_status = 'livrer'");
+//    }
 
 }

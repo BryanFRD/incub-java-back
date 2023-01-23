@@ -13,14 +13,4 @@ public class WebservicesGenericServiceException extends RuntimeException{
 
 }
 
-/*public class GenericServiceException extends RuntimeException {
-    private final Object data;
 
-    public GenericServiceException(Object data) {
-        this.data = data;
-    }
-
-    public Object getData() {
-        return data;
-    }
-}*/

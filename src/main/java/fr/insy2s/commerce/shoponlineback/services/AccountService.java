@@ -39,7 +39,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     public AccountDTO update(Long id, AccountDTO e) {
         return this.accountMapper.fromAccount(this.accountRepository.findById(id)
                 .map(p -> {
-                    p.setRefAccount(this.uuidService.generateUuid());
+//                    p.setRefAccount(this.uuidService.generateUuid());
                     if (p.getName() != null)
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
@@ -50,7 +50,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                         p.setResetToken(e.getResetToken());
                     return this.accountRepository.save(p);
 
-                }).orElseThrow(() -> new RuntimeException("sorry not found this id for account user")));
+                }).orElseThrow(() -> new AccountNotFountException("Account with id " +id+ " was not found")));
     }
 
     @Override
