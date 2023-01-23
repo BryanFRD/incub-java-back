@@ -8,12 +8,11 @@ import org.mapstruct.Mapper;
 
 import java.util.List;
 
-@Mapper(componentModel = "default", uses ={CategoryMapper.class} )
+@Mapper(componentModel = "default", uses = {CategoryMapper.class})
 public interface ProductMapper {
 
     ProductDTO fromProduct(Product product);
 
     Product fromProductDTO(ProductDTO productDTO);
-
 
 }

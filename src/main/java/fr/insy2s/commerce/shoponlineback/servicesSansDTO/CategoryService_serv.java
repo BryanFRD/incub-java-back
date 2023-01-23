@@ -10,22 +10,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService_serv implements Webservices<Category> {
+public class CategoryService_serv {
 
     private final CategoryRepository categoryRepository;
 
-    @Override
     public List<Category> all() {
         return this.categoryRepository.findAll();
     }
 
-    @Override
     public void add(Category e) {
 
         this.categoryRepository.save(e);
     }
 
-    @Override
     public Category update(Long id, Category e) {
         return this.categoryRepository.findById(id)
                 .map(p -> {
@@ -37,7 +34,6 @@ public class CategoryService_serv implements Webservices<Category> {
                 }).orElseThrow(() -> new RuntimeException("this id is not found sorry"));
     }
 
-    @Override
     public void remove(Long id) {
 
         Category category = this.categoryRepository.findById(id).get();
@@ -46,7 +42,6 @@ public class CategoryService_serv implements Webservices<Category> {
             this.categoryRepository.delete(category);
     }
 
-    @Override
     public Category getById(Long id) {
         return this.categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Not found sorry"));
     }

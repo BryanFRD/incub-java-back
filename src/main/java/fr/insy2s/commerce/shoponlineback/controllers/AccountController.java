@@ -1,16 +1,17 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
+import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.AccountNotFountException;
 import fr.insy2s.commerce.shoponlineback.services.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -21,7 +22,7 @@ public class AccountController {
     private final AccountService accountService;
     @GetMapping("/all-account")
     public ResponseEntity<Page<AccountDTO>> findAllWithPagination(Pageable pageable){
-        return ResponseEntity.ok(this.accountService.findAll(pageable));
+        return ResponseEntity.ok(this.accountService.all(pageable));
     }
 
     @PostMapping("/add-account-dto")
@@ -50,7 +51,13 @@ public class AccountController {
     @GetMapping("/get-by-id-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
-        AccountDTO userDto =  this.accountService.getById(idAccount);
-        return ResponseEntity.status(200).body(userDto);
+        return this.accountService.getById(idAccount)
+                .map(account -> {
+                    log.info("Account with id {} was found", idAccount);
+                    return new ResponseEntity<>(account, HttpStatus.OK);
+                }).orElseThrow(() ->{
+                    log.error("Account with id {} was not found", idAccount);
+                    return new AccountNotFountException("Account with id " +idAccount+ " was not found");
+                });
     }
 }

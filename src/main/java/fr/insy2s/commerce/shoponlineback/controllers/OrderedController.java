@@ -2,48 +2,84 @@ package fr.insy2s.commerce.shoponlineback.controllers;
 
 
 import fr.insy2s.commerce.shoponlineback.dtos.OrderedDTO;
+import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.OrderedNotFoundException;
 import fr.insy2s.commerce.shoponlineback.services.OrderedService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api-dto/ordered")
 @RequiredArgsConstructor
+@Slf4j
 public class OrderedController {
 
     @Autowired
     private final OrderedService orderedService;
 
     @GetMapping("/all-ordered-dto")
-    public List<OrderedDTO> allOrderedDTO() {
-        return this.orderedService.all();
+    public ResponseEntity<Page<OrderedDTO>> allOrderedDTO(Pageable pageable) {
+        return ResponseEntity.ok(this.orderedService.all(pageable));
     }
 
     @PostMapping("/add-ordered-dto")
-    public String addOrderedDTO(@Validated @RequestBody OrderedDTO orderedDTO) {
-        this.orderedService.add(orderedDTO);
-        return "Ordered dto successfully add";
+    public ResponseEntity<OrderedDTO> addOrderedDTO(@Valid @RequestBody OrderedDTO orderedDTO) {
+
+        try {
+            this.orderedService.add(orderedDTO);
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (ConstraintViolationException e)
+        {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/update-ordered-dto/{idOrdered}")
-    public String updateOrderedDTO(@Validated @PathVariable Long idOrdered, @RequestBody OrderedDTO orderedDTO){
-        this.orderedService.update(idOrdered, orderedDTO);
-        return "Ordered dto update complete successfully";
+    public ResponseEntity<OrderedDTO> updateOrderedDTO(@Validated @PathVariable Long idOrdered, @RequestBody OrderedDTO orderedDTO){
+
+        log.info("Updating ordered with id : {}", idOrdered);
+
+        try {
+
+            OrderedDTO updateOrderedDTO = this.orderedService.update(idOrdered, orderedDTO);
+
+            log.info("Ordered with id : {} updated successfully " ,idOrdered);
+            
+            return new ResponseEntity<>(updateOrderedDTO, HttpStatus.OK);
+
+        } catch (OrderedNotFoundException exception)
+        {
+            log.error("Error occured while updating ordered with id: {}. Error: {}", idOrdered, exception.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        }
     }
 
     @DeleteMapping("/remove-ordered-dto/{idOrdered}")
-    public String removeOrderedDTO(@Validated @PathVariable Long idOrdered) {
+    public ResponseEntity<Void> removeOrderedDTO(@Validated @PathVariable Long idOrdered) {
+
         this.orderedService.remove(idOrdered);
-        return "Ordered dto successfully delete";
+
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/get-by-id-ordered/{idOrdered}")
-    public OrderedDTO getByIdOrderedDTO (@Validated @PathVariable Long idOrdered) {
-        return this.orderedService.getById(idOrdered);
+    public ResponseEntity<OrderedDTO> getByIdOrderedDTO (@Validated @PathVariable Long idOrdered) {
+
+        return this.orderedService.getById(idOrdered)
+                .map(orderedDTO -> new ResponseEntity<>(orderedDTO, HttpStatus.OK))
+                .orElseThrow(() -> new OrderedNotFoundException("Ordered with id " +idOrdered+ " was not found"));
     }
 
 

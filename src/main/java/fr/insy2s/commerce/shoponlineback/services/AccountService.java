@@ -1,8 +1,9 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
 import fr.insy2s.commerce.shoponlineback.beans.Account;
-import fr.insy2s.commerce.shoponlineback.bricole.MapperBricolage;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
+import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.AccountNotFountException;
+import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapper;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapperImpl;
@@ -13,35 +14,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService implements Webservices<AccountDTO>{
+public class AccountService implements Webservices<AccountDTO, WebservicesGenericServiceException>{
 
     private final AccountRepository accountRepository;
 
     private final AccountMapper accountMapper = new AccountMapperImpl();
 
-//    private MapperBricolage mapperBricolage = new MapperBricolage();
-
-
-
-
-    @Override
-    public List<AccountDTO> all()
-    {
-        return null;
-    }
+    private final UuidService uuidService;
 
 
 
     @Override
     public void add(AccountDTO e) {
-        e.setRefAccount(UUID.randomUUID().toString());
+        e.setRefAccount(this.uuidService.generateUuid());
         this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
     }
 
@@ -49,7 +39,7 @@ public class AccountService implements Webservices<AccountDTO>{
     public AccountDTO update(Long id, AccountDTO e) {
         return this.accountMapper.fromAccount(this.accountRepository.findById(id)
                 .map(p -> {
-                    p.setRefAccount(UUID.randomUUID().toString());
+                    p.setRefAccount(this.uuidService.generateUuid());
                     if (p.getName() != null)
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
@@ -75,25 +65,20 @@ public class AccountService implements Webservices<AccountDTO>{
     }
 
     @Override
-    public AccountDTO getById(Long id) {
+    public Optional<AccountDTO> getById(Long id) {
 
-
-        return this.accountMapper.fromAccount(this.accountRepository.findById(id).orElseThrow(()-> new RuntimeException("Sorry user id not found")));
+        return this.accountRepository.findById(id)
+                .map(this.accountMapper::fromAccount)
+                .map(Optional::of)
+                .orElseThrow(() -> new AccountNotFountException("Account with id " +id+ " was not found"));
     }
 
-//    public Page<AccountDTO> findAll(Pageable pageable){
-//        return this.accountRepository.findAll(pageable)
-//                .map(this.mapperBricolage::toAccount);
-//    }
-    public Page<AccountDTO> findAll(Pageable pageable){
+    @Override
+    public Page<AccountDTO> all(Pageable pageable){
         return this.accountRepository.findAll(pageable)
                 .map(this.accountMapper::fromAccount);
     }
 
-//    public Page<AccountDTO> findAll(Pageable pageable) {
-//        return this.accountRepository.findAll(pageable)
-//                .map(accountDto -> this.accountMapper.fromAccount(accountDto));
-//    }
 
 
 

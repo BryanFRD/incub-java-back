@@ -10,22 +10,19 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ContactService_serv implements Webservices<Contact> {
+public class ContactService_serv {
 
     private final ContactRepository contactRepository;
 
-    @Override
     public List<Contact> all() {
         return this.contactRepository.findAll();
     }
 
-    @Override
     public void add(Contact e) {
 
         this.contactRepository.save(e);
     }
 
-    @Override
     public Contact update(Long id, Contact e) {
         return this.contactRepository.findById(id)
                 .map(p -> {
@@ -39,7 +36,6 @@ public class ContactService_serv implements Webservices<Contact> {
                 }).orElseThrow(()-> new RuntimeException("not found this id"));
     }
 
-    @Override
     public void remove(Long id) {
 
         Contact contact = this.contactRepository.findById(id).get();
@@ -48,7 +44,6 @@ public class ContactService_serv implements Webservices<Contact> {
             this.contactRepository.delete(contact);
     }
 
-    @Override
     public Contact getById(Long id) {
         return this.contactRepository.findById(id).orElseThrow(()-> new RuntimeException("Sorry not found"));
     }

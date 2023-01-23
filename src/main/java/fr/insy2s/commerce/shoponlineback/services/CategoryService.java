@@ -13,14 +13,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CategoryService implements Webservices<CategoryDTO> {
+public class CategoryService /*implements Webservices<CategoryDTO>*/ {
 
     private final CategoryRepository categoryRepository;
 
     private CategoryMapper categoryMapper = new CategoryMapperImpl();
 
 
-    @Override
+   /* @Override
     public List<CategoryDTO> all() {
         return this.categoryMapper.allDTOFromCategory(this.categoryRepository.findAll());
     }
@@ -54,6 +54,6 @@ public class CategoryService implements Webservices<CategoryDTO> {
     @Override
     public CategoryDTO getById(Long id) {
         return this.categoryMapper.fromCategory(this.categoryRepository.findById(id).get());
-    }
+    }*/
 }
 

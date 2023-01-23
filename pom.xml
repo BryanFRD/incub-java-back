@@ -73,9 +73,12 @@
 			<version>1.6.2</version>
 		</dependency>
 
-
-
-
+		<!-- https://mvnrepository.com/artifact/org.mapstruct.extensions.spring/mapstruct-spring-annotations -->
+		<dependency>
+			<groupId>org.mapstruct.extensions.spring</groupId>
+			<artifactId>mapstruct-spring-annotations</artifactId>
+			<version>0.1.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>

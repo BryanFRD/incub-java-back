@@ -16,10 +16,10 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    @GetMapping("/all-role-dto")
+    /*@GetMapping("/all-role-dto")
     public List<RoleDTO> allRoleDTO()
     {
         return this.roleService.all();
-    }
+    }*/
 
 }

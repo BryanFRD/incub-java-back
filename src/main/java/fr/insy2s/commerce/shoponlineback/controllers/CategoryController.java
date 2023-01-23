@@ -15,7 +15,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/all-category-dto")
+   /* @GetMapping("/all-category-dto")
     public List<CategoryDTO> allCategoryDTO(){ return this.categoryService.all();}
 
     @PostMapping("/add-category-dto")
@@ -40,5 +40,5 @@ public class CategoryController {
     public CategoryDTO getByIdCategoryDTO(@Validated @PathVariable Long idCategory) {
         return this.categoryService.getById(idCategory);
     }
-
+*/
 }
