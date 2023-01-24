@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
     public ProductDTO update(Long id, ProductDTO e) {
         return this.productMapper.fromProduct(this.productRepository.findById(id)
                 .map(p-> {
-                    p.setRefProduct(this.uuidService.generateUuid());
+//                    p.setRefProduct(this.uuidService.generateUuid()); // TODO  supprimer l'update de l'uuid ???
                     if (p.getName() != null)
                         p.setName(e.getName());
                     if(p.getPriceTTC() != null)
