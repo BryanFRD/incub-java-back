@@ -3,7 +3,6 @@ package fr.insy2s.commerce.shoponlineback.exceptions.advices;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -11,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 public class ErrorResponse {
 
     private  int status;
-
     private  String message;
-
     private  String error;
 
     private  String path;
