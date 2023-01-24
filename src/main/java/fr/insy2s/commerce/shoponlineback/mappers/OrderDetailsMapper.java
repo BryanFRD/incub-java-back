@@ -10,8 +10,4 @@ public interface OrderDetailsMapper {
     OrderDetailsDTO fromOrderDetails(OrderDetails orderDetails);
 
     OrderDetails fromOrderDetailsDTO(OrderDetailsDTO orderDetailsDTO);
-
-    }
-
-
-
+}

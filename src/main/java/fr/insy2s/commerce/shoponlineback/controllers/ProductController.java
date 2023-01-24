@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api-dto/product")
+@RequestMapping("/api/shopping-online/public/product")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {

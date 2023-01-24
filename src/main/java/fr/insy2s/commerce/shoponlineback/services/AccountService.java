@@ -8,9 +8,14 @@ import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapper;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapperImpl;
 import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
+import fr.insy2s.commerce.shoponlineback.secure.JwtService;
+import fr.insy2s.commerce.shoponlineback.secure.beanresponse.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -27,12 +32,38 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
 
     private final UuidService uuidService;
 
+    private final PasswordEncoder passwordEncoder;
+
+    private final JwtService jwtService;
+
+    private final AuthenticationManager authenticationManager;
+
 
 
     @Override
     public void add(AccountDTO e) {
         e.setRefAccount(this.uuidService.generateUuid());
+        e.setPassword(this.passwordEncoder.encode(e.getPassword()));
         this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
+
+        var jwtToken = jwtService.generateToken(this.accountMapper.fromAccountDTO(e));
+        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+        System.out.println(authenticationResponse.getToken());
+    }
+
+    public AuthenticationResponse login(AccountDTO accountDTO)
+    {
+        this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountDTO.getEmail(), accountDTO.getPassword()));
+
+        Optional<Account> account = this.accountRepository.findByEmail(accountDTO.getEmail());
+        if (account.isEmpty())
+            throw new AccountNotFountException("Account not found");
+        var jwtToken = this.jwtService.generateToken(account.get());
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
     }
 
     @Override
@@ -45,7 +76,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                     if (p.getFirstName() != null)
                         p.setFirstName(e.getFirstName());
                     if (p.getPassword() != null)
-                        p.setPassword(e.getPassword());
+                        p.setPassword(this.passwordEncoder.encode(e.getPassword()));
                     if (p.getResetToken() != null)
                         p.setResetToken(e.getResetToken());
                     return this.accountRepository.save(p);

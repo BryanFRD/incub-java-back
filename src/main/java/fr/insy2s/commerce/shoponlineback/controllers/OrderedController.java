@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-dto/ordered")
+@RequestMapping("/api/shopping-online/public/ordered")
 @RequiredArgsConstructor
 @Slf4j
 public class OrderedController {

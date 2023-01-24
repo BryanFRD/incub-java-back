@@ -2,6 +2,7 @@ package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.AccountNotFountException;
+import fr.insy2s.commerce.shoponlineback.secure.beanresponse.AuthenticationResponse;
 import fr.insy2s.commerce.shoponlineback.services.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,24 +16,30 @@ import javax.validation.Valid;
 
 @RestController
 @Slf4j
-@RequestMapping("/api-dto/account")
+@RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
 public class AccountController {
 
     private final AccountService accountService;
-    @GetMapping("/all-account")
+    @GetMapping("/admin/all-account")
     public ResponseEntity<Page<AccountDTO>> findAllWithPagination(Pageable pageable){
         return ResponseEntity.ok(this.accountService.all(pageable));
     }
 
-    @PostMapping("/add-account-dto")
+    @PostMapping("/public/add-account-dto")
     public ResponseEntity<String> addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
     {
         this.accountService.add(accountDTO);
         return ResponseEntity.status(200).body("Account dto successfully add");
     }
 
-    @PutMapping("/update-account-dto/{idAccount}")
+    @PostMapping("/public/login")
+    public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AccountDTO accountDTO)
+    {
+        return ResponseEntity.ok(this.accountService.login(accountDTO));
+    }
+
+    @PutMapping("/admin/update-account-dto/{idAccount}")
     public ResponseEntity<String> updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
         this.accountService.update(idAccount, accountDTO);
@@ -48,7 +55,7 @@ public class AccountController {
     }
 
 
-    @GetMapping("/get-by-id-account-dto/{idAccount}")
+    @GetMapping("/admin/get-by-id-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
         return this.accountService.getById(idAccount)

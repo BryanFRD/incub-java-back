@@ -1,20 +1,18 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.dtos.OrderDetailsDTO;
-import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.OrderDetailsNotFoundException;
 import fr.insy2s.commerce.shoponlineback.services.OrderDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api-dto/order-details") // TODO Renomer l'api sans dto
 @RequiredArgsConstructor
+@RequestMapping("/api/shopping-online")
 public class OrderDetailsController {
 
     private final OrderDetailsService orderDetailsService;
@@ -35,13 +33,4 @@ public class OrderDetailsController {
         this.orderDetailsService.update(idProduct, idOrderDetails, orderDetailsDTO);
         return ResponseEntity.status(200).body("OrderDetails dto update successfully");
     }
-
-    @GetMapping("/get-by-id-order-details/{idProduct}/{idOrdered}")
-    public ResponseEntity<OrderDetailsDTO> getByIdOrderDetailsDTO(@Valid @PathVariable Long idProduct, @PathVariable Long idOrdered) {
-        return this.orderDetailsService.getById(idProduct, idOrdered)
-                .map(orderDetail -> {
-                    return new ResponseEntity<>(orderDetail, HttpStatus.OK);
-                }).orElseThrow(()->new OrderDetailsNotFoundException("OrderDetails not found"));
-    }
-
 }
