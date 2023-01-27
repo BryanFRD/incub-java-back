@@ -20,6 +20,8 @@ public class ProductDTO {
 
     private Long productInventory;
 
+    private String productDescription;
+
     private CategoryDTO category;
 
 }

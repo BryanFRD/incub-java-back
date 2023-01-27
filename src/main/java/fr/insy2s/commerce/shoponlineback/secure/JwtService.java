@@ -1,5 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.secure;
 
+import fr.insy2s.commerce.shoponlineback.beans.Account;
+import fr.insy2s.commerce.shoponlineback.beans.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class JwtService {
@@ -29,18 +32,19 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(UserDetails userDetails)
+    public String generateToken(Account account)
     {
-        return generateToken(new HashMap<>(), userDetails);
+        return generateToken(new HashMap<>(), account);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails)
+    public String generateToken(Map<String, Object> extraClaims, Account account)
     {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(account.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                .claim("roles", account.getRoles().stream().map(Role::getName).collect(Collectors.joining(",")))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();

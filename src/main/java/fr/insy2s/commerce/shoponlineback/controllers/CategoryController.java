@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/category-dto")
+@RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
-   /* @GetMapping("/all-category-dto")
+    @GetMapping("/public/all-category-dto")
     public List<CategoryDTO> allCategoryDTO(){ return this.categoryService.all();}
 
     @PostMapping("/add-category-dto")
@@ -40,5 +40,5 @@ public class CategoryController {
     public CategoryDTO getByIdCategoryDTO(@Validated @PathVariable Long idCategory) {
         return this.categoryService.getById(idCategory);
     }
-*/
+
 }

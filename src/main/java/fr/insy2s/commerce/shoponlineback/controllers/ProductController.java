@@ -18,14 +18,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/shopping-online/public/product")
+@RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {
 
     private final ProductService productService;
 
-   @GetMapping("/all-product-dto")
+   @GetMapping("/public/all-product-dto")
     public ResponseEntity<Page> allProductDTO(Pageable pageable){
 
         log.debug("Finding all users");
@@ -34,7 +34,7 @@ public class ProductController {
 
     }
 
-    @PostMapping("/add-product-dto")
+    @PostMapping("/public/add-product-dto")
     public ResponseEntity<ProductDTO> addProductDTO(@Valid @RequestBody ProductDTO productDTO) {
 
         try
@@ -67,14 +67,14 @@ public class ProductController {
     }
 
 
-    @DeleteMapping("/remove-product-dto/{idProduct}")
+    @DeleteMapping("/public/remove-product-dto/{idProduct}")
     public ResponseEntity<ProductDTO> removeProductDTO(@Validated @PathVariable Long idProduct){
         this.productService.remove(idProduct);
 
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/get-by-id-product/{idProduct}")
+    @GetMapping("/public/get-by-id-product/{idProduct}")
     public ResponseEntity<ProductDTO> getByIdProductDTO(@Valid @PathVariable Long idProduct) {
 
         return this.productService.getById(idProduct)

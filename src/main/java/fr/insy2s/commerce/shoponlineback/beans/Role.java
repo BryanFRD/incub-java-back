@@ -23,6 +23,9 @@ public class Role {
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    @Override
+    public String toString(){return this.getName();}
+
     /*@OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"role"})
     private List<Account> accounts;*/
