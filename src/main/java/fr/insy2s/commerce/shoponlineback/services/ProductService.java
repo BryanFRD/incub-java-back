@@ -46,6 +46,18 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         this.productRepository.save(this.productMapper.fromProductDTO(e));
     }
 
+//    @Override
+//    public void add(ProductDTO e) {
+//        e.setRefProduct(this.uuidService.generateUuid());
+//        ProductDTO productDTO = new ProductDTO();
+//            productDTO.setName(e.getName());
+//            productDTO.setProductDescription(e.getProductDescription());
+//            productDTO.setPriceTTC(e.getPriceTTC());
+//            productDTO.setProductInventory(e.getProductInventory());
+//            productDTO.setCategory(e.getCategory());
+//        this.productRepository.save(this.productMapper.fromProductDTO(productDTO));
+//    }
+
     @Override
     public ProductDTO update(Long id, ProductDTO e) {
         return this.productMapper.fromProduct(this.productRepository.findById(id)

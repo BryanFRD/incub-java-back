@@ -20,18 +20,18 @@ public class CategoryService /*implements Webservices<CategoryDTO>*/ {
     private CategoryMapper categoryMapper = new CategoryMapperImpl();
 
 
-   /* @Override
+
     public List<CategoryDTO> all() {
         return this.categoryMapper.allDTOFromCategory(this.categoryRepository.findAll());
     }
 
-    @Override
+
     public void add(CategoryDTO e) {
         this.categoryRepository.save(this.categoryMapper.fromCategoryDTO(e));
 
     }
 
-    @Override
+
     public CategoryDTO update(Long id, CategoryDTO e) {
         return this.categoryMapper.fromCategory(this.categoryRepository.findById(id)
                 .map(p-> {
@@ -44,16 +44,16 @@ public class CategoryService /*implements Webservices<CategoryDTO>*/ {
         );
     }
 
-    @Override
+
     public void remove(Long id) {
         Category category = this.categoryRepository.findById(id).get();
         if(category != null)
             this.categoryRepository.delete(category);
     }
 
-    @Override
+
     public CategoryDTO getById(Long id) {
         return this.categoryMapper.fromCategory(this.categoryRepository.findById(id).get());
-    }*/
+    }
 }
 

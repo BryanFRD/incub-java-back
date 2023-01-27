@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 @RestController
@@ -21,7 +22,9 @@ import javax.validation.Valid;
 public class AccountController {
 
     private final AccountService accountService;
-    @GetMapping("/admin/all-account")
+
+//    @RolesAllowed("ADMIN")
+    @GetMapping("/public/all-account")
     public ResponseEntity<Page<AccountDTO>> findAllWithPagination(Pageable pageable){
         return ResponseEntity.ok(this.accountService.all(pageable));
     }
