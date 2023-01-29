@@ -18,12 +18,13 @@ public class RoleService /*implements Webservices<RoleDTO>*/ {
 
     private RoleMapper roleMapper = new RoleMapperImpl();
 
-  /*  @Override
+
     public List<RoleDTO> all() {
 
         return this.roleMapper.allDTOFromRole(this.roleRepository.findAll());
     }
 
+    /*
     @Override
     public void add(RoleDTO e) {
 

@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-dto/role")
+@RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
 public class RoleController {
 
     private final RoleService roleService;
 
-    /*@GetMapping("/all-role-dto")
+    @GetMapping("/public/all-role-dto")
     public List<RoleDTO> allRoleDTO()
     {
         return this.roleService.all();
-    }*/
+    }
 
 }
