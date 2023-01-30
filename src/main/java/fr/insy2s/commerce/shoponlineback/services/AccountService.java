@@ -1,13 +1,18 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
 import fr.insy2s.commerce.shoponlineback.beans.Account;
+import fr.insy2s.commerce.shoponlineback.beans.Role;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
+import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.AccountNotFountException;
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapper;
 import fr.insy2s.commerce.shoponlineback.mappers.AccountMapperImpl;
+import fr.insy2s.commerce.shoponlineback.mappers.RoleMapper;
+import fr.insy2s.commerce.shoponlineback.mappers.RoleMapperImpl;
 import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
+import fr.insy2s.commerce.shoponlineback.repositories.RoleRepository;
 import fr.insy2s.commerce.shoponlineback.secure.JwtService;
 import fr.insy2s.commerce.shoponlineback.secure.beanresponse.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +24,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +36,11 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
 
     private final AccountRepository accountRepository;
 
+    private final RoleRepository roleRepository;
+
     private final AccountMapper accountMapper = new AccountMapperImpl();
+
+    private final RoleMapper roleMapper = new RoleMapperImpl();
 
     private final UuidService uuidService;
 
@@ -43,14 +55,27 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     @Override
     public void add(AccountDTO e) {
         e.setRefAccount(this.uuidService.generateUuid());
-        e.setPassword(this.passwordEncoder.encode(e.getPassword()));
+        String roleName = "ROLE_CLIENT";
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(this.roleRepository.findByName(roleName));
+        e.setRoles(roleList.stream().map(this.roleMapper::fromRole).collect(Collectors.toList()));
         this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
+//        var jwtToken = jwtService.generateToken(this.accountMapper.fromAccountDTO(e));
+//        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
+//                .token(jwtToken)
+//                .build();
+//        System.out.println(authenticationResponse.getToken());
+    }
 
-        var jwtToken = jwtService.generateToken(this.accountMapper.fromAccountDTO(e));
-        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
-        System.out.println(authenticationResponse.getToken());
+
+    public AccountDTO addNew(AccountDTO e) {
+        e.setRefAccount(this.uuidService.generateUuid());
+        String roleName = "ROLE_CLIENT";
+        List<Role> roleList = new ArrayList<>();
+        roleList.add(this.roleRepository.findByName(roleName));
+        e.setRoles(roleList.stream().map(this.roleMapper::fromRole).collect(Collectors.toList()));
+        Account account = this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
+        return this.accountMapper.fromAccount(account);
     }
 
     public AuthenticationResponse login(AccountDTO accountDTO)
@@ -108,6 +133,14 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     public Page<AccountDTO> all(Pageable pageable){
         return this.accountRepository.findAll(pageable)
                 .map(this.accountMapper::fromAccount);
+    }
+
+
+    public void addRoleToUser(String userName, String roleName){
+        Optional<Account> account = this.accountRepository.findByEmail(userName);
+        Role role = this.roleRepository.findByName(roleName);
+        account.get().getRoles().add(role);
+        this.accountRepository.save(account.get());
     }
 
 

@@ -2,6 +2,7 @@ package fr.insy2s.commerce.shoponlineback.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.xml.bind.v2.TODO;
+import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -74,11 +75,13 @@ public class Account implements UserDetails {
     @JsonIgnoreProperties({"account", "deliveryAdress", "billingAdress"})
     private List<Ordered> ordereds;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+
 
     @Override
     public String getUsername() {

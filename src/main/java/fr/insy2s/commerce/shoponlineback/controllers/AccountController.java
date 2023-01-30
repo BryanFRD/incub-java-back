@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
 @RestController
@@ -32,10 +33,15 @@ public class AccountController {
     }
 
     @PostMapping("/no-role/add-account-dto")
-    public ResponseEntity<String> addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
+    public ResponseEntity<AccountDTO> addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
     {
-        this.accountService.add(accountDTO);
-        return ResponseEntity.status(200).body("Account dto successfully add");
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.accountService.addNew(accountDTO));
+//        try{
+//            this.accountService.add(accountDTO);
+//            return new ResponseEntity<>(HttpStatus.CREATED);
+//        } catch(ConstraintViolationException e){
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
     }
 
     @PostMapping("/no-role/login")
@@ -43,13 +49,15 @@ public class AccountController {
     {
         return ResponseEntity.ok(this.accountService.login(accountDTO));
     }
+
     @Secured({"ROLE_ADMIN", "ROLE_CLIENT"})
     @PutMapping("/update-account-dto/{idAccount}")
-    public ResponseEntity<String> updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
+    public ResponseEntity<AccountDTO> updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
-        this.accountService.update(idAccount, accountDTO);
-        return ResponseEntity.status(202).body("Account dto update complete successfully");
+
+        return ResponseEntity.status(202).body(this.accountService.update(idAccount, accountDTO));
     }
+
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/remove-account-dto/{idAccount}")
     public ResponseEntity<String> removeAccountDTO(@Valid @PathVariable Long idAccount)
