@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -29,14 +31,14 @@ public class AccountController {
         return ResponseEntity.ok(this.accountService.all(pageable));
     }
 
-    @PostMapping("/public/add-account-dto")
+    @PostMapping("/no-role/add-account-dto")
     public ResponseEntity<String> addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
     {
         this.accountService.add(accountDTO);
         return ResponseEntity.status(200).body("Account dto successfully add");
     }
 
-    @PostMapping("/public/login")
+    @PostMapping("/no-role/login")
     public ResponseEntity<AuthenticationResponse> login(@Valid @RequestBody AccountDTO accountDTO)
     {
         return ResponseEntity.ok(this.accountService.login(accountDTO));
@@ -57,7 +59,8 @@ public class AccountController {
         return ResponseEntity.status(202).body("Account dto successfully delete")  ;
     }
 
-
+//    @RolesAllowed("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/get-by-id-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {

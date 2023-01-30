@@ -7,13 +7,12 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -37,14 +36,18 @@ public class JwtService {
         return generateToken(new HashMap<>(), account);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, Account account)
+    public String generateToken(Map<String, Object> extraClaims, UserDetails account)
+
     {
+        Collection<? extends GrantedAuthority> authorities = account.getAuthorities();
+        List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(account.getEmail())
+                .setSubject(account.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .claim("roles", account.getRoles().stream().map(Role::getName).collect(Collectors.joining(",")))
+                .claim("roles", roles)
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
