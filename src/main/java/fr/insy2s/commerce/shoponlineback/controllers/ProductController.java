@@ -34,14 +34,12 @@ public class ProductController {
 
     }
 
-    @PostMapping("/public/add-product-dto")
+    @PostMapping("/no-role/add-product-dto")
     public ResponseEntity<ProductDTO> addProductDTO(@Valid @RequestBody ProductDTO productDTO) {
 
         try
         {
-            this.productService.add(productDTO);
-
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(  this.productService.addNew(productDTO));
         }catch (ConstraintViolationException e)
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -68,7 +66,7 @@ public class ProductController {
 
 
     @DeleteMapping("/public/remove-product-dto/{idProduct}")
-    public ResponseEntity<ProductDTO> removeProductDTO(@Validated @PathVariable Long idProduct){
+    public ResponseEntity<String> removeProductDTO(@Validated @PathVariable Long idProduct){
         this.productService.remove(idProduct);
 
         return ResponseEntity.noContent().build();

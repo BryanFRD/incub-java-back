@@ -54,9 +54,9 @@ public class AccountController {
     @PutMapping("/update-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
-
         return ResponseEntity.status(202).body(this.accountService.update(idAccount, accountDTO));
     }
+
 
     @Secured("ROLE_ADMIN")
     @DeleteMapping("/remove-account-dto/{idAccount}")
@@ -64,8 +64,9 @@ public class AccountController {
     {
         this.accountService.remove(idAccount);
 
-        return ResponseEntity.status(202).body("Account dto successfully delete")  ;
+        return ResponseEntity.status(202).body("Account dto with id : "+idAccount +" successfully delete")  ;
     }
+
 
 //    @RolesAllowed("ADMIN")
 //    @PreAuthorize("hasRole('ADMIN')")

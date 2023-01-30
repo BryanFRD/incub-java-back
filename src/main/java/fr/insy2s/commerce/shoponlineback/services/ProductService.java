@@ -51,6 +51,12 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         this.productRepository.save(this.productMapper.fromProductDTO(e));
     }
 
+    public ProductDTO addNew(ProductDTO p) {
+        p.setRefProduct(this.uuidService.generateUuid());
+        Product product =  this.productRepository.save(this.productMapper.fromProductDTO(p));
+        return this.productMapper.fromProduct(product);
+    }
+
 //    @Override
 //    public void add(ProductDTO e) {
 //        e.setRefProduct(this.uuidService.generateUuid());
@@ -87,7 +93,6 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
 
     @Override
     public void remove(Long id) {
-
         Optional<Product> productDTO = this.productRepository.findById(id);
 
         if (productDTO.isEmpty())
