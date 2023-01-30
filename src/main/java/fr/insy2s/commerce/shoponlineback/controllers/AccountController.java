@@ -25,8 +25,8 @@ public class AccountController {
 
     private final AccountService accountService;
 
-//    @RolesAllowed("ADMIN")
-    @GetMapping("/public/all-account")
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/all-account")
     public ResponseEntity<Page<AccountDTO>> findAllWithPagination(Pageable pageable){
         return ResponseEntity.ok(this.accountService.all(pageable));
     }
@@ -43,14 +43,14 @@ public class AccountController {
     {
         return ResponseEntity.ok(this.accountService.login(accountDTO));
     }
-
-    @PutMapping("/admin/update-account-dto/{idAccount}")
+    @Secured({"ROLE_ADMIN", "ROLE_CLIENT"})
+    @PutMapping("/update-account-dto/{idAccount}")
     public ResponseEntity<String> updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
         this.accountService.update(idAccount, accountDTO);
         return ResponseEntity.status(202).body("Account dto update complete successfully");
     }
-
+    @Secured("ROLE_ADMIN")
     @DeleteMapping("/remove-account-dto/{idAccount}")
     public ResponseEntity<String> removeAccountDTO(@Valid @PathVariable Long idAccount)
     {
@@ -60,7 +60,8 @@ public class AccountController {
     }
 
 //    @RolesAllowed("ADMIN")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
+    @Secured("ROLE_ADMIN")
     @GetMapping("/admin/get-by-id-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
