@@ -82,7 +82,7 @@ public class Account implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return this.email;
     }
 
     @Override
