@@ -17,7 +17,7 @@ public class RoleController {
 
     private final RoleService roleService;
 
-    @RolesAllowed("CLIENT")
+//    @RolesAllowed("CLIENT")
     @GetMapping("/public/all-role-dto")
     public List<RoleDTO> allRoleDTO()
     {

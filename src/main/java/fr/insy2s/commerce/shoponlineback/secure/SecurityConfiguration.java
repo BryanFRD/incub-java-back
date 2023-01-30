@@ -9,9 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -26,10 +28,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests()
                 .antMatchers("/api/shopping-online/no-role/**")
                 .permitAll()
-                .antMatchers("/api/shopping-online/public/**")
-                .hasAnyRole("CLIENT", "CUSTOMER")
-                .antMatchers("api/shopping-online/admin/**")
-                .hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
