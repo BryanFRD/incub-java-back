@@ -25,7 +25,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-   @GetMapping("/public/all-product-dto")
+   @GetMapping("/no-role/all-product-dto")
     public ResponseEntity<Page> allProductDTO(Pageable pageable){
 
         log.debug("Finding all users");
@@ -80,5 +80,10 @@ public class ProductController {
         return this.productService.getById(idProduct)
                 .map(productDTO -> new ResponseEntity<>(productDTO, HttpStatus.OK)).
                 orElseThrow(() -> new ProductNotFoundException("Product with id " +idProduct+ " was not found"));
+    }
+
+    @GetMapping("/no-role/get-by-category-name/{categoryName}")
+    public ResponseEntity<List<ProductDTO>> findProductsByCategoryName(@Valid @PathVariable String categoryName){
+       return ResponseEntity.ok(this.productService.getProductByCategoryName(categoryName));
     }
 }

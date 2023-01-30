@@ -95,7 +95,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     public AccountDTO update(Long id, AccountDTO e) {
         return this.accountMapper.fromAccount(this.accountRepository.findById(id)
                 .map(p -> {
-//                    p.setRefAccount(this.uuidService.generateUuid());
+                    p.setRefAccount(this.uuidService.generateUuid());
                     if (p.getName() != null)
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
@@ -104,6 +104,10 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                         p.setPassword(this.passwordEncoder.encode(e.getPassword()));
                     if (p.getResetToken() != null)
                         p.setResetToken(e.getResetToken());
+                    if(p.getRoles() != null){
+                        List<Role> roleList = e.getRoles().stream().map(this.roleMapper::fromRoleDTO).collect(Collectors.toList());
+                        p.setRoles(roleList);
+                    }
                     return this.accountRepository.save(p);
 
                 }).orElseThrow(() -> new AccountNotFountException("Account with id " +id+ " was not found")));

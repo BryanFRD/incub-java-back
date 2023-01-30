@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shopping-online/public/ordered")
+@RequestMapping("/api/shopping-online/")
 @RequiredArgsConstructor
 @Slf4j
 public class OrderedController {
@@ -27,7 +27,7 @@ public class OrderedController {
     @Autowired
     private final OrderedService orderedService;
 
-    @GetMapping("/all-ordered-dto")
+    @GetMapping("/no-role/all-ordered-dto")
     public ResponseEntity<Page<OrderedDTO>> allOrderedDTO(Pageable pageable) {
         return ResponseEntity.ok(this.orderedService.all(pageable));
     }
@@ -80,6 +80,10 @@ public class OrderedController {
         return this.orderedService.getById(idOrdered)
                 .map(orderedDTO -> new ResponseEntity<>(orderedDTO, HttpStatus.OK))
                 .orElseThrow(() -> new OrderedNotFoundException("Ordered with id " +idOrdered+ " was not found"));
+    }
+    @GetMapping("/no-role/get-ordereds-by-ref-account/{refAccount}")
+    public ResponseEntity<List<OrderedDTO>> getOrderedsByRefAccount(@Valid @PathVariable String refAccount){
+        return ResponseEntity.ok(this.orderedService.getOrderedsByRefAccount(refAccount));
     }
 
 

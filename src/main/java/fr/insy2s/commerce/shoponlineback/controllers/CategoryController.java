@@ -15,7 +15,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/public/all-category-dto")
+    @GetMapping("/all-category-dto")
     public List<CategoryDTO> allCategoryDTO(){ return this.categoryService.all();}
 
     @PostMapping("/add-category-dto")

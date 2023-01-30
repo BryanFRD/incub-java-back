@@ -1,8 +1,10 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
+import fr.insy2s.commerce.shoponlineback.beans.Account;
 import fr.insy2s.commerce.shoponlineback.beans.Address;
 import fr.insy2s.commerce.shoponlineback.beans.Invoice;
 import fr.insy2s.commerce.shoponlineback.beans.Ordered;
+import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.dtos.OrderedDTO;
 import fr.insy2s.commerce.shoponlineback.enums.OrderedStatus;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.OrderedNotFoundException;
@@ -10,6 +12,7 @@ import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.ProductNotFoun
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.*;
+import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
 import fr.insy2s.commerce.shoponlineback.repositories.OrderedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +30,8 @@ import java.util.stream.Collectors;
 public class OrderedService implements Webservices<OrderedDTO, WebservicesGenericServiceException> {
 
     private final OrderedRepository orderedRepository;
+
+    private final AccountRepository accountRepository;
     private final OrderedMapper orderedMapper = new OrderedMapperImpl();
 
     private final AddressMapper addressMapper = new AddressMapperImpl();
@@ -107,6 +112,16 @@ public class OrderedService implements Webservices<OrderedDTO, WebservicesGeneri
                 .map(Optional::of)
                 .orElseThrow(() -> new OrderedNotFoundException("Ordered with id " +id+ " was not found"));
     }
+
+    public List<OrderedDTO> getOrderedsByRefAccount(String refAccount){
+        Optional<Account> account = this.accountRepository.findByRefAccount(refAccount);
+        List<Ordered> listOrdereds = this.orderedRepository.findByAccount(account.get());
+        return listOrdereds.stream().map(this.orderedMapper::fromOrdered).collect(Collectors.toList());
+
+    }
+
+
+
 
 //    public void updateOrderedStatus()
 //    {

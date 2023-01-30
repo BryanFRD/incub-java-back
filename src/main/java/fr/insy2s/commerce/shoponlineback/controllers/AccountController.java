@@ -70,7 +70,7 @@ public class AccountController {
 //    @RolesAllowed("ADMIN")
 //    @PreAuthorize("hasRole('ADMIN')")
     @Secured("ROLE_ADMIN")
-    @GetMapping("/admin/get-by-id-account-dto/{idAccount}")
+    @GetMapping("/get-by-id-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
         return this.accountService.getById(idAccount)

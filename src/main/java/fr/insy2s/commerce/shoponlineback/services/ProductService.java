@@ -1,6 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
 
+import fr.insy2s.commerce.shoponlineback.beans.Category;
 import fr.insy2s.commerce.shoponlineback.beans.Product;
 import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
@@ -8,6 +9,7 @@ import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.ProductNotFoun
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.ProductMapper;
 import fr.insy2s.commerce.shoponlineback.mappers.ProductMapperImpl;
+import fr.insy2s.commerce.shoponlineback.repositories.CategoryRepository;
 import fr.insy2s.commerce.shoponlineback.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.webjars.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,8 @@ import java.util.UUID;
 public class ProductService implements Webservices<ProductDTO, WebservicesGenericServiceException> {
 
     private final ProductRepository productRepository;
+
+    private final CategoryRepository categoryRepository;
 
     private final ProductMapper productMapper = new ProductMapperImpl();
 
@@ -97,6 +102,13 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                 .map(this.productMapper::fromProduct)
                 .map(Optional::of)
                 .orElseThrow(() -> new ProductNotFoundException("Product with id " +id+ " was not found"));
+    }
+
+
+    public List<ProductDTO> getProductByCategoryName(String categoryName){
+        Optional<Category> category = this.categoryRepository.findByName(categoryName);
+        List<Product> productList = this.productRepository.findByCategory(category.get());
+        return productList.stream().map(this.productMapper::fromProduct).collect(Collectors.toList()) ;
     }
 
 
