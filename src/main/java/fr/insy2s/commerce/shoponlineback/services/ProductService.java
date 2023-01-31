@@ -14,6 +14,7 @@ import fr.insy2s.commerce.shoponlineback.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
@@ -110,10 +111,12 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
     }
 
 
-    public List<ProductDTO> getProductByCategoryName(String categoryName){
+    public Page<ProductDTO> getProductsByCategoryName(String categoryName, Pageable page){
         Optional<Category> category = this.categoryRepository.findByName(categoryName);
         List<Product> productList = this.productRepository.findByCategory(category.get());
-        return productList.stream().map(this.productMapper::fromProduct).collect(Collectors.toList()) ;
+        Page<Product> page1 = new PageImpl<>(productList, page, productList.size());
+        return page1.map(this.productMapper::fromProduct) ;
+
     }
 
 

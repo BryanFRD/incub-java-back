@@ -45,7 +45,6 @@ public class JwtService {
     {
         Collection<? extends GrantedAuthority> authorities = account.getAuthorities();
         List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-
         return Jwts
                 .builder()
                 .setClaims(extraClaims)

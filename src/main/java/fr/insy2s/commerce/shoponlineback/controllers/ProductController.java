@@ -46,7 +46,7 @@ public class ProductController {
         }
     }
 
-    @PutMapping("/update-product-dto/{idProduct}")
+    @PutMapping("/no-role/update-product-dto/{idProduct}")
     public ResponseEntity<ProductDTO> updateProductDTO(@Valid @PathVariable Long idProduct, @RequestBody ProductDTO productDTO) {
 
        log.info("Updating ordered with id : {}", idProduct);
@@ -65,14 +65,14 @@ public class ProductController {
     }
 
 
-    @DeleteMapping("/public/remove-product-dto/{idProduct}")
+    @DeleteMapping("/no-role/remove-product-dto/{idProduct}")
     public ResponseEntity<String> removeProductDTO(@Validated @PathVariable Long idProduct){
         this.productService.remove(idProduct);
 
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/public/get-by-id-product/{idProduct}")
+    @GetMapping("/no-role/get-by-id-product/{idProduct}")
     public ResponseEntity<ProductDTO> getByIdProductDTO(@Valid @PathVariable Long idProduct) {
 
         return this.productService.getById(idProduct)
@@ -81,7 +81,7 @@ public class ProductController {
     }
 
     @GetMapping("/no-role/get-by-category-name/{categoryName}")
-    public ResponseEntity<List<ProductDTO>> findProductsByCategoryName(@Valid @PathVariable String categoryName){
-       return ResponseEntity.ok(this.productService.getProductByCategoryName(categoryName));
+    public ResponseEntity<Page<ProductDTO>> findProductsByCategoryName(@Valid @PathVariable String categoryName, Pageable page){
+       return ResponseEntity.ok(this.productService.getProductsByCategoryName(categoryName, page));
     }
 }

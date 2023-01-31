@@ -26,8 +26,8 @@ public class AccountController {
 
     private final AccountService accountService;
 
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/all-account")
+//    @Secured("ROLE_ADMIN")
+    @GetMapping("/no-role/all-account")
     public ResponseEntity<Page<AccountDTO>> findAllWithPagination(Pageable pageable){
         return ResponseEntity.ok(this.accountService.all(pageable));
     }
