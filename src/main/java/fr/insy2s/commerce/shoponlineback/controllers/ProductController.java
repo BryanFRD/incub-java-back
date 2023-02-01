@@ -21,6 +21,7 @@ import java.util.Optional;
 @RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin("*")
 public class ProductController {
 
     private final ProductService productService;
@@ -39,7 +40,7 @@ public class ProductController {
 
         try
         {
-            return  ResponseEntity.status(HttpStatus.CREATED).body(  this.productService.addNew(productDTO));
+            return  ResponseEntity.status(HttpStatus.CREATED).body( this.productService.addNew(productDTO));
         }catch (ConstraintViolationException e)
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

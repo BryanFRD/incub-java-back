@@ -22,6 +22,7 @@ import javax.validation.Valid;
 @Slf4j
 @RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AccountController {
 
     private final AccountService accountService;
@@ -50,16 +51,16 @@ public class AccountController {
         return ResponseEntity.ok(this.accountService.login(accountDTO));
     }
 
-    @Secured({"ROLE_ADMIN", "ROLE_CLIENT"})
-    @PutMapping("/update-account-dto/{idAccount}")
+//    @Secured({"ROLE_ADMIN", "ROLE_CLIENT"})
+    @PutMapping("/no-role/update-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> updateAccountDTO(@Valid @PathVariable Long idAccount, @RequestBody AccountDTO accountDTO)
     {
         return ResponseEntity.status(202).body(this.accountService.update(idAccount, accountDTO));
     }
 
 
-    @Secured("ROLE_ADMIN")
-    @DeleteMapping("/remove-account-dto/{idAccount}")
+//    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/no-role/remove-account-dto/{idAccount}")
     public ResponseEntity<String> removeAccountDTO(@Valid @PathVariable Long idAccount)
     {
         this.accountService.remove(idAccount);
@@ -70,8 +71,8 @@ public class AccountController {
 
 //    @RolesAllowed("ADMIN")
 //    @PreAuthorize("hasRole('ADMIN')")
-    @Secured("ROLE_ADMIN")
-    @GetMapping("/get-by-id-account-dto/{idAccount}")
+//    @Secured("ROLE_ADMIN")
+    @GetMapping("/no-role/get-by-id-account-dto/{idAccount}")
     public ResponseEntity<AccountDTO> getByIdAccountDTO(@Valid @PathVariable Long idAccount)
     {
         return this.accountService.getById(idAccount)

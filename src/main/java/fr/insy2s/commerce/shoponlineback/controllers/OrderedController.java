@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/shopping-online/")
+@RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
 @Slf4j
 public class OrderedController {
@@ -32,20 +32,20 @@ public class OrderedController {
         return ResponseEntity.ok(this.orderedService.all(pageable));
     }
 
-    @PostMapping("/add-ordered-dto")
+    @PostMapping("/no-role/add-ordered-dto")
     public ResponseEntity<OrderedDTO> addOrderedDTO(@Valid @RequestBody OrderedDTO orderedDTO) {
 
         try {
             this.orderedService.add(orderedDTO);
 
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return  ResponseEntity.status(HttpStatus.CREATED).body(orderedDTO);
         }catch (ConstraintViolationException e)
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/update-ordered-dto/{idOrdered}")
+    @PutMapping("/no-role/update-ordered-dto/{idOrdered}")
     public ResponseEntity<OrderedDTO> updateOrderedDTO(@Validated @PathVariable Long idOrdered, @RequestBody OrderedDTO orderedDTO){
 
         log.info("Updating ordered with id : {}", idOrdered);
@@ -66,7 +66,7 @@ public class OrderedController {
         }
     }
 
-    @DeleteMapping("/remove-ordered-dto/{idOrdered}")
+    @DeleteMapping("/no-role/remove-ordered-dto/{idOrdered}")
     public ResponseEntity<Void> removeOrderedDTO(@Validated @PathVariable Long idOrdered) {
 
         this.orderedService.remove(idOrdered);
@@ -74,7 +74,7 @@ public class OrderedController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/get-by-id-ordered/{idOrdered}")
+    @GetMapping("/no-role/get-by-id-ordered/{idOrdered}")
     public ResponseEntity<OrderedDTO> getByIdOrderedDTO (@Validated @PathVariable Long idOrdered) {
 
         return this.orderedService.getById(idOrdered)

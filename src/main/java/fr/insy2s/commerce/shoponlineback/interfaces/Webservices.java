@@ -12,8 +12,7 @@ public interface Webservices<T, E extends WebservicesGenericServiceException> {
 
     Page<T> all(Pageable pageable);
 
-//    Page<AccountDTO> all(Pageable pageable);
-
+ //TODO Void à modifier en <T>
     void add(T e) throws WebservicesGenericServiceException;
 
     T update(Long id, T e) throws WebservicesGenericServiceException;
