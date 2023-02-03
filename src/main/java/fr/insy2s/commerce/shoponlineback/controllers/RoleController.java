@@ -3,6 +3,7 @@ package fr.insy2s.commerce.shoponlineback.controllers;
 import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
 import fr.insy2s.commerce.shoponlineback.services.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,11 +18,12 @@ public class RoleController {
 
     private final RoleService roleService;
 
-//    @RolesAllowed("CLIENT")
-    @GetMapping("/public/all-role-dto")
+    @RolesAllowed("ADMIN")
+    @GetMapping("/all-role-dto")
     public List<RoleDTO> allRoleDTO()
     {
         return this.roleService.all();
     }
+
 
 }

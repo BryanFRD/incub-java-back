@@ -26,12 +26,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @org.springframework.lang.NonNull HttpServletRequest request,
-            @org.springframework.lang.NonNull HttpServletResponse response,
+             HttpServletRequest request,
+             HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException
     {
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader("authorization");
+        System.out.println("test");
+        System.out.println(authHeader);
         final String jwt;
         final String userEmail;
         if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
