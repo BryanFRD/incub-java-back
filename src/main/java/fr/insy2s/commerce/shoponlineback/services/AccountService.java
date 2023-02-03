@@ -73,6 +73,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
         String roleName = "ROLE_CLIENT";
         List<Role> roleList = new ArrayList<>();
         roleList.add(this.roleRepository.findByName(roleName));
+        e.setPassword(passwordEncoder.encode(e.getPassword()));
         e.setRoles(roleList.stream().map(this.roleMapper::fromRole).collect(Collectors.toList()));
         Account account = this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
         return this.accountMapper.fromAccount(account);

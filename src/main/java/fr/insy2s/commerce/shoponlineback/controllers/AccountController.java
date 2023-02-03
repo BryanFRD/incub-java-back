@@ -59,8 +59,8 @@ public class AccountController {
     }
 
 
-//    @Secured("ROLE_ADMIN")
-    @DeleteMapping("/no-role/remove-account-dto/{idAccount}")
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/remove-account-dto/{idAccount}")
     public ResponseEntity<String> removeAccountDTO(@Valid @PathVariable Long idAccount)
     {
         this.accountService.remove(idAccount);

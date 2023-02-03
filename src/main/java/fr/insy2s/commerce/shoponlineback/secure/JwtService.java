@@ -41,7 +41,6 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails account)
-
     {
         Collection<? extends GrantedAuthority> authorities = account.getAuthorities();
         List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
