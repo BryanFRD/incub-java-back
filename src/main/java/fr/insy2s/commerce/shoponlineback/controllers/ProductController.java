@@ -21,11 +21,12 @@ import java.util.Optional;
 @RequestMapping("/api/shopping-online")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin("*")
 public class ProductController {
 
     private final ProductService productService;
 
-   @GetMapping("/public/all-product-dto")
+   @GetMapping("/no-role/all-product-dto")
     public ResponseEntity<Page> allProductDTO(Pageable pageable){
 
         log.debug("Finding all users");
@@ -34,21 +35,19 @@ public class ProductController {
 
     }
 
-    @PostMapping("/public/add-product-dto")
+    @PostMapping("/no-role/add-product-dto")
     public ResponseEntity<ProductDTO> addProductDTO(@Valid @RequestBody ProductDTO productDTO) {
 
         try
         {
-            this.productService.add(productDTO);
-
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return  ResponseEntity.status(HttpStatus.CREATED).body( this.productService.addNew(productDTO));
         }catch (ConstraintViolationException e)
         {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/update-product-dto/{idProduct}")
+    @PutMapping("/no-role/update-product-dto/{idProduct}")
     public ResponseEntity<ProductDTO> updateProductDTO(@Valid @PathVariable Long idProduct, @RequestBody ProductDTO productDTO) {
 
        log.info("Updating ordered with id : {}", idProduct);
@@ -67,18 +66,23 @@ public class ProductController {
     }
 
 
-    @DeleteMapping("/public/remove-product-dto/{idProduct}")
-    public ResponseEntity<ProductDTO> removeProductDTO(@Validated @PathVariable Long idProduct){
+    @DeleteMapping("/no-role/remove-product-dto/{idProduct}")
+    public ResponseEntity<String> removeProductDTO(@Validated @PathVariable Long idProduct){
         this.productService.remove(idProduct);
 
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/public/get-by-id-product/{idProduct}")
+    @GetMapping("/no-role/get-by-id-product/{idProduct}")
     public ResponseEntity<ProductDTO> getByIdProductDTO(@Valid @PathVariable Long idProduct) {
 
         return this.productService.getById(idProduct)
                 .map(productDTO -> new ResponseEntity<>(productDTO, HttpStatus.OK)).
                 orElseThrow(() -> new ProductNotFoundException("Product with id " +idProduct+ " was not found"));
+    }
+
+    @GetMapping("/no-role/get-by-category-name/{categoryName}")
+    public ResponseEntity<Page<ProductDTO>> findProductsByCategoryName(@Valid @PathVariable String categoryName, Pageable page){
+       return ResponseEntity.ok(this.productService.getProductsByCategoryName(categoryName, page));
     }
 }
