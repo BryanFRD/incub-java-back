@@ -81,6 +81,7 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                         p.setPriceTTC(e.getPriceTTC());
                     if(p.getProductInventory() != null)
                         p.setProductInventory(e.getProductInventory());
+                    p.setProductDescription(e.getProductDescription());
                     if(p.getCategory() != null)
                     {
                         Product product = this.productMapper.fromProductDTO(e);
