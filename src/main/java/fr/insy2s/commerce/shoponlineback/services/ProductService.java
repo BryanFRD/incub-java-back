@@ -4,6 +4,7 @@ package fr.insy2s.commerce.shoponlineback.services;
 import fr.insy2s.commerce.shoponlineback.beans.Category;
 import fr.insy2s.commerce.shoponlineback.beans.Product;
 import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
+import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.CategoryNotFoundException;
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.ProductNotFoundException;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
@@ -112,11 +113,13 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
     }
 
 
-    public Page<ProductDTO> getProductsByCategoryName(String categoryName, Pageable page){
-        Optional<Category> category = this.categoryRepository.findByName(categoryName);
-        List<Product> productList = this.productRepository.findByCategory(category.get());
+    public Page<ProductDTO> getProductsByCategoryId(Long id, Pageable page){
+        System.out.println(id);
+        Category category = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Category with id " + id + " was not found"));
+        List<Product> productList = this.productRepository.findByCategory(category);
         Page<Product> page1 = new PageImpl<>(productList, page, productList.size());
-        return page1.map(this.productMapper::fromProduct) ;
+        return page1.map(this.productMapper::fromProduct);
 
     }
 
