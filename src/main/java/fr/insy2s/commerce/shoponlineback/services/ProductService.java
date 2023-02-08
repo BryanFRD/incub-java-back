@@ -4,6 +4,7 @@ package fr.insy2s.commerce.shoponlineback.services;
 import fr.insy2s.commerce.shoponlineback.beans.Category;
 import fr.insy2s.commerce.shoponlineback.beans.Product;
 import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
+import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.CategoryNotFoundException;
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.ProductNotFoundException;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
@@ -45,12 +46,6 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                 .map(this.productMapper::fromProduct);
     }
 
-/*    public Page<ProductDTO> newAll(Pageable pageable)
-    {
-        return this.productRepository.findByPresentIsTrue(pageable)
-                .map(this.productMapper::fromProduct);
-    }*/
-
 
 
     @Override
@@ -68,6 +63,18 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         Product product =  this.productRepository.save(this.productMapper.fromProductDTO(p));
         return this.productMapper.fromProduct(product);
     }
+
+//    @Override
+//    public void add(ProductDTO e) {
+//        e.setRefProduct(this.uuidService.generateUuid());
+//        ProductDTO productDTO = new ProductDTO();
+//            productDTO.setName(e.getName());
+//            productDTO.setProductDescription(e.getProductDescription());
+//            productDTO.setPriceTTC(e.getPriceTTC());
+//            productDTO.setProductInventory(e.getProductInventory());
+//            productDTO.setCategory(e.getCategory());
+//        this.productRepository.save(this.productMapper.fromProductDTO(productDTO));
+//    }
 
     @Override
     public ProductDTO update(Long id, ProductDTO e) {
@@ -94,16 +101,6 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                 }).orElseThrow(() -> new RuntimeException("Sorry not this id for product")));
     }
 
-/*    @Override
-    public void remove(Long id) {
-        Optional<Product> productDTO = this.productRepository.findById(id);
-
-        if (productDTO.isEmpty())
-            throw new ProductNotFoundException("Ordered with id " +id+ " was not found");
-        this.productRepository.deleteById(id);
-
-    }*/
-
     @Override
     public void remove(Long id)
     {
@@ -124,11 +121,11 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
     }
 
 
-    public Page<ProductDTO> getProductsByCategoryName(String categoryName, Pageable page){
-
-        String categoryNameSpace = categoryName.replace(" ", "%20");
-        Optional<Category> category = this.categoryRepository.findByName(categoryName);
-        List<Product> productList = this.productRepository.findByCategory(category.get());
+    public Page<ProductDTO> getProductsByCategoryId(Long id, Pageable page){
+        System.out.println(id);
+        Category category = this.categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Category with id " + id + " was not found"));
+        List<Product> productList = this.productRepository.findByCategory(category);
         Page<Product> page1 = new PageImpl<>(productList, page, productList.size());
         return page1.map(this.productMapper::fromProduct) ;
 
