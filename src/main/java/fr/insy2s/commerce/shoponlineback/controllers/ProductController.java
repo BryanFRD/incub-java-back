@@ -81,9 +81,9 @@ public class ProductController {
                 orElseThrow(() -> new ProductNotFoundException("Product with id " +idProduct+ " was not found"));
     }
 
-    @GetMapping("/no-role/get-by-category-name/{categoryName}")
-    public ResponseEntity<Page<ProductDTO>> findProductsByCategoryName(@Valid @PathVariable String categoryName, Pageable page){
-       return ResponseEntity.ok(this.productService.getProductsByCategoryName(categoryName, page));
+    @GetMapping("/no-role/get-by-category-id/{id}")
+    public ResponseEntity<Page<ProductDTO>> findProductsByCategoryId(@Valid @PathVariable Long id, Pageable page){
+       return ResponseEntity.ok(this.productService.getProductsByCategoryId(id, page));
     }
 
     @GetMapping("/no-role/get-all-update")
