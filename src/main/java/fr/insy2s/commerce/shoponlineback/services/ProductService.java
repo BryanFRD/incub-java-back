@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,14 +41,24 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
     @Override
     public Page<ProductDTO> all(Pageable pageable) {
 
-        return this.productRepository.findAll(pageable).map(this.productMapper::fromProduct);
+        return this.productRepository.findByPresentIsTrue(pageable)
+                .map(this.productMapper::fromProduct);
     }
+
+/*    public Page<ProductDTO> newAll(Pageable pageable)
+    {
+        return this.productRepository.findByPresentIsTrue(pageable)
+                .map(this.productMapper::fromProduct);
+    }*/
 
 
 
     @Override
     public void add(ProductDTO e) {
         e.setRefProduct(this.uuidService.generateUuid());
+
+        if (e.getPresent() == null)
+            e.setPresent(true);
 
         this.productRepository.save(this.productMapper.fromProductDTO(e));
     }
@@ -57,18 +68,6 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         Product product =  this.productRepository.save(this.productMapper.fromProductDTO(p));
         return this.productMapper.fromProduct(product);
     }
-
-//    @Override
-//    public void add(ProductDTO e) {
-//        e.setRefProduct(this.uuidService.generateUuid());
-//        ProductDTO productDTO = new ProductDTO();
-//            productDTO.setName(e.getName());
-//            productDTO.setProductDescription(e.getProductDescription());
-//            productDTO.setPriceTTC(e.getPriceTTC());
-//            productDTO.setProductInventory(e.getProductInventory());
-//            productDTO.setCategory(e.getCategory());
-//        this.productRepository.save(this.productMapper.fromProductDTO(productDTO));
-//    }
 
     @Override
     public ProductDTO update(Long id, ProductDTO e) {
@@ -82,6 +81,8 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                     if(p.getProductInventory() != null)
                         p.setProductInventory(e.getProductInventory());
                     p.setProductDescription(e.getProductDescription());
+                    if (p.getPresent() == null || !p.getPresent())
+                        p.setPresent(true);
                     if(p.getCategory() != null)
                     {
                         Product product = this.productMapper.fromProductDTO(e);
@@ -93,7 +94,7 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                 }).orElseThrow(() -> new RuntimeException("Sorry not this id for product")));
     }
 
-    @Override
+/*    @Override
     public void remove(Long id) {
         Optional<Product> productDTO = this.productRepository.findById(id);
 
@@ -101,6 +102,17 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
             throw new ProductNotFoundException("Ordered with id " +id+ " was not found");
         this.productRepository.deleteById(id);
 
+    }*/
+
+    @Override
+    public void remove(Long id)
+    {
+        Optional<Product> product = this.productRepository.findById(id);
+
+        if (product.isEmpty())
+            throw new ProductNotFoundException("Product with id " +id+ "was not found");
+        product.get().setPresent(false);
+        this.productRepository.save(product.get());
     }
 
     @Override
@@ -113,11 +125,31 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
 
 
     public Page<ProductDTO> getProductsByCategoryName(String categoryName, Pageable page){
+
+        String categoryNameSpace = categoryName.replace(" ", "%20");
         Optional<Category> category = this.categoryRepository.findByName(categoryName);
         List<Product> productList = this.productRepository.findByCategory(category.get());
         Page<Product> page1 = new PageImpl<>(productList, page, productList.size());
         return page1.map(this.productMapper::fromProduct) ;
 
+    }
+
+    public Page<ProductDTO> updatePresentAllProduct(Pageable pageable)
+    {
+        List<Product> products = this.productRepository.findAll();
+
+        List<Product> productList = new ArrayList<>();
+
+        for (int i = 0; i < products.size(); i++)
+        {
+            products.get(i).setPresent(true);
+            productList.add(products.get(i));
+            /*this.productRepository.save(products.get(i));*/
+        }
+
+        Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
+
+        return productPage.map(this.productMapper::fromProduct);
     }
 
 

@@ -17,4 +17,6 @@ public interface ProductMapper {
 
     Product fromProductDTO(ProductDTO productDTO);
 
+    // List<Product> findByIsActive(Boolean status);
+
 }
