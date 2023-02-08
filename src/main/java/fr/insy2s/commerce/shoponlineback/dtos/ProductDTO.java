@@ -22,6 +22,8 @@ public class ProductDTO {
 
     private String productDescription;
 
+    private Boolean present;
+
     private CategoryDTO category;
 
 }

@@ -60,11 +60,6 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
         roleList.add(this.roleRepository.findByName(roleName));
         e.setRoles(roleList.stream().map(this.roleMapper::fromRole).collect(Collectors.toList()));
         this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
-//        var jwtToken = jwtService.generateToken(this.accountMapper.fromAccountDTO(e));
-//        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder()
-//                .token(jwtToken)
-//                .build();
-//        System.out.println(authenticationResponse.getToken());
     }
 
 

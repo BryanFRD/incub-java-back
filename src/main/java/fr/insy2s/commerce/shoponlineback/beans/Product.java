@@ -35,6 +35,9 @@ public class Product {
     @Column(name = "product_description", nullable = true, length = 350)
     private String productDescription;
 
+    @Column(name = "present")
+    private Boolean present;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "id_category")
     @JsonIgnoreProperties({"products"})

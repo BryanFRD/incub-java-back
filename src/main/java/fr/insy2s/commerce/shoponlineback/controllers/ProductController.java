@@ -85,4 +85,10 @@ public class ProductController {
     public ResponseEntity<Page<ProductDTO>> findProductsByCategoryId(@Valid @PathVariable Long id, Pageable page){
        return ResponseEntity.ok(this.productService.getProductsByCategoryId(id, page));
     }
+
+    @GetMapping("/no-role/get-all-update")
+    public ResponseEntity<Page<ProductDTO>> getUpdatePresentAllProduct(Pageable pageable)
+    {
+        return ResponseEntity.ok(this.productService.updatePresentAllProduct(pageable));
+    }
 }
