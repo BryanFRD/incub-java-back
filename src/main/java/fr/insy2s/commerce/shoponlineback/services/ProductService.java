@@ -144,7 +144,7 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         {
             products.get(i).setPresent(true);
             productList.add(products.get(i));
-            /*this.productRepository.save(products.get(i));*/
+//            this.productRepository.save(products.get(i));
         }
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
