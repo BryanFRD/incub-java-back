@@ -8,12 +8,15 @@ import fr.insy2s.commerce.shoponlineback.dtos.OrderDetailsDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.OrderDetailsNotFoundException;
 import fr.insy2s.commerce.shoponlineback.mappers.*;
 import fr.insy2s.commerce.shoponlineback.repositories.OrderDetailsRepository;
+import fr.insy2s.commerce.shoponlineback.repositories.OrderedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +25,8 @@ import java.util.Optional;
 public class OrderDetailsService {
 
     private final OrderDetailsRepository orderDetailsRepository;
+
+    private final OrderedRepository orderedRepository;
 
     private final OrderDetailsMapper orderDetailsMapper = new OrderDetailsMapperImpl();
 
@@ -83,4 +88,23 @@ public class OrderDetailsService {
                 .map(Optional::of)
                 .orElseThrow(() -> new OrderDetailsNotFoundException("Order detail with idOrdered " +idProduct+ "," +idOrdered+ " was not found"));
     }
+
+    // get all order detail by ref ordered
+
+    public Page<OrderDetailsDTO> allOrderDetailByRefOrdered(String refOrdered, Pageable pageable)
+    {
+        Optional<Ordered> ordered = this.orderedRepository.findByRefOrdered(refOrdered);
+
+        if (ordered.isEmpty())
+            throw new  OrderDetailsNotFoundException("sorry not found");
+
+        List<OrderDetails> orderDetails = this.orderDetailsRepository.findByOrdered(ordered.get());
+
+        Page<OrderDetails> orderDetailsPage = new PageImpl<>(orderDetails, pageable, orderDetails.size());
+
+        return orderDetailsPage
+                .map(this.orderDetailsMapper::fromOrderDetails);
+    }
+
+
 }

@@ -1,9 +1,11 @@
 package fr.insy2s.commerce.shoponlineback.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import fr.insy2s.commerce.shoponlineback.dtos.OrderDetailsDTO;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity

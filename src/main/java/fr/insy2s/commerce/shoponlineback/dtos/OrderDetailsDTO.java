@@ -4,6 +4,8 @@ import fr.insy2s.commerce.shoponlineback.beans.KeyOfOrderDetails;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Getter
 @Setter
