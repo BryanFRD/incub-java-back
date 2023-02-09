@@ -1,11 +1,9 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
-import fr.insy2s.commerce.shoponlineback.beans.Account;
-import fr.insy2s.commerce.shoponlineback.beans.Address;
-import fr.insy2s.commerce.shoponlineback.beans.Invoice;
-import fr.insy2s.commerce.shoponlineback.beans.Ordered;
+import fr.insy2s.commerce.shoponlineback.beans.*;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.dtos.OrderedDTO;
+import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
 import fr.insy2s.commerce.shoponlineback.enums.OrderedStatus;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.OrderedNotFoundException;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.ProductNotFoundException;
@@ -13,13 +11,17 @@ import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.Webservice
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.*;
 import fr.insy2s.commerce.shoponlineback.repositories.AccountRepository;
+import fr.insy2s.commerce.shoponlineback.repositories.OrderDetailsRepository;
 import fr.insy2s.commerce.shoponlineback.repositories.OrderedRepository;
+import fr.insy2s.commerce.shoponlineback.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,8 +32,13 @@ import java.util.stream.Collectors;
 public class OrderedService implements Webservices<OrderedDTO, WebservicesGenericServiceException> {
 
     private final OrderedRepository orderedRepository;
-
     private final AccountRepository accountRepository;
+
+    private final ProductRepository productRepository;
+
+    private final ProductMapper productMapper = new ProductMapperImpl();
+
+    private final OrderDetailsRepository orderDetailsRepository;
     private final OrderedMapper orderedMapper = new OrderedMapperImpl();
 
     private final AddressMapper addressMapper = new AddressMapperImpl();
@@ -62,7 +69,7 @@ public class OrderedService implements Webservices<OrderedDTO, WebservicesGeneri
     public OrderedDTO update(Long id, OrderedDTO e) {
         return this.orderedMapper.fromOrdered(this.orderedRepository.findById(id)
                 .map(p-> {
-//                    p.setRefOrdered(this.uuidService.generateUuid());
+                    p.setRefOrdered(this.uuidService.generateUuid());
                     if(p.getOrderedDate() != null){
                         p.setOrderedDate(e.getOrderedDate());
                     }
@@ -120,12 +127,24 @@ public class OrderedService implements Webservices<OrderedDTO, WebservicesGeneri
 
     }
 
+    // get All product by
+
+    public Page<ProductDTO> allProductByRefOrdered(String refOrdered, Pageable pageable)
+    {
+        Optional<Ordered> ordered = this.orderedRepository.findByRefOrdered(refOrdered);
+
+        if (ordered.isEmpty())
+            throw  new OrderedNotFoundException("sorry is not found");
+
+        List<Product> products = ordered.get().getOrderDetails().stream().map(OrderDetails::getProduct).collect(Collectors.toList());
+
+        Page<Product> productPage = new PageImpl<>(products, pageable, products.size());
+
+        return productPage
+                .map(this.productMapper::fromProduct);
 
 
 
-//    public void updateOrderedStatus()
-//    {
-//        this.jdbcTemplate.execute("update ordered set status ='CONFIRMED' where order_status = 'livrer'");
-//    }
+    }
 
 }

@@ -1,8 +1,6 @@
 package fr.insy2s.commerce.shoponlineback.beans;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sun.xml.bind.v2.TODO;
-import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -57,12 +55,8 @@ public class Account implements UserDetails {
     @Column(name = "reset_token", nullable = true, length = 100)
     private String resetToken;
 
-    /*@ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_role")
-    @JsonIgnoreProperties({"accounts"})
-    private Role role;*/
-
-
+    @Column(name = "civility", nullable = true)
+    private String civility;
     @ManyToMany(fetch = FetchType.EAGER)
     @Column(name = "id_role", nullable = false)
     @JoinTable(name = "account_role",

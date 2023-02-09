@@ -37,12 +37,6 @@ public class AccountController {
     public ResponseEntity<AccountDTO> addAccountDTO(@Valid @RequestBody AccountDTO accountDTO)
     {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.accountService.addNew(accountDTO));
-//        try{
-//            this.accountService.add(accountDTO);
-//            return new ResponseEntity<>(HttpStatus.CREATED);
-//        } catch(ConstraintViolationException e){
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
     }
 
     @PostMapping("/no-role/login")
