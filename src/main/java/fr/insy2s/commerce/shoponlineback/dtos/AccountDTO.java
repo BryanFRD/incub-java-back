@@ -21,5 +21,7 @@ public class AccountDTO {
 
     private String resetToken;
 
+    private String civility;
+
     List<RoleDTO> roles;
 }

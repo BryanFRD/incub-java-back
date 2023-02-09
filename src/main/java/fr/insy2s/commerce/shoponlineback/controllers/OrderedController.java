@@ -2,6 +2,7 @@ package fr.insy2s.commerce.shoponlineback.controllers;
 
 
 import fr.insy2s.commerce.shoponlineback.dtos.OrderedDTO;
+import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.OrderedNotFoundException;
 import fr.insy2s.commerce.shoponlineback.services.OrderedService;
 import lombok.RequiredArgsConstructor;
@@ -84,6 +85,12 @@ public class OrderedController {
     @GetMapping("/no-role/get-ordereds-by-ref-account/{refAccount}")
     public ResponseEntity<List<OrderedDTO>> getOrderedsByRefAccount(@Valid @PathVariable String refAccount){
         return ResponseEntity.ok(this.orderedService.getOrderedsByRefAccount(refAccount));
+    }
+
+    @GetMapping("/no-role/all-product-by-ref-ordered/{refOrdered}")
+    public ResponseEntity<Page<ProductDTO>> allProductByRefOrdered(@Valid @PathVariable String refOrdered, Pageable pageable)
+    {
+        return ResponseEntity.ok(this.orderedService.allProductByRefOrdered(refOrdered, pageable));
     }
 
 
