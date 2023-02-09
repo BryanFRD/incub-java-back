@@ -31,7 +31,6 @@ public class OrderedDTO {
 
     private List<InvoiceDTO> invoices;
 
-    /*@JsonIgnore
-    private List<OrderDetails> orderDetails;*/
+/*    private List<OrderDetailsDTO> orderDetails;*/
 
 }

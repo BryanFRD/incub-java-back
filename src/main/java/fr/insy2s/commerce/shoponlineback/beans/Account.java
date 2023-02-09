@@ -20,16 +20,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @NoArgsConstructor
@@ -75,12 +73,8 @@ public class Account implements UserDetails {
     @Column(name = "reset_password_token_creation_date", nullable = true)
     private Timestamp resetPasswordTokenCreationDate;
 
-    /*@ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_role")
-    @JsonIgnoreProperties({"accounts"})
-    private Role role;*/
-
-
+    @Column(name = "civility", nullable = true)
+    private String civility;
     @ManyToMany(fetch = FetchType.EAGER)
     @Column(name = "id_role", nullable = false)
     @JoinTable(name = "account_role",

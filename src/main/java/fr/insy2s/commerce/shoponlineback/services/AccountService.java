@@ -23,6 +23,7 @@ import org.webjars.NotFoundException;
 import fr.insy2s.commerce.shoponlineback.beans.Account;
 import fr.insy2s.commerce.shoponlineback.beans.Role;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
+import fr.insy2s.commerce.shoponlineback.enums.Civility;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.AccountNotFountException;
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
@@ -84,6 +85,8 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
         roleList.add(this.roleRepository.findByName(roleName));
         e.setPassword(passwordEncoder.encode(e.getPassword()));
         e.setRoles(roleList.stream().map(this.roleMapper::fromRole).collect(Collectors.toList()));
+        if (e.getCivility() == null)
+            e.setCivility(Civility.OTHER.toString());
         Account account = this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
         return this.accountMapper.fromAccount(account);
     }
@@ -105,7 +108,8 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     public AccountDTO update(Long id, AccountDTO e) {
         return this.accountMapper.fromAccount(this.accountRepository.findById(id)
                 .map(p -> {
-                    p.setRefAccount(this.uuidService.generateUuid());
+                    if (p.getRefAccount() == null)
+                        p.setRefAccount(this.uuidService.generateUuid());
                     if (p.getName() != null)
                         p.setName(e.getName());
                     if (p.getFirstName() != null)
@@ -116,6 +120,8 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                         p.setPassword(this.passwordEncoder.encode(e.getPassword()));
                     if (p.getResetToken() != null)
                         p.setResetToken(e.getResetToken());
+                    if (p.getCivility() != null || p.getCivility() == null)
+                        p.setCivility(e.getCivility());
                     if(p.getRoles() != null){
                         List<Role> roleList = e.getRoles().stream().map(this.roleMapper::fromRoleDTO).collect(Collectors.toList());
                         p.setRoles(roleList);
