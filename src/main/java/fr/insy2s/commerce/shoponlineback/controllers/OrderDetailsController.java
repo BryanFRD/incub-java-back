@@ -13,12 +13,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/shopping-online")
+@RequestMapping("/api/shopping-online/")
 public class OrderDetailsController {
 
     private final OrderDetailsService orderDetailsService;
 
-    @GetMapping("/all-order-details")
+    @GetMapping("/no-role/all-order-details")
     public ResponseEntity<Page<OrderDetailsDTO>> findAllOrderDetailsWithPagination(Pageable pageable){
         return ResponseEntity.ok(this.orderDetailsService.all(pageable));
     }
