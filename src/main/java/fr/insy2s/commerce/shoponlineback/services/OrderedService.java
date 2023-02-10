@@ -43,11 +43,8 @@ public class OrderedService implements Webservices<OrderedDTO, WebservicesGeneri
 
     private final AddressMapper addressMapper = new AddressMapperImpl();
 
-//    private final InvoiceMapper invoiceMapper = new InvoiceMapperImpl();
-
     private final UuidService uuidService;
 
-//    private JdbcTemplate jdbcTemplate;
 
     @Override
     public Page<OrderedDTO> all(Pageable pageable) {

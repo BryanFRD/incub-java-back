@@ -108,6 +108,8 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                         p.setResetToken(e.getResetToken());
                     if (p.getCivility() != null || p.getCivility() == null)
                         p.setCivility(e.getCivility());
+                    if (p.getActive() != null)
+                        p.setActive(e.getActive());
                     if(p.getRoles() != null){
                         List<Role> roleList = e.getRoles().stream().map(this.roleMapper::fromRoleDTO).collect(Collectors.toList());
                         p.setRoles(roleList);
@@ -117,15 +119,33 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                 }).orElseThrow(() -> new AccountNotFountException("Account with id " +id+ " was not found")));
     }
 
-    @Override
-    public void remove(Long id) {
+    public void disable(Long id) {
 
         Optional<Account> account = this.accountRepository.findById(id);
-        if (account.isEmpty()){
+        if (account.isEmpty()) {
             throw new NotFoundException("error.user.notFound");
         }
-            this.accountRepository.deleteById(id);
 
+        account.get().setActive(false);
+
+        this.accountRepository.save(account.get());
+
+    }
+
+    @Override
+    public void remove(Long id)
+    {
+        Optional<Account> account = this.accountRepository.findById(id);
+        if (account.isEmpty())
+            throw new AccountNotFountException("account not found");
+
+        account.get().setActive(false);
+        account.get().setName("anonymous");
+        account.get().setFirstName("anonymous");
+        account.get().setEmail("anonymous@anonymous.fr");
+        account.get().setCivility(Civility.NONE.toString());
+
+        this.accountRepository.save(account.get());
     }
 
     @Override
@@ -139,7 +159,8 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
 
     @Override
     public Page<AccountDTO> all(Pageable pageable){
-        return this.accountRepository.findAll(pageable)
+
+        return this.accountRepository.findByActiveIsTrue(pageable)
                 .map(this.accountMapper::fromAccount);
     }
 

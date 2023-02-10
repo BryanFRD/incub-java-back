@@ -34,12 +34,12 @@ public class Address {
     private String statut;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "deliveryAdress", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"deliveryAdress", "billingAdress", "account"})
     private List<Ordered> ordersDelivered;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "billingAdress", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "billingAdress", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"deliveryAdress", "billingAdress", "account"})
     private List<Ordered> ordersInvoiced;
 

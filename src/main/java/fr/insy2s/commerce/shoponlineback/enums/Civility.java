@@ -8,7 +8,9 @@ public enum Civility {
 
     COMPAGNY,
 
-    OTHER
+    OTHER,
+
+    NONE
 
 
 }

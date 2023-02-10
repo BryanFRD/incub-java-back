@@ -1,9 +1,12 @@
 package fr.insy2s.commerce.shoponlineback.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fr.insy2s.commerce.shoponlineback.beans.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -25,5 +28,7 @@ public class ProductDTO {
     private Boolean present;
 
     private CategoryDTO category;
+
+    private List<PromotionDTO> promotions;
 
 }

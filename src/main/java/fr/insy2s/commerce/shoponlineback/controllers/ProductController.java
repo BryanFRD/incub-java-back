@@ -1,6 +1,7 @@
 package fr.insy2s.commerce.shoponlineback.controllers;
 
 import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
+import fr.insy2s.commerce.shoponlineback.dtos.PromotionDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.ProductNotFoundException;
 import fr.insy2s.commerce.shoponlineback.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
+
 
    @GetMapping("/no-role/all-product-dto")
     public ResponseEntity<Page> allProductDTO(Pageable pageable){
@@ -91,4 +93,8 @@ public class ProductController {
     {
         return ResponseEntity.ok(this.productService.updatePresentAllProduct(pageable));
     }
+
+    // Test for promotion
+
+
 }

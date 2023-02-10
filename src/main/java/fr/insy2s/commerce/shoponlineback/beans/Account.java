@@ -57,6 +57,9 @@ public class Account implements UserDetails {
 
     @Column(name = "civility", nullable = true)
     private String civility;
+
+    @Column(name = "active")
+    private Boolean active;
     @ManyToMany(fetch = FetchType.EAGER)
     @Column(name = "id_role", nullable = false)
     @JoinTable(name = "account_role",

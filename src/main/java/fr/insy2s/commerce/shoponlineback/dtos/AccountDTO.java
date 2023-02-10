@@ -23,5 +23,7 @@ public class AccountDTO {
 
     private String civility;
 
+    private Boolean active;
+
     List<RoleDTO> roles;
 }

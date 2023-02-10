@@ -37,12 +37,12 @@ public class Ordered {
     @Column(name = "delivery_ordered", nullable = false)
     private Instant deliveryDate;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "id_adress_delivery")
     @JsonIgnoreProperties({"ordersDelivered"})
     private Address deliveryAdress;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "id_adress_invoiced")
     @JsonIgnoreProperties({"ordersInvoiced"})
     private Address billingAdress;

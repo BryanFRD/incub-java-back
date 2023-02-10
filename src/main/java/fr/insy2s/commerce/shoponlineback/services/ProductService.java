@@ -3,27 +3,33 @@ package fr.insy2s.commerce.shoponlineback.services;
 
 import fr.insy2s.commerce.shoponlineback.beans.Category;
 import fr.insy2s.commerce.shoponlineback.beans.Product;
+import fr.insy2s.commerce.shoponlineback.beans.Promotion;
 import fr.insy2s.commerce.shoponlineback.dtos.ProductDTO;
+import fr.insy2s.commerce.shoponlineback.dtos.PromotionDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.CategoryNotFoundException;
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.ProductNotFoundException;
 import fr.insy2s.commerce.shoponlineback.interfaces.Webservices;
 import fr.insy2s.commerce.shoponlineback.mappers.ProductMapper;
 import fr.insy2s.commerce.shoponlineback.mappers.ProductMapperImpl;
+import fr.insy2s.commerce.shoponlineback.mappers.PromotionMapper;
+import fr.insy2s.commerce.shoponlineback.mappers.PromotionMapperImpl;
 import fr.insy2s.commerce.shoponlineback.repositories.CategoryRepository;
 import fr.insy2s.commerce.shoponlineback.repositories.ProductRepository;
+import fr.insy2s.commerce.shoponlineback.repositories.PromotionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +41,11 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
 
     private final CategoryRepository categoryRepository;
 
+    private final PromotionRepository promotionRepository;
+
     private final ProductMapper productMapper = new ProductMapperImpl();
+
+    private final PromotionMapper promotionMapper = new PromotionMapperImpl();
 
     private final UuidService uuidService;
 
@@ -63,18 +73,6 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         Product product =  this.productRepository.save(this.productMapper.fromProductDTO(p));
         return this.productMapper.fromProduct(product);
     }
-
-//    @Override
-//    public void add(ProductDTO e) {
-//        e.setRefProduct(this.uuidService.generateUuid());
-//        ProductDTO productDTO = new ProductDTO();
-//            productDTO.setName(e.getName());
-//            productDTO.setProductDescription(e.getProductDescription());
-//            productDTO.setPriceTTC(e.getPriceTTC());
-//            productDTO.setProductInventory(e.getProductInventory());
-//            productDTO.setCategory(e.getCategory());
-//        this.productRepository.save(this.productMapper.fromProductDTO(productDTO));
-//    }
 
     @Override
     public ProductDTO update(Long id, ProductDTO e) {
@@ -141,7 +139,6 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         {
             products.get(i).setPresent(true);
             productList.add(products.get(i));
-//            this.productRepository.save(products.get(i));
         }
 
         Page<Product> productPage = new PageImpl<>(productList, pageable, productList.size());
@@ -149,5 +146,48 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
         return productPage.map(this.productMapper::fromProduct);
     }
 
+    @Scheduled(fixedRate = 3600000)
+    public List<Product> calculatePromotionPrice()
+    {
+        List<Product> products = this.productRepository.findAll();
+
+        for (Product product : products)
+        {
+            List<Promotion> promotions = product.getPromotions();
+
+            for (Promotion promotion : promotions)
+            {
+                if (isPromotionValid(promotion))
+                {
+                    double discount = promotion.getDiscount();
+                    double priceTtcTmp = product.getPriceTTC();
+
+                    product.setPriceTTC(priceTtcTmp * (1 - discount / 100));
+                }
+            }
+        }
+
+        return products;
+    }
+
+    private boolean isPromotionValid(Promotion promotion)
+    {
+        Date now = new Date(System.currentTimeMillis());
+
+        Date promoStart = promotion.getPromoStart();
+        Date promoEnd = promotion.getPromoEnd();
+
+        return now.after(promoStart) && now.before(promoEnd);
+    }
+
+    public Page<ProductDTO> newAllProduct(Pageable pageable)
+    {
+        List<Product> products = this.calculatePromotionPrice();
+
+        Page<Product> productDTOPage = new PageImpl<>(products, pageable, products.size());
+
+        return productDTOPage.map(this.productMapper::fromProduct);
+
+    }
 
 }
