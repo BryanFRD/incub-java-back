@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
 import fr.insy2s.commerce.shoponlineback.dtos.ForgetPasswordDTO;
 import fr.insy2s.commerce.shoponlineback.dtos.ResetPasswordDTO;
+import fr.insy2s.commerce.shoponlineback.dtos.UpdatePasswordDTO;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.AccountNotFountException;
 import fr.insy2s.commerce.shoponlineback.secure.beanresponse.AuthenticationResponse;
 import fr.insy2s.commerce.shoponlineback.services.AccountService;
@@ -97,5 +98,11 @@ public class AccountController {
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordDTO body) {
     	accountService.resetPassword(body.getToken(), body.getPassword());
     	return ResponseEntity.ok("reset password");
+    }
+    
+    @PutMapping("/accounts/password")
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordDTO body) {
+    	accountService.updatePassword(body.getOldPassword(), body.getNewPassword());
+    	return ResponseEntity.ok("update password");
     }
 }

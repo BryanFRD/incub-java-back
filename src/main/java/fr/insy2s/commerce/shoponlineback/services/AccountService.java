@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -94,7 +95,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     public AuthenticationResponse login(AccountDTO accountDTO)
     {
         this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountDTO.getEmail(), accountDTO.getPassword()));
-
+        
         Optional<Account> account = this.accountRepository.findByEmail(accountDTO.getEmail());
         if (account.isEmpty())
             throw new AccountNotFountException("Account not found");
@@ -190,6 +191,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     		throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "reset password token creation date is null");
     	}
     	
+    	// vérifier si le token est expiré
     	Instant tokenExpirationDate = account.getResetPasswordTokenCreationDate().toInstant().plus(RESET_PASSWORD_TOKEN_VALIDITY, ChronoUnit.DAYS);
     	if(Instant.now().isAfter(tokenExpirationDate)) {
     		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "token is expired");
@@ -199,5 +201,20 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     	account.setResetPasswordToken(null);
     	account.setResetPasswordTokenCreationDate(null);
     	accountRepository.save(account);
+    }
+    
+    /***/
+    public void updatePassword(String oldPassword, String newPassword) {
+    	Account authenticatedAccount = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	
+    	// vérifier si l'ancien mot de passe est correct
+    	if(!passwordEncoder.matches(oldPassword, authenticatedAccount.getPassword())) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "old password is invalid");
+    	}
+    	
+    	authenticatedAccount.setPassword(passwordEncoder.encode(newPassword));
+    	authenticatedAccount.setResetPasswordToken(null);
+    	authenticatedAccount.setResetPasswordTokenCreationDate(null);
+    	accountRepository.save(authenticatedAccount);
     }
 }
