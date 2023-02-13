@@ -119,8 +119,6 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                         p.setEmail(e.getEmail());
                     if (p.getPassword() != null)
                         p.setPassword(this.passwordEncoder.encode(e.getPassword()));
-                    if (p.getResetToken() != null)
-                        p.setResetToken(e.getResetToken());
                     if (p.getCivility() != null || p.getCivility() == null)
                         p.setCivility(e.getCivility());
                     if (p.getActive() != null)

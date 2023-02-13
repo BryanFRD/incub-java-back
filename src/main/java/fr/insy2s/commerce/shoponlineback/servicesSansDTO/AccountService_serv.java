@@ -21,11 +21,7 @@ public class AccountService_serv{
 
 
     public void add(Account e) {
-
         e.setRefAccount(UUID.randomUUID().toString());
-        e.setResetToken(UUID.randomUUID().toString());
-
-
         this.accountRepository.save(e);
     }
 
@@ -41,7 +37,6 @@ public class AccountService_serv{
                         p.setPassword(e.getPassword());
                     if (p.getEmail() != null)
                         p.setEmail(e.getEmail());
-                    p.setResetToken(UUID.randomUUID().toString());
                     if (p.getRoles() != null)
                         p.setRoles(e.getRoles());
                     return this.accountRepository.save(p);

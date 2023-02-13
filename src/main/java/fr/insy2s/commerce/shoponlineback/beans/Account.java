@@ -63,9 +63,6 @@ public class Account implements UserDetails {
     @NotEmpty
     @NotNull
     private String email;
-
-    @Column(name = "reset_token", nullable = true, length = 100)
-    private String resetToken;
     
     @Column(name = "reset_password_token", nullable = true)
     private String resetPasswordToken;
