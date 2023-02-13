@@ -18,14 +18,30 @@ spring:
   jackson:
     date-format: dd-MM-yyyy
     time-zone: Europe/Paris
+  mail:
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: 'smtp.gmail.com'
+          starttls:
+            enable: 'true'
+          auth: 'true'
+    host: smtp.gmail.com
+    username: bluby80@gmail.com
+    password: umtararhpevdfcyx
+    port: '587'
 logging:
   level:
     fr.insy2s.ecommerce: trace
     org.hibernate.SQL: debug
 server:
   port: 9000
+reset-password:
+  url: http://localhost:5173/reset-password/%s
 
 
 app:
   jwt:
     secret : 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+

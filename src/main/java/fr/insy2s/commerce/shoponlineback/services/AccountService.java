@@ -1,9 +1,29 @@
 package fr.insy2s.commerce.shoponlineback.services;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import org.webjars.NotFoundException;
+
 import fr.insy2s.commerce.shoponlineback.beans.Account;
 import fr.insy2s.commerce.shoponlineback.beans.Role;
 import fr.insy2s.commerce.shoponlineback.dtos.AccountDTO;
-import fr.insy2s.commerce.shoponlineback.dtos.RoleDTO;
 import fr.insy2s.commerce.shoponlineback.enums.Civility;
 import fr.insy2s.commerce.shoponlineback.exceptions.beansexptions.AccountNotFountException;
 import fr.insy2s.commerce.shoponlineback.exceptions.generic_exception.WebservicesGenericServiceException;
@@ -17,19 +37,6 @@ import fr.insy2s.commerce.shoponlineback.repositories.RoleRepository;
 import fr.insy2s.commerce.shoponlineback.secure.JwtService;
 import fr.insy2s.commerce.shoponlineback.secure.beanresponse.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.webjars.NotFoundException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +57,14 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
+    
+    private final EmailSenderService emailSenderService;
+    
+    // Validité du token en jours
+    private static final int RESET_PASSWORD_TOKEN_VALIDITY = 30;
+    
+    @Value("${reset-password.url}")
+    private String resetPasswordUrl;
 
 
 
@@ -80,7 +95,7 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
     public AuthenticationResponse login(AccountDTO accountDTO)
     {
         this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(accountDTO.getEmail(), accountDTO.getPassword()));
-
+        
         Optional<Account> account = this.accountRepository.findByEmail(accountDTO.getEmail());
         if (account.isEmpty())
             throw new AccountNotFountException("Account not found");
@@ -171,8 +186,56 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
         account.get().getRoles().add(role);
         this.accountRepository.save(account.get());
     }
+   
+    /***/
+    public void forgetPassword(String email) {
+    	Account account = accountRepository.findByEmail(email)
+    			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "email is invalid"));
+    	
+    	final String token = UUID.randomUUID().toString();
+    	account.setResetPasswordToken(token);
+    	account.setResetPasswordTokenCreationDate(Timestamp.from(Instant.now()));
 
 
-
-
+    	
+    	emailSenderService.sendSimpleEmail(account.getEmail(), "Mot de passe oublié", String.format(resetPasswordUrl, token));
+    	
+    	accountRepository.save(account);
+    } 
+    
+    /***/
+    public void resetPassword(String token, String password) {
+    	Account account = accountRepository.findByResetPasswordToken(token)
+    			.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "token is invalid"));
+    	
+    	if(account.getResetPasswordTokenCreationDate() == null) {
+    		throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "reset password token creation date is null");
+    	}
+    	
+    	// vérifier si le token est expiré
+    	Instant tokenExpirationDate = account.getResetPasswordTokenCreationDate().toInstant().plus(RESET_PASSWORD_TOKEN_VALIDITY, ChronoUnit.DAYS);
+    	if(Instant.now().isAfter(tokenExpirationDate)) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "token is expired");
+    	}
+    	
+    	account.setPassword(passwordEncoder.encode(password));
+    	account.setResetPasswordToken(null);
+    	account.setResetPasswordTokenCreationDate(null);
+    	accountRepository.save(account);
+    }
+    
+    /***/
+    public void updatePassword(String oldPassword, String newPassword) {
+    	Account authenticatedAccount = (Account)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	
+    	// vérifier si l'ancien mot de passe est correct
+    	if(!passwordEncoder.matches(oldPassword, authenticatedAccount.getPassword())) {
+    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "old password is invalid");
+    	}
+    	
+    	authenticatedAccount.setPassword(passwordEncoder.encode(newPassword));
+    	authenticatedAccount.setResetPasswordToken(null);
+    	authenticatedAccount.setResetPasswordTokenCreationDate(null);
+    	accountRepository.save(authenticatedAccount);
+    }
 }

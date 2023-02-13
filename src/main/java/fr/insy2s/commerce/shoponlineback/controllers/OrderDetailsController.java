@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/shopping-online")
+@RequestMapping("/api/shopping-online/")
 public class OrderDetailsController {
 
     private final OrderDetailsService orderDetailsService;
