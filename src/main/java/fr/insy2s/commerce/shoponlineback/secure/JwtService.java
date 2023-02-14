@@ -40,7 +40,7 @@ public class JwtService {
         return generateToken(new HashMap<>(), account);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails account)
+    public String generateToken(Map<String, Object> extraClaims, Account account)
     {
         Collection<? extends GrantedAuthority> authorities = account.getAuthorities();
         List<String> roles = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
@@ -50,6 +50,7 @@ public class JwtService {
                 .setSubject(account.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .claim("roles", roles)
+                .claim("subid", account.getId())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();

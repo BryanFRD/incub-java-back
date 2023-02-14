@@ -6,7 +6,7 @@ CREATE TABLE `account` (
   `password` varchar(250) NOT NULL,
   `email` varchar(100) NOT NULL,
   `civility` varchar(50) DEFAULT NULL,
-  `active` bit(1) NOT NULL,
+  `active` bit(1) NOT NULL DEFAULT 1,
   `reset_password_token` varchar(100) DEFAULT NULL,
   `reset_password_token_creation_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id_account`)

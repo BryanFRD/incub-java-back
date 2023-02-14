@@ -88,6 +88,9 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
         e.setRoles(roleList.stream().map(this.roleMapper::fromRole).collect(Collectors.toList()));
         if (e.getCivility() == null)
             e.setCivility(Civility.OTHER.toString());
+        if(e.getActive() == null) {
+        	e.setActive(Boolean.TRUE);
+        }
         Account account = this.accountRepository.save(this.accountMapper.fromAccountDTO(e));
         return this.accountMapper.fromAccount(account);
     }
@@ -117,8 +120,6 @@ public class AccountService implements Webservices<AccountDTO, WebservicesGeneri
                         p.setFirstName(e.getFirstName());
                     if(p.getEmail() != null)
                         p.setEmail(e.getEmail());
-                    if (p.getPassword() != null)
-                        p.setPassword(this.passwordEncoder.encode(e.getPassword()));
                     if (p.getCivility() != null || p.getCivility() == null)
                         p.setCivility(e.getCivility());
                     if (p.getActive() != null)
