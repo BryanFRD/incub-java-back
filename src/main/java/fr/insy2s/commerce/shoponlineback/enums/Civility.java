@@ -2,15 +2,13 @@ package fr.insy2s.commerce.shoponlineback.enums;
 
 public enum Civility {
 
-    SIR,
+    MR,
 
     MRS,
 
-    COMPAGNY,
+    COMPANY,
 
     OTHER,
 
     NONE
-
-
 }
