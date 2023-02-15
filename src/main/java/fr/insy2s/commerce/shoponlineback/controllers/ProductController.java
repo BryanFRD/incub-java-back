@@ -87,13 +87,18 @@ public class ProductController {
     public ResponseEntity<Page<ProductDTO>> findProductsByCategoryId(@Valid @PathVariable Long id, Pageable page){
        return ResponseEntity.ok(this.productService.getProductsByCategoryId(id, page));
     }
-
+    
     @GetMapping("/no-role/get-all-update")
     public ResponseEntity<Page<ProductDTO>> getUpdatePresentAllProduct(Pageable pageable)
     {
         return ResponseEntity.ok(this.productService.updatePresentAllProduct(pageable));
     }
-
+    
+    @PostMapping("/no-role/all-product-by-id-in")
+    public ResponseEntity<List<ProductDTO>> getAllProductByIdIn(@RequestBody List<Long> idList){
+       return ResponseEntity.ok(this.productService.getByIdIn(idList));
+    }
+    
     // Test for promotion
 
 

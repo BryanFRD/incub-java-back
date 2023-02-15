@@ -56,8 +56,6 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                 .map(this.productMapper::fromProduct);
     }
 
-
-
     @Override
     public void add(ProductDTO e) {
         e.setRefProduct(this.uuidService.generateUuid());
@@ -117,7 +115,12 @@ public class ProductService implements Webservices<ProductDTO, WebservicesGeneri
                 .map(Optional::of)
                 .orElseThrow(() -> new ProductNotFoundException("Product with id " +id+ " was not found"));
     }
-
+    
+    public List<ProductDTO> getByIdIn(List<Long> idList){
+        return this.productRepository.findByIdProductIn(idList)
+                .stream().map(productMapper::fromProduct)
+                .collect(Collectors.toList());
+    }
 
     public Page<ProductDTO> getProductsByCategoryId(Long id, Pageable page){
         System.out.println(id);
